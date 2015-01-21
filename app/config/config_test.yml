@@ -17,7 +17,12 @@ swiftmailer:
 
 doctrine:
     dbal:
-        dbname:   %database_name%_test
+#        dbname:   %database_name%_test
+        default_connection: default
+        connections:
+            default:
+                driver:   pdo_sqlite
+                path:     %kernel.cache_dir%/test.db
 
-parameters:
-     security.context_listener.class: SensioLabs\JobBoardBundle\TestsFunctional\Security\Http\Firewall\ContextListener
+#parameters:
+#     security.context_listener.class: SensioLabs\JobBoardBundle\TestsFunctional\Security\Http\Firewall\ContextListener

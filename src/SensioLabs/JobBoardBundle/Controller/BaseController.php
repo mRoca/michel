@@ -15,20 +15,18 @@ class BaseController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $data = array();
+        $page = max(1, intval($this->get('request')->query->get('page'))) - 1;
+
+        $em = $this->getDoctrine()->getManager();
+
+        $data['jobs'] = $em->getRepository('SensioLabsJobBoardBundle:Job')->findBy(array(), array('createdAt' => 'desc'), 10, 10 * $page);
+
         if ($request->isXmlHttpRequest()) {
-            return $this->render('SensioLabsJobBoardBundle:Includes:job_container.html.twig');
+            return $this->render('SensioLabsJobBoardBundle:Includes:job_container.html.twig', $data);
         }
 
-        return array();
-    }
-
-    /**
-     * @Route("/post", name="job_post")
-     * @Template()
-     */
-    public function postAction(Request $request)
-    {
-        return array();
+        return $data;
     }
 
     /**
