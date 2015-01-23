@@ -1,0 +1,37 @@
+{% extends "SensioLabsJobBoardBundle::layout.html.twig" %}
+
+{% from 'SensioLabsJobBoardBundle:Includes:breadcrumb.html.twig' import breadcrumb %}
+
+{% block page_class 'publish' %}
+
+{% block title job.title %}
+
+{% block content %}
+    {{ breadcrumb({
+        'Post a job': path('job_post'),
+        'Preview':  path('job_preview', job.urlParameters),
+        'Publish':  null,
+    }) }}
+
+    {% embed 'SensioLabsJobBoardBundle:Includes:job.html.twig' %}
+        {% block job_steps %}
+            <div class="padding clearfix">
+                <h2 style="color: red;">{% trans %}Here will be a payment form{% endtrans %}</h2>
+            </div>
+            <div class="padding clearfix">
+                <a href="{{ path('job_preview', job.urlParameters) }}" class="green-button left"><span class="sprite-icon-light-arrow-left"></span>
+                    <span>{% trans %}Preview{% endtrans %}</span>
+                </a>
+
+                {{ form_start(publish_form) }}
+                <button type="submit" class="green-button right">
+                    <b>€</b>&nbsp;
+                    <span>{% trans %}Pay & Publish{% endtrans %}</span>
+                </button>
+                {{ form_end(publish_form) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+
+    <div class="clear"></div>
+{% endblock %}

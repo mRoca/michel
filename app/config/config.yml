@@ -26,6 +26,9 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    form:
+        resources:
+            - 'SensioLabsJobBoardBundle:Form:fields.html.twig'
     globals:
         sln_js:       "%sensiolabs_connect.sln_js%"
 
@@ -54,7 +57,8 @@ doctrine:
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%
-
+        types:
+            datetime: SensioLabs\JobBoardBundle\Doctrine\DBAL\Types\UTCDateTimeType
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
@@ -72,3 +76,16 @@ sensio_labs_connect:
     scope:          %sensiolabs_connect.scope%
     oauth_endpoint: %sensiolabs_connect.oauth_endpoint%
     api_endpoint:   %sensiolabs_connect.api_endpoint%
+
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+            sluggable: true
+            timestampable: true
+
+services:
+ twig.extension.text:
+     class: Twig_Extensions_Extension_Text
+     tags:
+         - { name: twig.extension }

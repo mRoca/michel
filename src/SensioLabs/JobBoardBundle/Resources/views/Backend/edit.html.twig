@@ -10,17 +10,24 @@
         'Make changes on \'Developper\' announcement': null,
     }) }}
 
-    {% embed "SensioLabsJobBoardBundle:Includes:job_form.html.twig" %}
-        {% block admin_extra_fields %}
-            <div class="backend-job-dates">
-                Visible from
-                <input id="publishedAt" class="span3 hasDatepicker" type="datetime" value="01/06/2014" name="publishedAt">
-                To
-                <input id="endedAt" class="span3 hasDatepicker" type="datetime" value="01/06/2014" name="endedAt">
-                (format: mm/dd/yyyy) 
-            </div>
-        {% endblock %}
-    {% endembed %}
-
+    <form id="addJob" method="post" name="add">
+        {% embed "SensioLabsJobBoardBundle:Includes:job_form.html.twig" %}
+            {% block admin_extra_fields %}
+                <div class="backend-job-dates">
+                    Visible from
+                    <input id="publishedAt" class="span3 hasDatepicker" type="datetime" value="01/06/2014" name="publishedAt">
+                    To
+                    <input id="endedAt" class="span3 hasDatepicker" type="datetime" value="01/06/2014" name="endedAt">
+                    (format: mm/dd/yyyy)
+                </div>
+            {% endblock %}
+            {% block buttons %}
+                <button class="green-button right" type="submit">
+                    <span class="sprite-icon-light-arrow-right"></span>
+                    <span>Preview</span>
+                </button>
+            {% endblock %}
+        {% endembed %}
+    </form>
     <div class="clear"></div>
 {% endblock %}

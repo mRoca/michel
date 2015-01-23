@@ -1,14 +1,15 @@
 <div class="details">
     <span class="filter">
-        <a href="#">Paris, France</a> /
-        <a href="#">Full time</a>
+
+        <a href="#">{{ job.city }}, {{ job.country | countryName }}</a> /
+        <a href="#">{{ job.contractName }}</a>
         
-        <br/><span class="archived">Archived since 12/12/2013</span>
+        {#<br/><span class="archived">Archived since 12/12/2013</span>#}
 
     </span>
 </div>
 
-<a href="{{ path('job_show') }}" class="title">
-    Developer
-    <span class="company">@&nbsp;SensioLabs</span>
+<a href="#" class="title">
+    {{ job.title }}
+    <span class="company">@&nbsp;{{ job.company }}</span>
 </a>

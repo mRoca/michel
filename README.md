@@ -1,8 +1,28 @@
 SensioLabs Jobs
 ===============
 
-1. Install the vendors : composer.phar install
+## Installation
 
-2. Create the folder app/sessions
-		mkdir app/sessions
-		chmod -R 755 app/sessions
+Install the vendors
+
+	composer install
+
+Create the folder app/sessions
+
+	mkdir app/sessions
+	chmod -R 755 app/sessions
+
+## Dev
+
+Caution : The application provides jobs for eveery country, so all DateTime are stored in UTC format.
+
+### Create DB and update schema
+
+	app/console doctrine:database:create
+	app/console doctrine:schema:update --force
+	
+### Fill DB with fake data
+
+	app/console doctrine:fixtures:load
+	
+	
