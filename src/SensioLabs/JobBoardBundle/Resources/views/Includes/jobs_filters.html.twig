@@ -1,0 +1,68 @@
+{% import _self as self %}
+
+<div class="filter">
+    <span class="title">
+        <img class="sprite-icon-location" alt=">" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}"/>
+        {% trans %}Location{% endtrans %}
+    </span>
+    <ul>
+        <li class="{{ filters.country ? '' : 'active' }}">
+            <a href="{{ path('homepage', {'contract': filters.contract}) }}">{% trans %}All countries{% endtrans %}</a>
+        </li>
+
+        {% for i, country in countries %}
+            <li {% if i > 2 %}style="display:none"{% endif %} class="{{ filters.country == country.code ? 'active' : '' }}">
+                <a href="{{ path('homepage', {'contract': filters.contract, 'country': country.code}) }}">
+                    {{ country.code | countryName }} ({{ country.total }})
+                </a>
+            </li>
+        {% endfor %}
+
+        {% if (countries | length) > 4 %}
+            <li>
+                {{ self.filteraction()  }}
+            </li>
+        {% endif %}
+    </ul>
+</div>
+<div class="filter">
+    <span class="title">
+        <img class="sprite-icon-paperclip" alt=">" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}"/>
+        {% trans %}Type of contract{% endtrans %}
+    </span>
+    <ul>
+        <li class="{{ filters.contract ? '' : 'active' }}">
+            <a href="{{ path('homepage', {'country': filters.country}) }}">{% trans %}All types of contracts{% endtrans %}</a>
+        </li>
+
+        {% for i, contract in contracts %}
+            <li {% if i > 2 %}style="display:none"{% endif %} class="{{ filters.contract == contract.code ? 'active' : '' }}">
+                <a href="{{ path('homepage', {'contract': contract.code, 'country': filters.country}) }}">
+                    {{ contract.code | contractName }} ({{ contract.total }})
+                </a>
+            </li>
+        {% endfor %}
+
+        {% if (contracts | length) > 4 %}
+            <li>
+                {{ self.filteraction()  }}
+            </li>
+        {% endif %}
+    </ul>
+</div>
+<ul class="function">
+    <li>
+        <a href="{{ path('homepage') }}">
+            <img class="sprite-icon-dark-arrow-right" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt=">"/> {% trans %}All jobs{% endtrans %}
+        </a>
+    </li>
+</ul>
+
+{% macro filteraction() %}
+    <a href="#" class="filter-action" data-filter-action="down">
+        <img class="sprite-icon-dark-arrow-down" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="v"/> {% trans %}More{% endtrans %}
+    </a>
+    <a href="#" class="filter-action" data-filter-action="up" style="display:none">
+        <img class="sprite-icon-dark-arrow-up" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="^"/> {% trans %}Less{% endtrans %}
+    </a>
+{% endmacro %}

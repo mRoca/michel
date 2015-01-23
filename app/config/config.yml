@@ -29,6 +29,7 @@ twig:
     form:
         resources:
             - 'SensioLabsJobBoardBundle:Form:fields.html.twig'
+            - 'LexikFormFilterBundle:Form:form_div_layout.html.twig'
     globals:
         sln_js:       "%sensiolabs_connect.sln_js%"
 
@@ -84,8 +85,11 @@ stof_doctrine_extensions:
             sluggable: true
             timestampable: true
 
+knp_paginator:
+    page_range: 10
+
 services:
- twig.extension.text:
-     class: Twig_Extensions_Extension_Text
-     tags:
-         - { name: twig.extension }
+    twig.extension.text:
+         class: Twig_Extensions_Extension_Text
+         tags:
+             - { name: twig.extension }

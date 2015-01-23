@@ -6,8 +6,12 @@
 
 <div class="details">
     <span class="filter">
-        <a href="#">{{ job.city }}, {{ job.country | countryName }}</a> /
-        <a href="#">{{ job.contractName }}</a>
+        <a href="{{ path('homepage', {'country': job.country}) }}">
+            {{ job.city }}, {{ job.country | countryName }}
+        </a> /
+        <a href="{{ path('homepage', {'contract': job.contract}) }}">
+            {{ job.contract | contractName }}
+        </a>
 
         {# TOFUTURE <br/><span class="archived">Archived since 12/12/2013</span>#}
     </span>
