@@ -14,7 +14,7 @@ Create the folder app/sessions
 
 ## Dev
 
-Caution : The application provides jobs for eveery country, so all DateTime are stored in UTC format.
+Caution : The application provides jobs for every country, so all DateTime are stored in UTC format.
 
 ### Create DB and update schema
 
@@ -24,5 +24,3 @@ Caution : The application provides jobs for eveery country, so all DateTime are 
 ### Fill DB with fake data
 
 	app/console doctrine:fixtures:load
-	
-	

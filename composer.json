@@ -1,5 +1,5 @@
 {
-    "name": "SensioLabs Job Board",
+    "name": "sensiolabs/jobboard",
     "description": "The official job board for Symfony talent.",
     "license": "proprietary",
     "autoload": {
@@ -18,6 +18,7 @@
         "doctrine/doctrine-migrations-bundle": "2.1.x-dev",
         "doctrine/migrations": "dev-master",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
+        "exercise/htmlpurifier-bundle": "1.0.*@dev",
         "incenteev/composer-parameter-handler": "2.0.*",
         "sensio/buzz-bundle": "0.2.*@dev",
         "sensio/distribution-bundle": "2.3.*",

@@ -5030,11 +5030,14 @@ input[type="text"],
     font-size: 24px;
     font-weight: bold;
 }
+.add .company-label:after {
+    clear: both;
+}
 .add .company-label .label {
     float: left;
     background: none;
     padding-top: 6px;
-    padding-right: 10px;
+    padding-right: 0;
     color: #7e7e7e;
     font-size: 21px;
     line-height: 23px;
@@ -5047,6 +5050,7 @@ input[type="text"],
     color: #7e7e7e;
     font-size: 21px;
     font-weight: bold;
+    float: right;
 }
 .add .how-to-apply {
     margin-top: 5px;

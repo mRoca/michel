@@ -20,7 +20,7 @@ class BaseController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $data['jobs'] = $em->getRepository('SensioLabsJobBoardBundle:Job')->findBy(array(), array('createdAt' => 'desc'), 10, 10 * $page);
+        $data['jobs'] = $em->getRepository('SensioLabsJobBoardBundle:Job')->findBy(array(), array('id' => 'desc'), 10, 10 * $page);
 
         if ($request->isXmlHttpRequest()) {
             return $this->render('SensioLabsJobBoardBundle:Includes:job_container.html.twig', $data);
