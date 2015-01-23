@@ -28,4 +28,10 @@ $(function () {
             });
         }
     });
+
+    $(document).on('click', '#job-container .box', function (e) {
+        if (!$(e.target).is('a')) {
+            document.location = $(this).find('a.title').attr('href');
+        }
+    });
 });

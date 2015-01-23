@@ -1,5 +1,5 @@
 <h2>
-    <a href="{{ job.id ? "#" : path('job_post') }}" class="title">
+    <a href="{{ job.id ? path('job_show', job.urlParameters)  : path('job_post') }}" class="title">
         {{ job.title }}
     </a>
 </h2>
@@ -9,7 +9,7 @@
         <a href="{{ path('homepage', {'country': job.country}) }}">
             {{ job.city }}, {{ job.country | countryName }}
         </a> /
-        <a href="{{ path('homepage', {'contract': job.contract}) }}">
+        <a href="{{ path('homepage', {'country': job.country, 'contract': job.contract}) }}">
             {{ job.contract | contractName }}
         </a>
 

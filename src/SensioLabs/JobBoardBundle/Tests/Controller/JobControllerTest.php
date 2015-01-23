@@ -5,6 +5,7 @@ namespace SensioLabs\JobBoardBundle\Tests\Controller;
 
 use SensioLabs\JobBoardBundle\Entity\Job;
 use SensioLabs\JobBoardBundle\Test\ConnectWebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class JobControllerTest extends ConnectWebTestCase
 {
@@ -72,6 +73,17 @@ class JobControllerTest extends ConnectWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertCount(1, $crawler->filter('body.preview'));
+    }
+
+    public function testShowAction()
+    {
+        $crawler = $this->client->request('GET', '/');
+
+        $this->assertGreaterThan(0, $crawler->filter('#job-container > .box a.title')->count());
+        $link = $crawler->filter('#job-container > .box a.title')->first()->link();
+
+        $this->client->click($link);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
     protected function jobData()
