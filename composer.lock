@@ -1408,12 +1408,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikFormFilterBundle.git",
-                "reference": "e70fcf7168ce278572650a0154d87bd935b547b9"
+                "reference": "9b1f006a5a7e533c9e279ba674699072b24ccacf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikFormFilterBundle/zipball/e70fcf7168ce278572650a0154d87bd935b547b9",
-                "reference": "e70fcf7168ce278572650a0154d87bd935b547b9",
+                "url": "https://api.github.com/repos/lexik/LexikFormFilterBundle/zipball/9b1f006a5a7e533c9e279ba674699072b24ccacf",
+                "reference": "9b1f006a5a7e533c9e279ba674699072b24ccacf",
                 "shasum": ""
             },
             "require": {
@@ -1459,7 +1459,7 @@
                 "filter",
                 "form"
             ],
-            "time": "2015-01-07 13:23:23"
+            "time": "2015-01-26 13:32:48"
         },
         {
             "name": "monolog/monolog",
