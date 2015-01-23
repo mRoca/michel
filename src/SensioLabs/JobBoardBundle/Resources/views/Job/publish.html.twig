@@ -16,17 +16,17 @@
     {% embed 'SensioLabsJobBoardBundle:Includes:job.html.twig' %}
         {% block job_steps %}
             <div class="padding clearfix">
-                <h2 style="color: red;">{% trans %}Here will be a payment form{% endtrans %}</h2>
+                <h2 style="color: red;">Here will be a payment form</h2>
             </div>
             <div class="padding clearfix">
                 <a href="{{ path('job_preview', job.urlParameters) }}" class="green-button left"><span class="sprite-icon-light-arrow-left"></span>
-                    <span>{% trans %}Preview{% endtrans %}</span>
+                    <span>Preview</span>
                 </a>
 
                 {{ form_start(publish_form) }}
                 <button type="submit" class="green-button right">
                     <b>€</b>&nbsp;
-                    <span>{% trans %}Pay & Publish{% endtrans %}</span>
+                    <span>Pay &amp; Publish</span>
                 </button>
                 {{ form_end(publish_form) }}
             </div>

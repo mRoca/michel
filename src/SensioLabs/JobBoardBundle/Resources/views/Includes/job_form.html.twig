@@ -2,7 +2,7 @@
 {% form_theme form 'SensioLabsJobBoardBundle:Form:fields.html.twig' %}
 
 {% block box_content %}
-    {{ form_start(form, {'method': 'POST', 'action': path('job_post'), 'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_start(form, {'method': 'POST', 'action': form_action, 'attr': {'novalidate': 'novalidate'}}) }}
 
     <div class="padding">
         <div class="head clearfix">

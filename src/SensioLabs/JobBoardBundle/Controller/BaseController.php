@@ -34,13 +34,9 @@ class BaseController extends Controller
 
         $data['jobs'] = $this->get('knp_paginator')->paginate($filterBuilder, $request->query->get('page', 1), Job::LIST_MAX_JOB_ITEMS);
 
-        $data['filters'] = $formFilter->getData();
-        //Add invalid fields not in getData() array
-        foreach ($formFilter->all() as $field) {
-            if (!isset($data['filters'][$field->getName()])) {
-                $data['filters'][$field->getName()] = null;
-            }
-        }
+        // Add invalid fields not in getData() array
+        $data['filters'] = array_fill_keys(array_keys($formFilter->all()), null);
+        $data['filters'] = array_merge($data['filters'], $formFilter->getData());
 
         if ($request->isXmlHttpRequest()) {
             return $this->render('SensioLabsJobBoardBundle:Includes:job_container.html.twig', $data);

@@ -3,11 +3,11 @@
 <div class="filter">
     <span class="title">
         <img class="sprite-icon-location" alt=">" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}"/>
-        {% trans %}Location{% endtrans %}
+        Location
     </span>
     <ul>
         <li class="{{ filters.country ? '' : 'active' }}">
-            <a href="{{ path('homepage', {'contract': filters.contract}) }}">{% trans %}All countries{% endtrans %}</a>
+            <a href="{{ path('homepage', {'contract': filters.contract}) }}">All countries</a>
         </li>
 
         {% for i, country in countries %}
@@ -28,11 +28,11 @@
 <div class="filter">
     <span class="title">
         <img class="sprite-icon-paperclip" alt=">" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}"/>
-        {% trans %}Type of contract{% endtrans %}
+        Type of contract
     </span>
     <ul>
         <li class="{{ filters.contract ? '' : 'active' }}">
-            <a href="{{ path('homepage', {'country': filters.country}) }}">{% trans %}All types of contracts{% endtrans %}</a>
+            <a href="{{ path('homepage', {'country': filters.country}) }}">All types of contracts</a>
         </li>
 
         {% for i, contract in contracts %}
@@ -53,16 +53,16 @@
 <ul class="function">
     <li>
         <a href="{{ path('homepage') }}">
-            <img class="sprite-icon-dark-arrow-right" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt=">"/> {% trans %}All jobs{% endtrans %}
+            <img class="sprite-icon-dark-arrow-right" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt=">"/>All jobs
         </a>
     </li>
 </ul>
 
 {% macro filteraction() %}
     <a href="#" class="filter-action" data-filter-action="down">
-        <img class="sprite-icon-dark-arrow-down" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="v"/> {% trans %}More{% endtrans %}
+        <img class="sprite-icon-dark-arrow-down" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="v"/>More
     </a>
     <a href="#" class="filter-action" data-filter-action="up" style="display:none">
-        <img class="sprite-icon-dark-arrow-up" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="^"/> {% trans %}Less{% endtrans %}
+        <img class="sprite-icon-dark-arrow-up" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="^"/>Less
     </a>
 {% endmacro %}

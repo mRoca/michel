@@ -17,13 +17,14 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new SensioLabs\JobBoardBundle\SensioLabsJobBoardBundle(),
             new SensioLabs\Bundle\ConnectBundle\SensioLabsConnectBundle(),
             new SensioLabs\Internal\Bundle\ConnectBundle\SensioLabsInternalConnectBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
             new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+
+            new SensioLabs\JobBoardBundle\SensioLabsJobBoardBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
