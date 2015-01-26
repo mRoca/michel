@@ -14,13 +14,34 @@ class JobType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text', array('attr' => array('placeholder' => 'Job title')))
-            ->add('company', 'text', array('attr' => array('placeholder' => 'Company')))
+            ->add('title', 'text', array(
+                'attr' => array(
+                    'placeholder' => 'Job title',
+                    'class' => 'title-input',
+                ),
+            ))
+            ->add('company', 'text', array(
+                'attr'  => array('placeholder' => 'Company'),
+            ))
             ->add('country', 'country')
-            ->add('city', 'text', array('attr' => array('placeholder' => 'City')))
-            ->add('contract', 'choice', array('choices' => Job::$CONTRACT_TYPES, 'empty_value' => 'Type of contract'))
-            ->add('description', 'textarea')
-            ->add('howToApply', 'text', array('attr' => array('placeholder' => 'Send your resume at...'), 'required' => false));
+            ->add('city', 'text', array(
+                'attr' => array(
+                    'placeholder' => 'City',
+                    'class' => 'location',
+                ),
+            ))
+            ->add('contract', 'choice', array(
+                'choices' => Job::$CONTRACT_TYPES,
+                'empty_value' => 'Type of contract'
+            ))
+            ->add('description', 'textarea', array(
+                'attr' => array('class' => 'ckeditor')
+            ))
+            ->add('howToApply', 'text', array(
+                'attr' => array('placeholder' => 'Send your resume at...'),
+                'required' => false
+            ))
+        ;
     }
 
     /**

@@ -21,3 +21,17 @@
         {%- endfor -%}
     {% endspaceless %}
 {% endblock widget_attributes %}
+
+{% block form_row -%}
+    <div>
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock form_row %}
+
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        {%- for error in errors -%}
+            <li>{{ error.message }}</li>
+        {%- endfor -%}
+    {%- endif %}
+{%- endblock form_errors %}

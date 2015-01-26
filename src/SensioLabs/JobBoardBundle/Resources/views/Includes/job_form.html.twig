@@ -1,57 +1,53 @@
 {% extends 'SensioLabsJobBoardBundle:Includes:box.html.twig' %}
+{% form_theme form 'SensioLabsJobBoardBundle:Form:fields.html.twig' %}
 
 {% block box_content %}
-    {{ form_start(form) }}
+    {{ form_start(form, {'method': 'POST', 'action': path('job_post'), 'attr': {'novalidate': 'novalidate'}}) }}
 
     <div class="padding">
         <div class="head clearfix">
 
-            {% if(errors | length) %}
+            {% if not form.vars.valid %}
                 <div class="error-container">
-                    <h4>{% trans %}Errors{% endtrans %} :</h4>
-
+                    <h4>Errors:</h4>
                     <ul>
-                        {% for error in errors %}
-                            <li>{{ error | trans({}, 'validators') }}</li>
-                        {% endfor %}
+                    {% for field in form.children %}
+                        {{ form_errors(field) }}
+                    {% endfor %}
                     </ul>
                 </div>
             {% endif %}
 
             <div class="title-company">
                 <div class="job-title">
-                    {{ form_widget(form.title, {'attr': {'class': 'title-input' }}) }}
+                    {{ form_row(form.title) }}
                 </div>
                 <div class="company-label">
                     <label class="label" for="job_company">@</label>
-                    {{ form_widget(form.company) }}
+                    {{ form_row(form.company) }}
                 </div>
             </div>
 
             <div class="country-city-contract">
                 <div class="country-city clearfix">
                     <div class="city-input country-select">
-                        {{ form_widget(form.country) }}
+                        {{ form_row(form.country) }}
                     </div>
                     <div class="city-input">
-                        {{ form_widget(form.city, {'attr': {'class': 'location' }}) }}
+                        {{ form_row(form.city) }}
                     </div>
                 </div>
                 <div>
-                    {{ form_widget(form.contract) }}
+                    {{ form_row(form.contract) }}
                 </div>
             </div>
         </div>
 
-        {% block admin_extra_fields %}{% endblock %}
-
-        <div>
-            {{ form_widget(form.description, {'attr': {'class': 'ckeditor'}}) }}
-        </div>
+        {{ form_row(form.description) }}
 
         <div class="how-to-apply">
             <h3> How to apply? </h3><br/>
-            {{ form_widget(form.howToApply) }}
+            {{ form_row(form.howToApply) }}
         </div>
 
     </div>

@@ -29,34 +29,31 @@ class JobController extends Controller
      */
     public function postAction(Request $request)
     {
-        $entity = new Job();
-        $from_preview = false;
+        $job = new Job();
+        $fromPreview = false;
 
         if ($request->isMethod('GET') && $this->get('session')->has('current_new_job')) {
-
             if ($this->get('session')->get('current_new_job') instanceof Job) {
-                $entity = $this->get('session')->get('current_new_job');
-                $from_preview = true;
+                $job = $this->get('session')->get('current_new_job');
+                $fromPreview = true;
             } else {
                 $this->get('session')->remove('current_new_job');
             }
         }
 
-        $form = $this->createCreateForm($entity);
+        $form = $this->createForm('job', $job);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $this->get('session')->set('current_new_job', $job);
 
-            $this->get('session')->set('current_new_job', $entity);
-
-            return $this->redirect($this->generateUrl('job_preview', $entity->getUrlParameters()));
+            return $this->redirect($this->generateUrl('job_preview', $job->getUrlParameters()));
         }
 
         return array(
-            'job'          => $entity,
-            'from_preview' => $from_preview,
+            'job'          => $job,
+            'from_preview' => $fromPreview,
             'form'         => $form->createView(),
-            'errors'       => $this->getAllFormErrorMessages($form)
         );
     }
 
@@ -118,42 +115,4 @@ class JobController extends Controller
     {
         return array();
     }
-
-    // ======================================
-
-    /**
-     * @param Job $entity
-     * @return \Symfony\Component\Form\Form
-     */
-    private function createCreateForm(Job $entity)
-    {
-        $form = $this->createForm(new JobType(), $entity, array(
-            'action' => $this->generateUrl('job_post'),
-            'method' => 'POST'
-        ));
-
-        return $form;
-    }
-
-    /**
-     * @param Form $form
-     * @return array
-     */
-    private function getAllFormErrorMessages(Form $form)
-    {
-        $errors = array();
-
-        if (count($form->getErrors())) {
-            foreach ($form->getErrors() as $error) {
-                $errors[] = $error->getMessage();
-            }
-        }
-
-        foreach ($form->all() as $name => $child) {
-            $errors = array_merge($errors, $this->getAllFormErrorMessages($child));
-        }
-
-        return $errors;
-    }
-
 }
