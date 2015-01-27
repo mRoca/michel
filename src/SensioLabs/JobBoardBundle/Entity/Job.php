@@ -11,13 +11,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class Job
  *
- * @Entity
+ * @Entity(repositoryClass="SensioLabs\JobBoardBundle\Repository\JobRepository")
  *
  * @ORM\Table(name="jobs", indexes={
  *      @ORM\Index(name="country_idx", columns={"country"}),
  *      @ORM\Index(name="contract_idx", columns={"contract"}),
  *      @ORM\Index(name="slug_idx", columns={"slug"})
  * })
+ *
  */
 class Job
 {
@@ -99,7 +100,7 @@ class Job
      */
     protected $updatedAt;
 
-
+    const LIST_MAX_JOB_ITEMS = 10;
     const CONTRACT_TYPE_FULL_TIME = 'CDI';
     const CONTRACT_TYPE_PART_TIME = 'PART_TIME';
     const CONTRACT_TYPE_INTERNSHIP = 'INTERNSHIP';
@@ -115,9 +116,9 @@ class Job
     );
 
     /** @return string */
-    public function getContractName()
+    public static function getContractName($contractCode)
     {
-        return isset(self::$CONTRACT_TYPES[$this->contract]) ? self::$CONTRACT_TYPES[$this->contract] : '';
+        return isset(self::$CONTRACT_TYPES[$contractCode]) ? self::$CONTRACT_TYPES[$contractCode] : '';
     }
 
     /** @return array */

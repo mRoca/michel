@@ -7,6 +7,9 @@
         <service id="sensiolabs.twig.country_extension" class="SensioLabs\JobBoardBundle\Twig\CountryExtension">
             <tag name="twig.extension" />
         </service>
+        <service id="sensiolabs.twig.contract_extension" class="SensioLabs\JobBoardBundle\Twig\ContractExtension">
+            <tag name="twig.extension" />
+        </service>
 
         <service id="form.job" class="SensioLabs\JobBoardBundle\Form\JobType">
             <tag name="form.type" alias="job" />

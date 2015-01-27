@@ -8,12 +8,14 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\Tools\SchemaTool;
 use SensioLabs\JobBoardBundle\DataFixtures\ORM\LoadJobData;
+use SensioLabs\JobBoardBundle\Entity\Job;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BaseControllerTest extends WebTestCase
 {
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
 
         parent::setUpBeforeClass();
 
@@ -28,7 +30,8 @@ class BaseControllerTest extends WebTestCase
     }
 
 
-    public function setUp() {
+    public function setUp()
+    {
         $client = static::createClient();
         $em = $client->getContainer()->get('doctrine')->getManager();
 
@@ -42,12 +45,20 @@ class BaseControllerTest extends WebTestCase
         parent::setUp();
     }
 
-    public function testPostAction()
+    public function testIndexAction()
     {
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/');
+        $this->assertEquals(Job::LIST_MAX_JOB_ITEMS, $crawler->filter('#job-container > .box')->count());
+    }
 
-        $this->assertEquals(10, $crawler->filter('#job-container > .box')->count());
+    public function testXMLHttpRequestIndexAction()
+    {
+        $client = static::createClient();
+
+        $ajaxCrawler = $client->request('GET', '/', array('page' => 2), array(), array('HTTP_X-Requested-With' => 'XMLHttpRequest',));
+        $this->assertEquals(0, $ajaxCrawler->filter('#job-container')->count());
+        $this->assertEquals(Job::LIST_MAX_JOB_ITEMS, $ajaxCrawler->filter('body > .box')->count());
     }
 }

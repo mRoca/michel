@@ -20,6 +20,8 @@
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "exercise/htmlpurifier-bundle": "1.0.*@dev",
         "incenteev/composer-parameter-handler": "2.0.*",
+        "knplabs/knp-paginator-bundle": "2.4.*@dev",
+        "lexik/form-filter-bundle": "3.*@dev",
         "sensio/buzz-bundle": "0.2.*@dev",
         "sensio/distribution-bundle": "2.3.*",
         "sensio/framework-extra-bundle": "~3.0",

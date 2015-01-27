@@ -113,6 +113,9 @@ textarea {
     background-color: transparent;
     border: 0;
 }
+.text-center {
+    text-align: center;
+}
 .input-block-level {
     display: block;
     width: 100%;
