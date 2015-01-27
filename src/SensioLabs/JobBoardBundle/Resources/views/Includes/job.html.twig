@@ -8,17 +8,19 @@
     {% block job_description %}
         <div class="clear"></div>
         <div id="job-description" class="padding description">
-           {{ job.description | raw }}
+           {{ job.description | purify }}
         </div>
     {% endblock %}
 
     {% block job_apply %}
-        <div class="padding how-to-apply">
-            <h3>{% trans %}How to apply?{% endtrans %}</h3><br/>
+        {% if(job.howToApply) %}
+            <div class="padding how-to-apply">
+                <h3>{% trans %}How to apply?{% endtrans %}</h3><br/>
 
-            <div id="howToApply">{{ job.howToApply | raw }}</div>
-        </div>
-        <br/><br/>
+                <div id="howToApply">{{ job.howToApply | purify }}</div>
+            </div>
+            <br/><br/>
+        {% endif %}
     {% endblock %}
 
     {% block job_steps %}

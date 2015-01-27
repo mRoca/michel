@@ -16,8 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="jobs", indexes={
  *      @ORM\Index(name="country_idx", columns={"country"}),
  *      @ORM\Index(name="contract_idx", columns={"contract"}),
- *      @ORM\Index(name="slug_idx", columns={"slug"}),
- *      @ORM\Index(name="created_at_idx", columns={"created_at"})
+ *      @ORM\Index(name="slug_idx", columns={"slug"})
  * })
  */
 class Job
