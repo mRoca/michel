@@ -113,6 +113,24 @@ class Job
     protected $status;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", name="list_views_count")
+     */
+    protected $listViewsCount;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", name="display_views_count")
+     */
+    protected $displayViewsCount;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", name="api_views_count")
+     */
+    protected $apiViewsCount;
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true, name="created_at")
@@ -188,6 +206,9 @@ class Job
     public function __construct()
     {
         $this->status = self::STATUS_NEW;
+        $this->listViewsCount = 0;
+        $this->displayViewsCount = 0;
+        $this->apiViewsCount = 0;
     }
 
     /**
@@ -197,15 +218,33 @@ class Job
     public function getUrlParameters()
     {
         return array(
-            'country'  => strtoupper($this->getCountry()),
-            'contract' => strtoupper($this->getContract()),
-            'slug'     => $this->getSlug() ? $this->getSlug() : Urlizer::urlize($this->getTitle()),
+            'country'  => strtoupper($this->country),
+            'contract' => strtoupper($this->contract),
+            'slug'     => $this->slug ? $this->slug : Urlizer::urlize($this->title),
         );
     }
 
     public function isPublished()
     {
-        return $this->getStatus() === Job::STATUS_PUBLISHED;
+        return $this->status === Job::STATUS_PUBLISHED;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalViewsCount()
+    {
+        return $this->listViewsCount + $this->displayViewsCount + $this->apiViewsCount;
+    }
+
+    public function incrementApiViews()
+    {
+        ++$this->apiViewsCount;
+    }
+
+    public function incrementDisplayViews()
+    {
+        ++$this->displayViewsCount;
     }
 
     /**
@@ -482,6 +521,30 @@ class Job
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getListViewsCount()
+    {
+        return $this->listViewsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDisplayViewsCount()
+    {
+        return $this->displayViewsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getApiViewsCount()
+    {
+        return $this->apiViewsCount;
     }
 
     /**
