@@ -3,6 +3,7 @@
 namespace SensioLabs\JobBoardBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use SensioLabs\JobBoardBundle\Entity\Job;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -18,7 +19,7 @@ class ApiController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('SensioLabsJobBoardBundle:Job');
 
-        $job = $repository->getRandom();
+        $job = $repository->getRandom(Job::STATUS_PUBLISHED);
 
         if (null === $job) {
             throw $this->createNotFoundException('Random entity not found');

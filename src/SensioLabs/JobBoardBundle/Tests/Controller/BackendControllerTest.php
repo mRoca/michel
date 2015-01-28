@@ -32,7 +32,7 @@ class BackendControllerTest extends ConnectWebTestCase
         $savedGet = $_GET;
         $_GET = array('sort' => 'job.title', 'direction' => 'desc');
         $crawler = $this->client->request('GET', '/backend');
-        $this->assertSame('My great job 9', $crawler->filter('#backend-job-container > table > tbody > tr > td')->eq(1)->first()->text());
+        $this->assertSame('My great job 50', $crawler->filter('#backend-job-container > table > tbody > tr > td')->eq(1)->first()->text());
         $_GET = $savedGet;
 
         // Delete button
@@ -43,6 +43,28 @@ class BackendControllerTest extends ConnectWebTestCase
         $crawler = $this->client->followRedirect();
 
         // Published announcement => cannot delete
+        $this->assertCount(1, $crawler->filter('#backend-job-container .error'));
+    }
+
+    public function testListArchivedAction()
+    {
+        // Not authenticated => Redirect to connect.sensiolabs
+        $this->client->request('GET', '/backend', array('status' => 'archived'));
+        $this->assertConnectRedirect($this->client->getResponse());
+
+        // Authenticated as admin
+        $this->logInAsAdmin();
+        $crawler = $this->client->request('GET', '/backend', array('status' => 'archived'));
+        $this->assertCount(10, $crawler->filter('#backend-job-container > table > tbody > tr'));
+
+        // Delete button
+        $form = $crawler->filter('#backend-job-container > table > tbody > tr')->first()->selectButton('job_delete[delete]')->form();
+        $this->client->submit($form);
+
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $crawler = $this->client->followRedirect();
+
+        // Archived announcement => cannot delete
         $this->assertCount(1, $crawler->filter('#backend-job-container .error'));
     }
 
