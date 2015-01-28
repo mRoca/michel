@@ -31,6 +31,9 @@ class User implements UserInterface
     /** @ORM\Column(type="string", length=255) */
     protected $name;
 
+    /** @ORM\Column(type="string", length=255, nullable=true) */
+    protected $email;
+
     /**
      * @var bool
      * @ORM\Column(type="boolean")
@@ -53,6 +56,7 @@ class User implements UserInterface
     {
         $this->username = $apiUser->getUsername();
         $this->name = $apiUser->getName();
+        $this->email = $apiUser->getEmail();
     }
 
     /**
@@ -107,6 +111,25 @@ class User implements UserInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
     }
 
     /**

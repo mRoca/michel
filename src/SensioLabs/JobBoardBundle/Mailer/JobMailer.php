@@ -4,6 +4,7 @@
 namespace SensioLabs\JobBoardBundle\Mailer;
 
 use SensioLabs\JobBoardBundle\Entity\Job;
+use SensioLabs\JobBoardBundle\Entity\User;
 
 class JobMailer extends Mailer
 {
@@ -13,25 +14,54 @@ class JobMailer extends Mailer
      * @param Job $job
      * @param Job $oldJob
      * @return bool|int
-     * @throws \Exception
-     * @throws \Twig_Error
      */
     public function jobUpdate(Job $job, Job $oldJob)
     {
-        if (!$this->adminEmail) {
+        return $this->updateNotification($job, $oldJob, 'Job announcement update', $this->adminEmail, false);
+    }
+
+    /**
+     * Sends an email to the user when an admin publish his announcement
+     *
+     * @param Job $job
+     * @param Job $oldJob
+     * @return bool|int
+     */
+    public function jobPublish(Job $job, Job $oldJob)
+    {
+        if (!$job->getUser() instanceof User) {
             return false;
         }
 
-        $message = $this->newMessage('Job announcement update')
-            ->setTo($this->adminEmail)
+        return $this->updateNotification($job, $oldJob, 'Job announcement publish', $job->getUser()->getEmail());
+    }
+
+    /**
+     * @param Job $job
+     * @param Job $oldJob
+     * @param string $subject
+     * @param string $to
+     * @param bool $frontendLink
+     * @return bool|int
+     */
+    private function updateNotification(Job $job, Job $oldJob, $subject, $to, $frontendLink = true)
+    {
+        if (!$to) {
+            return false;
+        }
+
+        $message = $this->newMessage($subject)
+            ->setTo($to)
             ->setBody($this->templating->render(
                 '@SensioLabsJobBoard/Mail/updateNotification.html.twig',
                 array(
-                    'job'    => $job,
-                    'oldjob' => $oldJob
+                    'frontend_link' => $frontendLink,
+                    'job'           => $job,
+                    'oldjob'        => $oldJob
                 )
             ));
 
         return $this->send($message);
     }
+
 }

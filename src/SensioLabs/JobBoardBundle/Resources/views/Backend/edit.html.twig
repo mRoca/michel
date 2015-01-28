@@ -1,33 +1,38 @@
-{% extends "SensioLabsJobBoardBundle:Backend:layout.html.twig" %}
-
+{% set extended_layout = "SensioLabsJobBoardBundle::Backend/layout.html.twig" %}
+{% extends "SensioLabsJobBoardBundle::layout_wysiwyg.html.twig" %}
 {% from 'SensioLabsJobBoardBundle:Includes:breadcrumb.html.twig' import breadcrumb %}
 
+{% block page_class 'backend add' %}
 {% block title 'Backend - Edit' %}
 
 {% block content %}
     {{ breadcrumb({
         'Backend': path('backend_list'),
-        'Make changes on \'Developper\' announcement': null,
+        ('Make changes on "%title%" announcement' | trans({'%title%': job.title})): null,
     }) }}
 
-    <form id="addJob" method="post" name="add">
-        {% embed "SensioLabsJobBoardBundle:Includes:job_form.html.twig" %}
-            {% block admin_extra_fields %}
-                <div class="backend-job-dates">
-                    Visible from
-                    <input id="publishedAt" class="span3 hasDatepicker" type="datetime" value="01/06/2014" name="publishedAt">
-                    To
-                    <input id="endedAt" class="span3 hasDatepicker" type="datetime" value="01/06/2014" name="endedAt">
-                    (format: mm/dd/yyyy)
-                </div>
-            {% endblock %}
-            {% block buttons %}
-                <button class="green-button right" type="submit">
-                    <span class="sprite-icon-light-arrow-right"></span>
-                    <span>Preview</span>
-                </button>
-            {% endblock %}
-        {% endembed %}
-    </form>
-    <div class="clear"></div>
+    {% embed "SensioLabsJobBoardBundle:Includes:job_form.html.twig" with {'form_action' : path('backend_edit', {id: job.id})} %}
+        {% block admin_extra_fields %}
+            <div class="backend-job-dates">
+                Visible from
+                {{ form_widget(form.publishStart) }}
+                to
+                {{ form_widget(form.publishEnd) }}
+                (format: mm/dd/yyyy)
+            </div>
+        {% endblock %}
+        {% block buttons %}
+            <hr/>
+            <div class="backend-validate">
+                {{ form_widget(form.publish) }}
+                <label for="adminjob_publish">Validate the announcement</label>
+            </div>
+
+            <button class="green-button right" type="submit" name="save">
+                <img src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" class="sprite-icon-cloud-upload" />
+                <span>Save</span>
+            </button>
+        {% endblock %}
+    {% endembed %}
+
 {% endblock %}

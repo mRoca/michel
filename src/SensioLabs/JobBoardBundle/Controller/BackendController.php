@@ -54,7 +54,32 @@ class BackendController extends Controller
      */
     public function editAction(Request $request, Job $job)
     {
-        return array();
+        $oldjob = clone($job);
+
+        $form = $this->createForm('adminjob', $job);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            // If the "Publish" checkbox has been changed, we switch the job status
+            if ($form->get('publish')->getData() !== $oldjob->isPublished()) {
+                $job->setStatus($form->get('publish')->getData() ? Job::STATUS_PUBLISHED : Job::STATUS_NEW);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            if ($job->getStatus() !== $oldjob->getStatus()) {
+                $this->get('sensiolabs_jobboard.mailer.job')->jobPublish($job, $oldjob);
+            }
+
+            return $this->redirectToRoute('backend_list');
+        }
+
+        return array(
+            'job'  => $job,
+            'form' => $form->createView(),
+        );
     }
 
     /**

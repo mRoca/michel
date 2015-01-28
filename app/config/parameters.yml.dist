@@ -19,7 +19,7 @@ parameters:
 
     sensiolabs_connect.app_id: ~
     sensiolabs_connect.app_secret: ~
-    sensiolabs_connect.scope: ~
+    sensiolabs_connect.scope: 'SCOPE_EMAIL SCOPE_PUBLIC'
     sensiolabs_connect.oauth_endpoint: https://connect.sensiolabs.com
     sensiolabs_connect.api_endpoint: https://connect.sensiolabs.com/api
     sensiolabs_connect.sln_js: https://connect.sensiolabs.com/sln.js

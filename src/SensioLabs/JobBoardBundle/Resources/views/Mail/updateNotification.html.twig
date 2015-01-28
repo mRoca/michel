@@ -5,25 +5,31 @@
 
 <p>
     Source:
-    <a href="{{ url('backend_edit', {'id': job.id}) }}">{{ url('backend_edit', {'id': job.id}) }}</a>
+    {% set showlink = frontend_link ? url('job_show', job.urlParameters) : url('backend_edit', {'id': job.id}) %}
+    <a href="{{ showlink }}">{{ showlink }}</a>
 </p>
 
-<br/>
 <table>
     <tr>
-        <td rowspan="2">BEFORE</td>
+        <td rowspan="3">BEFORE</td>
+        <td>State: {{ oldjob.status }}</td>
+    </tr>
+    <tr>
         <td>Title: {{ oldjob.title }}</td>
     </tr>
     <tr>
-        <td>Description:<br/><br/>{{ oldjob.description }} </td>
+        <td>Description:<br/><br/>{{ oldjob.description | purify }} </td>
     </tr>
 
     <tr>
-        <td rowspan="2">AFTER</td>
+        <td rowspan="3">AFTER</td>
+        <td>State: {{ job.status }}</td>
+    </tr>
+    <tr>
         <td>Title: {{ job.title }}</td>
     </tr>
     <tr>
-        <td>Description:<br/><br/>{{ job.description }}</td>
+        <td>Description:<br/><br/>{{ job.description  | purify }}</td>
     </tr>
 </table>
 </body>

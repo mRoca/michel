@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale }}">
     <head>
         <meta charset="UTF-8" />
         <title>{% if block('title') is not empty %}{% block title %}{% endblock %} - {% endif %}SensioLabs Jobs</title>
@@ -8,7 +8,6 @@
             {% stylesheets filter='cssrewrite' output='css/compiled/main_layout.css'
                 'bundles/sensiolabsjobboard/css/style.css'
                 'bundles/sensiolabsjobboard/css/backend.css'
-                'bundles/sensiolabsjobboard/css/jquery/jquery-ui-1.9.2.custom.css'
             %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}

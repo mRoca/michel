@@ -4,11 +4,4 @@
 
 {% block javascript %}
     {{ parent() }}
-
-    {% javascripts output='js/backend.js'
-        '@SensioLabsJobBoardBundle/Resources/assets/jqueryui.js'
-        '@SensioLabsJobBoardBundle/Resources/assets/backend.js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
 {% endblock %}

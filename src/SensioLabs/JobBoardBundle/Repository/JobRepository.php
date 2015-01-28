@@ -3,6 +3,7 @@
 
 namespace SensioLabs\JobBoardBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use SensioLabs\JobBoardBundle\Entity\Job;
 use SensioLabs\JobBoardBundle\Entity\User;
@@ -16,7 +17,7 @@ class JobRepository extends EntityRepository
      */
     protected function getFiltersLists($filterColumn, $requestFilters = array())
     {
-        $qb = $this->createQueryBuilder('job');
+        $qb = $this->filterPublished($this->createQueryBuilder('job'));
         $qb
             ->addSelect("count(job) as total")
             ->addSelect("job.$filterColumn as code")
@@ -28,7 +29,7 @@ class JobRepository extends EntityRepository
                 continue;
             }
 
-            $qb->where($qb->expr()->eq("job.$column", ":$column"))
+            $qb->andWhere($qb->expr()->eq("job.$column", ":$column"))
                 ->setParameter(":$column", $value);
         }
 
@@ -42,6 +43,16 @@ class JobRepository extends EntityRepository
     public function getCountries($filters = array())
     {
         return $this->getFiltersLists('country', $filters);
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @return QueryBuilder
+     */
+    protected function filterPublished(QueryBuilder $qb)
+    {
+        return $qb->where($qb->expr()->eq('job.status', ':published'))
+            ->setParameter('published', Job::STATUS_PUBLISHED);
     }
 
     /**
@@ -63,8 +74,7 @@ class JobRepository extends EntityRepository
         $qb->orderBy('job.id', 'desc');
 
         if ($onlyPublished) {
-            $qb->where($qb->expr()->eq('job.status', ':published'))
-                ->setParameter('published', Job::STATUS_PUBLISHED);
+            $this->filterPublished($qb);
         }
 
         return $qb;
@@ -115,12 +125,13 @@ class JobRepository extends EntityRepository
      */
     public function getRandom()
     {
-        $count = $this->createQueryBuilder('job')
+        $count = $this->filterPublished($this->createQueryBuilder('job'))
             ->select('count(job.id)')
             ->getQuery()
             ->getSingleScalarResult();
 
-        return $this->createQueryBuilder('job')
+
+        return $this->filterPublished($this->createQueryBuilder('job'))
             ->setMaxResults(1)
             ->setFirstResult(mt_rand(0, $count))
             ->getQuery()
