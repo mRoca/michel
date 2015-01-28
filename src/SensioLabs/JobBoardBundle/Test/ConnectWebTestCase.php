@@ -17,11 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class ConnectWebTestCase extends WebTestCase
 {
-    public static $testUserUuid = 'a8a1c2f5-995d-41a1-b0ae-fd9a1157bef6';
-
-    /** @var User */
-    protected $user;
-
     /** @var Client */
     protected $client;
 
@@ -55,24 +50,51 @@ abstract class ConnectWebTestCase extends WebTestCase
         $executor = new ORMExecutor($this->em, $purger);
         $executor->execute($loader->getFixtures());
 
-        /** @var User $user */
-        $this->user = $this->client->getContainer()->get('sensiolabs_jobboard.security.userprovider')->loadUserByUsername(self::$testUserUuid);
-        $this->assertNotNull($this->user);
-
         parent::setUp();
     }
 
-    protected function logIn()
+    protected function getUser($userUuid)
+    {
+        /** @var User $user */
+        $user = $this->client->getContainer()->get('sensiolabs_jobboard.security.userprovider')->loadUserByUsername($userUuid);
+        $this->assertNotNull($user);
+
+        return $user;
+    }
+
+    protected function getAdminUser()
+    {
+        return $this->getUser(LoadUserData::TEST_UUID_ADMIN);
+    }
+
+    protected function getSimpleUser()
+    {
+        return $this->getUser(LoadUserData::TEST_UUID_USER);
+    }
+
+    protected function logInAs(User $user)
     {
         $firewall = 'secured_area';
 
-        $token = new ConnectToken($this->user, 'xxx', null, $firewall, null, $this->user->getRoles());
+        $token = new ConnectToken($user, 'xxx', null, $firewall, null, $user->getRoles());
 
         $this->client->getContainer()->get('security.token_storage')->setToken($token);
 
         $session = $this->client->getContainer()->get('session');
         $session->set('_security_' . $firewall, serialize($token));
         $session->save();
+
+        return $this->client;
+    }
+
+    protected function logInAsAdmin()
+    {
+        $this->logInAs($this->getAdminUser());
+    }
+
+    protected function logInAsUser()
+    {
+        $this->logInAs($this->getSimpleUser());
     }
 
     protected function assertConnectRedirect(Response $response)

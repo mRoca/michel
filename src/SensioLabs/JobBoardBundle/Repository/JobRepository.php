@@ -54,12 +54,18 @@ class JobRepository extends EntityRepository
     }
 
     /**
+     * @param bool $onlyPublished
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getListQb()
+    public function getListQb($onlyPublished = true)
     {
-        $qb = $this->createQueryBuilder('e');
-        $qb->orderBy('e.id', 'desc');
+        $qb = $this->createQueryBuilder('job');
+        $qb->orderBy('job.id', 'desc');
+
+        if ($onlyPublished) {
+            $qb->where($qb->expr()->eq('job.status', ':published'))
+                ->setParameter('published', Job::STATUS_PUBLISHED);
+        }
 
         return $qb;
     }

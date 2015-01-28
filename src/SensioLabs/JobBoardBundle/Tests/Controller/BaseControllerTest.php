@@ -29,7 +29,7 @@ class BaseControllerTest extends ConnectWebTestCase
         $this->assertConnectRedirect($this->client->getResponse());
 
         // Authenticated
-        $this->logIn($this->client);
+        $this->logInAsUser();
 
         $crawler = $this->client->request('GET', '/manage');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

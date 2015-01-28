@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SensioLabs\JobBoardBundle\Form;
+namespace SensioLabs\JobBoardBundle\Form\Type;
 
 
 use SensioLabs\JobBoardBundle\Entity\Job;

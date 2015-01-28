@@ -16,7 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="jobs", indexes={
  *      @ORM\Index(name="country_idx", columns={"country"}),
  *      @ORM\Index(name="contract_idx", columns={"contract"}),
- *      @ORM\Index(name="slug_idx", columns={"slug"})
+ *      @ORM\Index(name="slug_idx", columns={"slug"}),
+ *      @ORM\Index(name="company_idx", columns={"company"}),
+ *      @ORM\Index(name="title_idx", columns={"title"}),
+ *      @ORM\Index(name="created_at_idx", columns={"created_at"}),
+ *      @ORM\Index(name="status_idx", columns={"status"}),
  * })
  *
  */
@@ -108,7 +112,7 @@ class Job
     /**
      * @var string
      * @ORM\Column(type="string", length=31)
-     * @Assert\Choice(callback="getStatusKeys", message="Status must be selected")
+     * @Assert\Choice(callback="getStatusesKeys", message="Status must be selected")
      */
     protected $status;
 
@@ -186,7 +190,7 @@ class Job
     }
 
     /** @return array */
-    public static function getStatusKeys()
+    public static function getStatusesKeys()
     {
         return array_keys(self::$STATUSES);
     }

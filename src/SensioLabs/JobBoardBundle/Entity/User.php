@@ -32,6 +32,12 @@ class User implements UserInterface
     protected $name;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    protected $isAdmin;
+
+    /**
      * @var ArrayCollection|Job[]
      * @ORM\OneToMany(targetEntity="Job", mappedBy="user", fetch="EXTRA_LAZY")
      */
@@ -40,6 +46,7 @@ class User implements UserInterface
     public function __construct($uuid)
     {
         $this->uuid = $uuid;
+        $this->isAdmin = false;
     }
 
     public function updateFromConnect(ConnectApiUser $apiUser)
@@ -48,16 +55,25 @@ class User implements UserInterface
         $this->name = $apiUser->getName();
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getUuid()
     {
         return $this->uuid;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername()
     {
         return $this->username;
@@ -85,14 +101,25 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @return array
+     */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        $roles = array('ROLE_USER');
+
+        if (null !== $this->id) $roles[] = 'ROLE_CONNECT_USER';
+        if ($this->isAdmin) $roles[] = 'ROLE_ADMIN';
+
+        return $roles;
     }
 
     public function getPassword()
@@ -113,5 +140,24 @@ class User implements UserInterface
     public function getJobs()
     {
         return $this->jobs;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsAdmin()
+    {
+        return $this->isAdmin;
+    }
+
+    /**
+     * @param boolean $isAdmin
+     * @return $this
+     */
+    public function setIsAdmin($isAdmin)
+    {
+        $this->isAdmin = $isAdmin;
+
+        return $this;
     }
 }

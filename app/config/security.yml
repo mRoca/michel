@@ -9,9 +9,7 @@ security:
     providers:
         sensiolabs_connect:
             id: sensiolabs_jobboard.security.userprovider
-#            connect_memory:
-#                users:
-#                    36221b12-f362-4dca-8724-4da82ef2ba49: "ROLE_ADMIN" # Sarah Khalil
+
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
@@ -28,5 +26,6 @@ security:
             anonymous:       true
 
     access_control:
-        - { path: ^/manage, roles: ROLE_USER }
+        - { path: ^/manage, roles: ROLE_CONNECT_USER }
+        - { path: ^/backend, roles: ROLE_ADMIN }
         - { path: ^/[\w\-]+/[\w\-]+/[\w\-]+/(update|pay)$, roles: ROLE_USER }
