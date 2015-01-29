@@ -87,9 +87,21 @@ stof_doctrine_extensions:
 
 knp_paginator:
     page_range: 10
+    default_options:
+        page_name: page
+        sort_field_name: sort
+        sort_direction_name: direction
+        distinct: true
+    template:
+        pagination: SensioLabsJobBoardBundle:Pagination:sliding.html.twig
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig
 
 services:
     twig.extension.text:
          class: Twig_Extensions_Extension_Text
+         tags:
+             - { name: twig.extension }
+    twig.extension.intl:
+         class: Twig_Extensions_Extension_Intl
          tags:
              - { name: twig.extension }

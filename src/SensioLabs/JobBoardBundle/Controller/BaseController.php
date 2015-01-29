@@ -57,8 +57,19 @@ class BaseController extends Controller
      * @Route("/manage", name="manage")
      * @Template()
      */
-    public function manageAction()
+    public function manageAction(Request $request)
     {
-        return array();
+        $em = $this->getDoctrine()->getManager();
+        /** @var JobRepository $repository */
+        $repository = $em->getRepository('SensioLabsJobBoardBundle:Job');
+
+        $qb = $repository->getQbByUser($this->getUser());
+
+        /** @var Job[] $jobs */
+        $jobs = $this->get('knp_paginator')->paginate($qb, $request->query->get('page', 1), Job::LIST_ADMIN_MAX_JOB_ITEMS);
+
+        return array(
+            'jobs' => $jobs
+        );
     }
 }

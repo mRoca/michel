@@ -3,11 +3,15 @@ security:
         ROLE_ADMIN:       [ROLE_USER, ROLE_CONNECT_USER]
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
+    encoders:
+        SensioLabs\JobBoardBundle\Entity\User: plaintext
+
     providers:
         sensiolabs_connect:
-            connect_memory:
-                users:
-                    36221b12-f362-4dca-8724-4da82ef2ba49: "ROLE_ADMIN" # Sarah Khalil
+            id: sensiolabs_jobboard.security.userprovider
+#            connect_memory:
+#                users:
+#                    36221b12-f362-4dca-8724-4da82ef2ba49: "ROLE_ADMIN" # Sarah Khalil
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
@@ -24,4 +28,5 @@ security:
             anonymous:       true
 
     access_control:
-        - { path: ^/manage, roles: ROLE_CONNECT_USER }
+        - { path: ^/manage, roles: ROLE_USER }
+        - { path: ^/[\w\-]+/[\w\-]+/[\w\-]+/(update|pay)$, roles: ROLE_USER }

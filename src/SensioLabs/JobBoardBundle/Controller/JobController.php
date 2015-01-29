@@ -76,7 +76,7 @@ class JobController extends Controller
     }
 
     /**
-     * @Route("/{country}/{contract}/{slug}/publish", name="job_publish")
+     * @Route("/{country}/{contract}/{slug}/pay", name="job_publish")
      * @Template()
      */
     public function publishAction(Request $request)
@@ -91,6 +91,8 @@ class JobController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $entity->setUser($this->getUser());
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -107,7 +109,7 @@ class JobController extends Controller
     }
 
     /**
-     * @Route("/update", name="job_update")
+     * @Route("/{country}/{contract}/{slug}/update", name="job_update")
      * @Template()
      * TODO
      */
@@ -115,4 +117,5 @@ class JobController extends Controller
     {
         return array();
     }
+
 }

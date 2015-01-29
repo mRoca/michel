@@ -4,6 +4,7 @@
 namespace SensioLabs\JobBoardBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use SensioLabs\JobBoardBundle\Entity\User;
 
 
 class JobRepository extends EntityRepository
@@ -60,6 +61,20 @@ class JobRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $qb->orderBy('e.id', 'desc');
+
+        return $qb;
+    }
+
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getQbByUser(User $user)
+    {
+        $qb = $this->createQueryBuilder('job');
+        $qb->where($qb->expr()->eq('job.user', ':user'))
+            ->setParameter(':user', $user)
+            ->orderBy('job.id', 'desc');
 
         return $qb;
     }

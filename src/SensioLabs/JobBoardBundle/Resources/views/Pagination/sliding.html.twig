@@ -1,0 +1,24 @@
+{% if pageCount > 1 %}
+    <div class="smallpagination ">
+        {% if previous is defined %}
+            <a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" class="left-icon">
+                <img class="sprite-icon-green-arrow-left" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="&lt;"/>
+            </a>
+        {% endif %}
+
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+            {% else %}
+                <a href="#" class="active">{{ page }}</a>
+            {% endif %}
+
+        {% endfor %}
+
+        {% if next is defined %}
+            <a href="{{ path(route, query|merge({(pageParameterName): next})) }}" class="right-icon">
+                <img class="sprite-icon-green-arrow-right" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="&gt;"/>
+            </a>
+        {% endif %}
+    </div>
+{% endif %}

@@ -31,6 +31,13 @@ class Job
     protected $id;
 
     /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    protected $user;
+
+    /**
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Job title should not be empty")
@@ -88,6 +95,18 @@ class Job
 
     /**
      * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true, name="publish_start")
+     */
+    protected $publishStart;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true, name="publish_end")
+     */
+    protected $publishEnd;
+
+    /**
+     * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true, name="created_at")
      */
@@ -101,6 +120,8 @@ class Job
     protected $updatedAt;
 
     const LIST_MAX_JOB_ITEMS = 10;
+    const LIST_ADMIN_MAX_JOB_ITEMS = 25;
+
     const CONTRACT_TYPE_FULL_TIME = 'CDI';
     const CONTRACT_TYPE_PART_TIME = 'PART_TIME';
     const CONTRACT_TYPE_INTERNSHIP = 'INTERNSHIP';
@@ -155,6 +176,25 @@ class Job
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }
@@ -336,6 +376,44 @@ class Job
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPublishStart()
+    {
+        return $this->publishStart;
+    }
+
+    /**
+     * @param \DateTime $publishStart
+     * @return $this
+     */
+    public function setPublishStart($publishStart)
+    {
+        $this->publishStart = $publishStart;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPublishEnd()
+    {
+        return $this->publishEnd;
+    }
+
+    /**
+     * @param \DateTime $publishEnd
+     * @return $this
+     */
+    public function setPublishEnd($publishEnd)
+    {
+        $this->publishEnd = $publishEnd;
 
         return $this;
     }
