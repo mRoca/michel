@@ -6,7 +6,7 @@
 
 {% block content %}
     {{ breadcrumb({
-        (job.country | countryName): path('homepage', {'country': job.country}),
+        (job.company.country | countryName): path('homepage', {'country': job.company.country}),
         (job.contract | contractName): path('homepage', {'contract': job.contract}),
         (job.title): null
     }) }}

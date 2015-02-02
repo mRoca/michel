@@ -32,8 +32,8 @@
                     {% for job in jobs %}
                         <tr>
                             <td>
-                                <a href="{{ path('job_preview', job.urlParameters) }}">
-                                    {{ job.contract | contractName }} in {{ job.city }} &mdash; {{ job.title }}
+                                <a href="{{ path('job_udpate_preview', job.urlParameters) }}">
+                                    {{ job.contract | contractName }} in {{ job.company.city }} &mdash; {{ job.title }}
                                 </a>
                             </td>
 

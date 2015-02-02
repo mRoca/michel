@@ -1,8 +1,6 @@
 <?php
 
-
 namespace SensioLabs\JobBoardBundle\Form\Type;
-
 
 use SensioLabs\JobBoardBundle\Entity\Job;
 use Symfony\Component\Form\AbstractType;
@@ -17,31 +15,21 @@ class JobType extends AbstractType
             ->add('title', 'text', array(
                 'attr' => array(
                     'placeholder' => 'Job title',
-                    'class' => 'title-input',
+                    'class'       => 'title-input',
                 ),
             ))
-            ->add('company', 'text', array(
-                'attr'  => array('placeholder' => 'Company'),
-            ))
-            ->add('country', 'country')
-            ->add('city', 'text', array(
-                'attr' => array(
-                    'placeholder' => 'City',
-                    'class' => 'location',
-                ),
-            ))
+            ->add('company', 'company')
             ->add('contract', 'choice', array(
-                'choices' => Job::$CONTRACT_TYPES,
+                'choices'     => Job::$CONTRACT_TYPES,
                 'empty_value' => 'Type of contract'
             ))
             ->add('description', 'textarea', array(
                 'attr' => array('class' => 'ckeditor')
             ))
             ->add('howToApply', 'text', array(
-                'attr' => array('placeholder' => 'Send your resume at...'),
+                'attr'     => array('placeholder' => 'Send your resume at...'),
                 'required' => false
-            ))
-        ;
+            ));
     }
 
     /**
@@ -49,11 +37,9 @@ class JobType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'SensioLabs\JobBoardBundle\Entity\Job'
-            )
-        );
+        $resolver->setDefaults(array(
+            'data_class' => 'SensioLabs\JobBoardBundle\Entity\Job',
+        ));
     }
 
     public function getName()

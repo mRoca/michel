@@ -17,7 +17,7 @@ class JobController extends Controller
      * @Route("/{country}/{contract}/{slug}", name="job_show", requirements={"slug": "[\w\-]+"})
      * @Method("GET")
      * @Template()
-     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job")
+     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job", options={"mapping": {"slug": "slug"}})
      */
     public function showAction(Job $job)
     {
@@ -37,23 +37,21 @@ class JobController extends Controller
      */
     public function postAction(Request $request)
     {
-        $job = new Job();
-        $fromPreview = false;
+        $postedJobHandler = $this->get('sensiolabs_jobboard.postedjob_handler');
 
-        if ($request->isMethod('GET') && $this->get('session')->has('current_new_job')) {
-            if ($this->get('session')->get('current_new_job') instanceof Job) {
-                $job = $this->get('session')->get('current_new_job');
-                $fromPreview = true;
-            } else {
-                $this->get('session')->remove('current_new_job');
-            }
+        $fromPreview = false;
+        if ($request->isMethod('GET') && $postedJobHandler->hasPostedJob()) {
+            $job = $postedJobHandler->getPostedJob();
+            $fromPreview = true;
+        } else {
+            $job = new Job();
         }
 
         $form = $this->createForm('job', $job);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->get('session')->set('current_new_job', $job);
+            $postedJobHandler->setPostedJob($job);
 
             return $this->redirectToRoute('job_preview', $job->getUrlParameters());
         }
@@ -65,22 +63,57 @@ class JobController extends Controller
         );
     }
 
+
+    /**
+     * @Route("/{country}/{contract}/{slug}/pay", name="job_publish")
+     * @Template()
+     */
+    public function publishAction(Request $request)
+    {
+        $postedJobHandler = $this->get('sensiolabs_jobboard.postedjob_handler');
+
+        $job = $postedJobHandler->getPostedJob();
+
+        if (!$job instanceof Job) {
+            throw $this->createNotFoundException('Posted Job not found');
+        }
+
+        $form = $this->createFormBuilder($job)->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $job->setUser($this->getUser());
+            $job->setStatus(Job::STATUS_NEW);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($job);
+            $em->flush();
+
+            $postedJobHandler->clearPostedJob();
+            $this->get('session')->getFlashBag()->add('success', 'Your announcement has been added with success');
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return array(
+            'job'          => $job,
+            'publish_form' => $form->createView(),
+        );
+    }
+
     /**
      * @Route("/{country}/{contract}/{slug}/preview", name="job_preview")
      * @Method("GET")
      * @Template()
-     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job")
      */
-    public function previewAction(Job $job = null)
+    public function previewAction()
     {
-        if ($job instanceof Job) {
-            return $this->render('@SensioLabsJobBoard/Job/update_preview.html.twig', array('job' => $job));
-        }
+        $postedJobHandler = $this->get('sensiolabs_jobboard.postedjob_handler');
 
-        $job = $this->get('session')->get('current_new_job');
+        $job = $postedJobHandler->getPostedJob();
 
         if (!$job instanceof Job) {
-            return $this->redirectToRoute('job_post');
+            throw $this->createNotFoundException('Posted Job not found');
         }
 
         return array(
@@ -91,7 +124,7 @@ class JobController extends Controller
     /**
      * @Route("/{country}/{contract}/{slug}/update", name="job_update")
      * @Template()
-     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job")
+     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job", options={"mapping": {"slug": "slug"}})
      */
     public function updateAction(Request $request, Job $job)
     {
@@ -105,7 +138,6 @@ class JobController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($job);
             $em->flush();
@@ -114,7 +146,7 @@ class JobController extends Controller
                 $this->get('sensiolabs_jobboard.mailer.job')->jobUpdate($job, $oldjob);
             }
 
-            return $this->redirectToRoute('job_preview', $job->getUrlParameters());
+            return $this->redirectToRoute('job_udpate_preview', $job->getUrlParameters());
         }
 
         return array(
@@ -124,38 +156,15 @@ class JobController extends Controller
     }
 
     /**
-     * @Route("/{country}/{contract}/{slug}/pay", name="job_publish")
-     * @Template()
+     * @Route("/{country}/{contract}/{slug}/update/preview", name="job_udpate_preview")
+     * @Method("GET")
+     * @Template("@SensioLabsJobBoard/Job/update_preview.html.twig")
+     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job", options={"mapping": {"slug": "slug"}})
      */
-    public function publishAction(Request $request)
+    public function updatePreviewAction(Job $job = null)
     {
-        $job = $this->get('session')->get('current_new_job');
-
-        if (!$job instanceof Job) {
-            return $this->redirectToRoute('job_post');
-        }
-
-        $form = $this->createFormBuilder($job)->getForm();
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $job->setUser($this->getUser());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($job);
-            $em->flush();
-
-            $session = $this->get('session');
-            $session->remove('current_new_job');
-            $session->getFlashBag()->add('success', 'Your announcement has been added with success');
-
-            return $this->redirectToRoute('homepage');
-        }
-
         return array(
-            'job'          => $job,
-            'publish_form' => $form->createView(),
+            'job' => $job,
         );
     }
-
 }

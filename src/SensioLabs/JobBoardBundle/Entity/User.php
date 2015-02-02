@@ -50,6 +50,12 @@ class User implements UserInterface
     {
         $this->uuid = $uuid;
         $this->isAdmin = false;
+        $this->jobs = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getUsername();
     }
 
     public function updateFromConnect(ConnectApiUser $apiUser)
