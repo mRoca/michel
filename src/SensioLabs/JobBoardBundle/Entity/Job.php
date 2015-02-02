@@ -106,6 +106,13 @@ class Job
     protected $publishEnd;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=31)
+     * @Assert\Choice(callback="getStatusKeys", message="Status must be selected")
+     */
+    protected $status;
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true, name="created_at")
@@ -122,11 +129,29 @@ class Job
     const LIST_MAX_JOB_ITEMS = 10;
     const LIST_ADMIN_MAX_JOB_ITEMS = 25;
 
+    const STATUS_NEW = 'NEW';
+    const STATUS_ORDERED = 'ORDERED';
+    const STATUS_PUBLISHED = 'PUBLISHED';
+    const STATUS_EXPIRED = 'EXPIRED';
+    const STATUS_ARCHIVED = 'ARCHIVED';
+    const STATUS_DELETED = 'DELETED';
+    const STATUS_RESTORED = 'RESTORED';
+
     const CONTRACT_TYPE_FULL_TIME = 'CDI';
     const CONTRACT_TYPE_PART_TIME = 'PART_TIME';
     const CONTRACT_TYPE_INTERNSHIP = 'INTERNSHIP';
     const CONTRACT_TYPE_FREELANCE = 'FREELANCE';
     const CONTRACT_TYPE_ALTERNANCE = 'ALTERNANCE';
+
+    public static $STATUSES = array(
+        self::STATUS_NEW       => "New",
+        self::STATUS_ORDERED   => "Ordered",
+        self::STATUS_PUBLISHED => "Published",
+        self::STATUS_EXPIRED   => "Expired",
+        self::STATUS_ARCHIVED  => "Archived",
+        self::STATUS_DELETED   => "Deleted",
+        self::STATUS_RESTORED  => "Restored",
+    );
 
     public static $CONTRACT_TYPES = array(
         self::CONTRACT_TYPE_FULL_TIME  => "Full Time",
@@ -135,6 +160,18 @@ class Job
         self::CONTRACT_TYPE_FREELANCE  => "Freelance",
         self::CONTRACT_TYPE_ALTERNANCE => "Alternance"
     );
+
+    /** @return string */
+    public static function getStatusName($status)
+    {
+        return isset(self::$STATUSES[$status]) ? self::$STATUSES[$status] : '';
+    }
+
+    /** @return array */
+    public static function getStatusKeys()
+    {
+        return array_keys(self::$STATUSES);
+    }
 
     /** @return string */
     public static function getContractName($contractCode)
@@ -148,6 +185,11 @@ class Job
         return array_keys(self::$CONTRACT_TYPES);
     }
 
+    public function __construct()
+    {
+        $this->status = self::STATUS_NEW;
+    }
+
     /**
      * Create an array used by the generateUrl method
      * @return array
@@ -159,6 +201,11 @@ class Job
             'contract' => strtoupper($this->getContract()),
             'slug'     => $this->getSlug() ? $this->getSlug() : Urlizer::urlize($this->getTitle()),
         );
+    }
+
+    public function isPublished()
+    {
+        return $this->getStatus() === Job::STATUS_PUBLISHED;
     }
 
     /**
@@ -414,6 +461,25 @@ class Job
     public function setPublishEnd($publishEnd)
     {
         $this->publishEnd = $publishEnd;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     * @return $this
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
 
         return $this;
     }

@@ -2,14 +2,14 @@
 
 namespace SensioLabs\JobBoardBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use SensioLabs\JobBoardBundle\Entity\Job;
-use SensioLabs\JobBoardBundle\Form\JobType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class JobController extends Controller
 {
@@ -47,7 +47,7 @@ class JobController extends Controller
         if ($form->isValid()) {
             $this->get('session')->set('current_new_job', $job);
 
-            return $this->redirect($this->generateUrl('job_preview', $job->getUrlParameters()));
+            return $this->redirectToRoute('job_preview', $job->getUrlParameters());
         }
 
         return array(
@@ -61,17 +61,57 @@ class JobController extends Controller
      * @Route("/{country}/{contract}/{slug}/preview", name="job_preview")
      * @Method("GET")
      * @Template()
+     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job")
      */
-    public function previewAction()
+    public function previewAction(Job $job = null)
     {
-        $entity = $this->get('session')->get('current_new_job');
+        if ($job instanceof Job) {
+            return $this->render('@SensioLabsJobBoard/Job/update_preview.html.twig', array('job' => $job));
+        }
 
-        if (!$entity instanceof Job) {
-            return $this->redirect($this->generateUrl('job_post'));
+        $job = $this->get('session')->get('current_new_job');
+
+        if (!$job instanceof Job) {
+            return $this->redirectToRoute('job_post');
         }
 
         return array(
-            'job' => $entity
+            'job' => $job,
+        );
+    }
+
+    /**
+     * @Route("/{country}/{contract}/{slug}/update", name="job_update")
+     * @Template()
+     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job")
+     */
+    public function updateAction(Request $request, Job $job)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('edit', $job)) {
+            throw new AccessDeniedException('Unauthorised access');
+        }
+
+        $oldjob = clone($job);
+
+        $form = $this->createForm('job', $job);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($job);
+            $em->flush();
+
+            if ($job->isPublished()) {
+                $this->get('sensiolabs_jobboard.mailer.job')->jobUpdate($job, $oldjob);
+            }
+
+            return $this->redirectToRoute('job_preview', $job->getUrlParameters());
+        }
+
+        return array(
+            'job'  => $job,
+            'form' => $form->createView(),
         );
     }
 
@@ -81,41 +121,33 @@ class JobController extends Controller
      */
     public function publishAction(Request $request)
     {
-        $entity = $this->get('session')->get('current_new_job');
+        $job = $this->get('session')->get('current_new_job');
 
-        if (!$entity instanceof Job) {
-            return $this->redirect($this->generateUrl('job_post'));
+        if (!$job instanceof Job) {
+            return $this->redirectToRoute('job_post');
         }
 
-        $form = $this->createFormBuilder($entity)->getForm();
+        $form = $this->createFormBuilder($job)->getForm();
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $entity->setUser($this->getUser());
+            $job->setUser($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($job);
             $em->flush();
 
-            $this->get('session')->remove('current_new_job');
+            $session = $this->get('session');
+            $session->remove('current_new_job');
+            $session->getFlashBag()->add('success', 'Your announcement has been added with success');
 
-            return $this->redirect($this->generateUrl('homepage'));
+            return $this->redirectToRoute('homepage');
         }
 
         return array(
-            'job'          => $entity,
+            'job'          => $job,
             'publish_form' => $form->createView(),
         );
-    }
-
-    /**
-     * @Route("/{country}/{contract}/{slug}/update", name="job_update")
-     * @Template()
-     * TODO
-     */
-    public function updateAction(Request $request)
-    {
-        return array();
     }
 
 }

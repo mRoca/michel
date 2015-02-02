@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: services.yml }
 
 framework:
     #esi:             ~
@@ -96,12 +97,7 @@ knp_paginator:
         pagination: SensioLabsJobBoardBundle:Pagination:sliding.html.twig
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig
 
-services:
-    twig.extension.text:
-         class: Twig_Extensions_Extension_Text
-         tags:
-             - { name: twig.extension }
-    twig.extension.intl:
-         class: Twig_Extensions_Extension_Intl
-         tags:
-             - { name: twig.extension }
+sensio_labs_job_board:
+    mailer_from_name: %sensiolabs_jobboard.mailer_from_name%
+    mailer_from_email: %sensiolabs_jobboard.mailer_from_email%
+    mailer_admin_email: %sensiolabs_jobboard.mailer_admin_email%

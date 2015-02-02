@@ -2,19 +2,19 @@
 
 namespace SensioLabs\JobBoardBundle\Security;
 
+use Doctrine\ORM\EntityManager;
 use SensioLabs\JobBoardBundle\Entity\User;
-use SensioLabs\JobBoardBundle\Repository\UserRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserProvider implements UserProviderInterface
 {
-    protected $userRepository;
+    protected $em;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(EntityManager $em)
     {
-        $this->userRepository = $userRepository;
+        $this->em = $em;
     }
 
     /**
@@ -23,7 +23,7 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($uuid)
     {
-        $user = $this->userRepository->findOneByUuid($uuid);
+        $user = $this->em->getRepository('SensioLabsJobBoardBundle:User')->findOneByUuid($uuid);
 
         if (!$user) {
             $user = new User($uuid);

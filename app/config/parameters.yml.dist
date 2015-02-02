@@ -23,3 +23,7 @@ parameters:
     sensiolabs_connect.oauth_endpoint: https://connect.sensiolabs.com
     sensiolabs_connect.api_endpoint: https://connect.sensiolabs.com/api
     sensiolabs_connect.sln_js: https://connect.sensiolabs.com/sln.js
+
+    sensiolabs_jobboard.mailer_from_name: 'SensioLabs JobBoard'
+    sensiolabs_jobboard.mailer_from_email: 'jobboard@sensiolabs.com'
+    sensiolabs_jobboard.mailer_admin_email: 'adminjobboard@sensiolabs.com'

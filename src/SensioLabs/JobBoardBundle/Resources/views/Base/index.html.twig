@@ -34,17 +34,24 @@
         </div>
     </div>
     <div id="right">
+        {% if app.session.flashBag.peek('success') | length %}
+            <ul class="backend-flashes">
+                {% for message in app.session.flashBag.get('success') %}
+                    <li class="success">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <div id="job-container">
             {% if jobs | length %}
                 {% include 'SensioLabsJobBoardBundle:Includes:job_container.html.twig' %}
             {% else %}
-                <p class="text-center">{% trans %}No job to show{% endtrans %}</p>
+                <p class="text-center">No job to show</p>
             {% endif %}
         </div>
         <div
                 data-page="1"
                 data-url="{{ path('homepage', {'contract': filters.contract, 'country': filters.country}) }}"
-                data-empty="<p class='text-center'>{% trans %}No more jobs to show{% endtrans %}</p>"
+                data-empty="<p class='text-center'>No more jobs to show</p>"
                 id="loadmoreajaxloader"
                 style="display:none;"
                 >

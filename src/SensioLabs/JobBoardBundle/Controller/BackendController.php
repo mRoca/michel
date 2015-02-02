@@ -19,7 +19,7 @@ class BackendController extends Controller
     }
 
     /**
-     * @Route("/backend/edit", name="backend_edit")
+     * @Route("/backend/{id}/edit", name="backend_edit")
      * @Template()
      */
     public function editAction(Request $request)

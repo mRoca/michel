@@ -19,6 +19,7 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
         for ($i = 0; $i < 50; $i++) {
             $job = new Job();
             $job
+                ->setStatus(Job::STATUS_PUBLISHED)
                 ->setUser($this->getReference('user'))
                 ->setTitle('My great job ' . ($i + 1))
                 ->setCountry('FR')

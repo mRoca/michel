@@ -8,19 +8,16 @@
 
 {% block content %}
     {{ breadcrumb({
-        'Post a job': path('job_post'),
+        'My jobs': path('manage'),
+        (job.title): null,
         'Preview':  path('job_preview', job.urlParameters),
     }) }}
 
     {% embed 'SensioLabsJobBoardBundle:Includes:job.html.twig' %}
         {% block job_steps %}
             <div class="padding clearfix">
-                <a href="{{ path('job_post') }}" class="green-button left"><span class="sprite-icon-light-arrow-left"></span>
+                <a href="{{ path('job_update', job.urlParameters) }}" class="green-button left"><span class="sprite-icon-light-arrow-left"></span>
                     <span>Make changes</span>
-                </a>
-                <a href="{{ path('job_publish', job.urlParameters) }}" class="green-button right">
-                    <img src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" class="sprite-icon-cloud-upload" />
-                    <span>Publish</span>
                 </a>
             </div>
         {% endblock %}
