@@ -37,7 +37,7 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
                 ->setStatus(Job::STATUS_PUBLISHED)
                 ->setUser($this->getReference('user'))
                 ->setTitle('My great job ' . ($i + 1))
-                ->setCompany(rand(0, 1) ? $sensiolabs : $sensiolabsUK)
+                ->setCompany($i % 2 ? $sensiolabs : $sensiolabsUK)
                 ->setContract(Job::getContractTypesKeys()[rand(0, count(Job::getContractTypesKeys()) - 1)])
                 ->setDescription('<p><b>Lorem ipsum</b> dolor sit amet, consectetur adipiscing elit. In quis nulla augue. Phasellus enim eros, luctus a dapibus ut, auctor et urna. Donec eget egestas mi. Sed auctor semper elit, quis elementum orci pulvinar ut. Donec leo quam, elementum non vulputate ut, laoreet eu augue. Pellentesque tempus luctus porttitor. In id orci enim, quis gravida massa. Praesent consequat hendrerit consequat. Cras nulla elit, pulvinar a dapibus vitae, pellentesque...</p>')
                 ->setHowToApply('Send your CV to : <a href="mailto:contact@nocompany.com">contact@nocompany.com</a>');
@@ -50,9 +50,9 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
                 $job->setStatus(Job::STATUS_DELETED);
             }
 
-            if ($job->isPublished() && rand(0, 1)) {
+            if ($job->isPublished() && ($i % 2)) {
                 $job->setPublishStart(new \DateTime("last week - " . rand(1, 90) . " days"));
-                $job->setPublishEnd(new \DateTime("last week +" . rand(0, 90) . " days"));
+                $job->setPublishEnd(new \DateTime("next week +" . rand(0, 90) . " days"));
             }
 
             $manager->persist($job);

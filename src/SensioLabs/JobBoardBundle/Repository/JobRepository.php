@@ -24,7 +24,7 @@ class JobRepository extends EntityRepository
         return $qb->where($qb->expr()->eq('job.status', ':status'))
             ->setParameter('status', $status);
     }
-    
+
     /**
      * @param QueryBuilder $qb
      * @return QueryBuilder
@@ -86,6 +86,22 @@ class JobRepository extends EntityRepository
             ->addSelect('company')
             ->leftJoin('job.company', 'company')
             ->orderBy('job.id', 'desc');
+
+        return $qb;
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getFeedQb()
+    {
+        $now = new \DateTime('today');
+        $qb = $this->getListQb();
+        $qb
+            ->setParameter(':now', $now)
+            ->andWhere($qb->expr()->lte('job.publishStart', ':now'))
+            ->andWhere($qb->expr()->gt('job.publishEnd', ':now'))
+            ->orderBy('job.publishStart', 'desc');
 
         return $qb;
     }
