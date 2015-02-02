@@ -14,13 +14,16 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class JobController extends Controller
 {
     /**
-     * @Route("/show", name="job_show")
+     * @Route("/{country}/{contract}/{slug}", name="job_show", requirements={"slug": "[\w\-]+"})
+     * @Method("GET")
      * @Template()
-     * TODO
+     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job")
      */
-    public function showAction()
+    public function showAction(Job $job)
     {
-        return array();
+        return array(
+            'job' => $job,
+        );
     }
 
     /**

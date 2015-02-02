@@ -4755,6 +4755,7 @@ nav.menu a {
     margin-left: 30px;
     margin-bottom: 17px;
     width: 700px;
+    cursor: pointer;
 }
 .home #right .box .details {
     float: right;
