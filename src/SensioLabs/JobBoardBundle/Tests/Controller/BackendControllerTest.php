@@ -36,7 +36,7 @@ class BackendControllerTest extends ConnectWebTestCase
         $_GET = $savedGet;
 
         // Delete button
-        $form = $crawler->filter('#backend-job-container > table > tbody > tr')->first()->selectButton('job_delete[delete]')->form();
+        $form = $crawler->filter('#backend-job-container > table > tbody > tr')->first()->filter('button')->form();
         $this->client->submit($form);
 
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -55,10 +55,10 @@ class BackendControllerTest extends ConnectWebTestCase
         // Authenticated as admin
         $this->logInAsAdmin();
         $crawler = $this->client->request('GET', '/backend', array('status' => 'archived'));
-        $this->assertCount(10, $crawler->filter('#backend-job-container > table > tbody > tr'));
+        $this->assertCount(9, $crawler->filter('#backend-job-container > table > tbody > tr'));
 
         // Delete button
-        $form = $crawler->filter('#backend-job-container > table > tbody > tr')->first()->selectButton('job_delete[delete]')->form();
+        $form = $crawler->filter('#backend-job-container > table > tbody > tr')->first()->filter('button')->form();
         $this->client->submit($form);
 
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -66,6 +66,29 @@ class BackendControllerTest extends ConnectWebTestCase
 
         // Archived announcement => cannot delete
         $this->assertCount(1, $crawler->filter('#backend-job-container .error'));
+    }
+
+    public function testListDeletedAction()
+    {
+        // Not authenticated => Redirect to connect.sensiolabs
+        $this->client->request('GET', '/backend', array('status' => 'deleted'));
+        $this->assertConnectRedirect($this->client->getResponse());
+
+        // Authenticated as admin
+        $this->logInAsAdmin();
+        $crawler = $this->client->request('GET', '/backend', array('status' => 'deleted'));
+        $this->assertCount(1, $crawler->filter('#backend-job-container > table > tbody > tr'));
+
+        // Restore button
+        $form = $crawler->filter('#backend-job-container > table > tbody > tr')->first()->filter('button')->form();
+        $this->client->submit($form);
+
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $crawler = $this->client->followRedirect();
+
+        // Delete success
+        $this->assertCount(1, $crawler->filter('#backend-job-container .success'));
+        $this->assertCount(0, $crawler->filter('#backend-job-container > table > tbody > tr'));
     }
 
     public function testEditAction()

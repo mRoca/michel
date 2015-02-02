@@ -6,14 +6,14 @@
 
 {% block content %}
 <ul id="breadcrumb">
-    <li class="{{ status == 'PUBLISHED' ? 'active' : '' }}">
+    <li class="{{ status is constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_PUBLISHED') ? 'active' : '' }}">
         <a href="{{ path('backend_list') }}">Published ads</a> |
     </li>
-    <li class="{{ status == 'ARCHIVED' ? 'active' : '' }}">
+    <li class="{{ status is constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_ARCHIVED') ? 'active' : '' }}">
         <a href="{{ path('backend_list', {status: 'archived'}) }}">Archived ads</a> |
     </li>
-    <li>
-        <a href="#">Deleted ads</a>
+    <li class="{{ status is constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_DELETED') ? 'active' : '' }}">
+        <a href="{{ path('backend_list', {status: 'deleted'}) }}">Deleted ads</a>
     </li>
 </ul>
 
@@ -22,12 +22,14 @@
         <div class="padding-table">
             <div id="backend-job-container">
 
-                {% if app.session.flashBag.peek('error') | length %}
+                {% if app.session.flashBag.peekAll() | length %}
                     <ul class="backend-flashes">
-                        {% for error in app.session.flashBag.get('error') %}
-                            <li class="error">{{ error }}</li>
+                        {% for message in app.session.flashBag.get('error') %}
+                            <li class="error">{{ message }}</li>
                         {% endfor %}
-                        {#<li class="success">Example of an success message</li>#}
+                        {% for message in app.session.flashBag.get('success') %}
+                            <li class="success">{{ message }}</li>
+                        {% endfor %}
                     </ul>
                 {% endif %}
 
@@ -56,9 +58,15 @@
                             <td>{{ job.apiViewsCount }}</td>
                             <td>
                                 <a href="{{ path('backend_edit', {id: job.id}) }}"> Edit </a>
-                                {{ form_start(delete_forms[job.id]) }}
-                                {{ form_widget(delete_forms[job.id].delete) }}
-                                {{ form_end(delete_forms[job.id]) }}
+                                {% if not job.deleted %}
+                                    {{ form_start(delete_forms[job.id]) }}
+                                    {{ form_widget(delete_forms[job.id].delete) }}
+                                    {{ form_end(delete_forms[job.id]) }}
+                                {% else %}
+                                    {{ form_start(restore_forms[job.id]) }}
+                                    {{ form_widget(restore_forms[job.id].restore) }}
+                                    {{ form_end(restore_forms[job.id]) }}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
