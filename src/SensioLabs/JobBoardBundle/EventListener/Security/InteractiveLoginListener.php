@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SensioLabs\JobBoardBundle\EventListener;
+namespace SensioLabs\JobBoardBundle\EventListener\Security;
 
 use Doctrine\ORM\EntityManager;
 use SensioLabs\Connect\Security\Authentication\Token\ConnectToken;
@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-class SecurityInteractiveLoginListener implements EventSubscriberInterface
+class InteractiveLoginListener implements EventSubscriberInterface
 {
     private $em;
 

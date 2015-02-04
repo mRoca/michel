@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Util\Urlizer;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
 
@@ -22,7 +23,7 @@ use JMS\Serializer\Annotation as JMS;
  *      @ORM\Index(name="status_idx", columns={"status"}),
  * })
  *
- * @ORM\EntityListeners({"SensioLabs\JobBoardBundle\EventListener\JobCompanySubscriber"})
+ * @ORM\EntityListeners({"SensioLabs\JobBoardBundle\EventListener\Job\JobCompanySubscriber"})
  */
 class Job implements RoutedItemInterface
 {
@@ -31,6 +32,7 @@ class Job implements RoutedItemInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Groups({"api"})
      */
     protected $id;
 
@@ -45,7 +47,7 @@ class Job implements RoutedItemInterface
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Job title should not be empty")
-     * @JMS\Groups({"post_session"})
+     * @JMS\Groups({"post_session", "api"})
      */
     protected $title;
 
@@ -70,7 +72,7 @@ class Job implements RoutedItemInterface
      * @ORM\Column(type="string", length=31)
      * @Assert\NotBlank(message="Contract must be selected")
      * @Assert\Choice(callback = "getContractTypesKeys", message="Contract must be selected")
-     * @JMS\Groups({"post_session"})
+     * @JMS\Groups({"post_session", "api"})
      */
     protected $contract;
 
@@ -316,6 +318,42 @@ class Job implements RoutedItemInterface
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("company")
+     * @JMS\Groups({"api"})
+     *
+     * @return string
+     */
+    public function getCompanyName()
+    {
+        return $this->company->getName();
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("country_name")
+     * @JMS\Groups({"api"})
+     *
+     * @return string
+     */
+    public function getCountryName()
+    {
+        return Intl::getRegionBundle()->getCountryName($this->company->getCountry());
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("country_code")
+     * @JMS\Groups({"api"})
+     *
+     * @return string
+     */
+    public function getCountryCode()
+    {
+        return $this->company->getCountry();
     }
 
     /**

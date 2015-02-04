@@ -1,12 +1,9 @@
 <?php
 
-namespace SensioLabs\JobBoardBundle\EventListener;
+namespace SensioLabs\JobBoardBundle\EventListener\Job;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use SensioLabs\JobBoardBundle\Entity\Company;
 use SensioLabs\JobBoardBundle\Entity\Job;
