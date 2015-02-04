@@ -4922,12 +4922,12 @@ h3 {
     background: #82e83e;
     color: white;
 }
-.payment_confirmation h2, .publish h2 {
+.payment_confirmation h2, .publish h2, .error h2 {
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 30px;
 }
-.payment_confirmation p, .publish p {
+.payment_confirmation p, .publish p, .error p {
     color: #585858;
     font-size: 14px;
 }
