@@ -86,6 +86,39 @@ class JobControllerTest extends ConnectWebTestCase
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
+    public function testViewsCount()
+    {
+        $jobRepository = $this->em->getRepository('SensioLabsJobBoardBundle:Job');
+
+        // API views count
+        $this->client->request('GET', '/api/random');
+        $responseContent = $this->client->getResponse()->getContent();
+        $this->assertJson($responseContent);
+        $result = json_decode($responseContent, true);
+        $this->assertArrayHasKey('id', $result);
+
+        $this->em->clear();
+        $job = $jobRepository->find($result['id']);
+        $this->assertSame(1, $job->getApiViewsCount());
+
+        // List views count
+        $this->em->clear();
+        $initialJob = $jobRepository->getListQb()->setMaxResults(1)->getQuery()->getSingleResult();
+        $this->assertNotNull($initialJob);
+
+        $this->client->request('GET', '/');
+        $this->em->clear();
+        $job = $jobRepository->find($initialJob->getId());
+        $this->assertEquals($initialJob->getListViewsCount() + 1, $job->getListViewsCount());
+
+        // Display views count
+        $route = $this->client->getContainer()->get('router')->generate('job_show', $job->getUrlParameters(), false);
+        $this->client->request('GET', $route);
+        $this->em->clear();
+        $job = $jobRepository->find($initialJob->getId());
+        $this->assertEquals($initialJob->getDisplayViewsCount() + 1, $job->getDisplayViewsCount());
+    }
+
     protected function jobData()
     {
         return array(

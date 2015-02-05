@@ -4,12 +4,11 @@
 namespace SensioLabs\JobBoardBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use SensioLabs\JobBoardBundle\Entity\Job;
 use SensioLabs\JobBoardBundle\Entity\User;
-
 
 class JobRepository extends EntityRepository
 {
-
     /**
      * @param string $filterColumn
      * @param array $requestFilters
@@ -77,6 +76,49 @@ class JobRepository extends EntityRepository
             ->orderBy('job.id', 'desc');
 
         return $qb;
+    }
+
+    /**
+     * Increase the views count of Jobs entities
+     *
+     * @param Job[]|\Traversable $jobs
+     * @return bool
+     */
+    public function incrementListViews(\Traversable $jobs)
+    {
+        $ids = array();
+        foreach ($jobs as $job) {
+            $ids[] = $job->getId();
+        }
+
+        if (!count($ids)) {
+            return false;
+        }
+
+        $qb = $this->createQueryBuilder('job');
+        $qb
+            ->update()
+            ->set("job.listViewsCount", "job.listViewsCount + 1")
+            ->where($qb->expr()->in('job.id', $ids));
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @return Job|null
+     */
+    public function getRandom()
+    {
+        $count = $this->createQueryBuilder('job')
+            ->select('count(job.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $this->createQueryBuilder('job')
+            ->setMaxResults(1)
+            ->setFirstResult(mt_rand(0, $count))
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
 }

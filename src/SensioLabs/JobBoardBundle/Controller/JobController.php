@@ -21,6 +21,11 @@ class JobController extends Controller
      */
     public function showAction(Job $job)
     {
+        $job->incrementDisplayViews();
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush($job);
+
         return array(
             'job' => $job,
         );

@@ -4,7 +4,6 @@ namespace SensioLabs\JobBoardBundle\Controller;
 
 use SensioLabs\JobBoardBundle\Entity\Job;
 use SensioLabs\JobBoardBundle\Filter\JobFilterType;
-use SensioLabs\JobBoardBundle\Repository\JobRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -18,12 +17,9 @@ class BaseController extends Controller
      */
     public function indexAction(Request $request)
     {
-
         $data = array();
-        $em = $this->getDoctrine()->getManager();
 
-        /** @var JobRepository $repository */
-        $repository = $em->getRepository('SensioLabsJobBoardBundle:Job');
+        $repository = $this->getDoctrine()->getRepository('SensioLabsJobBoardBundle:Job');
         $formFilter = $this->get('form.factory')->createNamed(null, new JobFilterType());
 
         $formFilter->submit($this->get('request'));
@@ -33,6 +29,7 @@ class BaseController extends Controller
         $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($formFilter, $filterBuilder);
 
         $data['jobs'] = $this->get('knp_paginator')->paginate($filterBuilder, $request->query->get('page', 1), Job::LIST_MAX_JOB_ITEMS);
+        $repository->incrementListViews($data['jobs']);
 
         // Add invalid fields not in getData() array
         $data['filters'] = array_fill_keys(array_keys($formFilter->all()), null);
@@ -55,9 +52,7 @@ class BaseController extends Controller
      */
     public function manageAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        /** @var JobRepository $repository */
-        $repository = $em->getRepository('SensioLabsJobBoardBundle:Job');
+        $repository = $this->getDoctrine()->getRepository('SensioLabsJobBoardBundle:Job');
 
         $qb = $repository->getQbByUser($this->getUser());
 
