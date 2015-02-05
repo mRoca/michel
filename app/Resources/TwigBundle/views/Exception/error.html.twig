@@ -1,0 +1,19 @@
+{% extends "SensioLabsJobBoardBundle::layout.html.twig" %}
+
+{% from 'SensioLabsJobBoardBundle:Includes:breadcrumb.html.twig' import breadcrumb %}
+
+{% block page_class 'error' %}
+
+{% block content %}
+    {{ breadcrumb({
+        'Error': null
+    }) }}
+
+    {% embed "SensioLabsJobBoardBundle:Includes:box.html.twig" %}
+        {% block box_content %}
+            <h2 class="text-center">The server returned a "{{ status_code }}".</h2>
+            <br/>
+            <p class="text-center">{{ status_text }}</p>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
