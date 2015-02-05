@@ -29,3 +29,12 @@ Caution : The application provides jobs for every country, so all DateTime are s
 
     app/console translation:extract fr --config=jobboard --keep --output-format=yml -v
     app/console translation:extract en --config=jobboard --keep --output-format=yml -v
+
+## Usage
+
+### Clean old deleted jobs
+
+To delete from the database all announcements having the status « deleted » since at least x days (default: 20) :
+
+	app/console jobboard:jobs:clean
+	app/console jobboard:jobs:clean --days=20 
