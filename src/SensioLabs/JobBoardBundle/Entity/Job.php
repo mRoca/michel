@@ -46,7 +46,7 @@ class Job implements RoutedItemInterface
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Job title should not be empty")
+     * @Assert\NotBlank(message="job.title.not_blank")
      * @JMS\Groups({"post_session", "api"})
      */
     protected $title;
@@ -70,8 +70,8 @@ class Job implements RoutedItemInterface
     /**
      * @var string
      * @ORM\Column(type="string", length=31)
-     * @Assert\NotBlank(message="Contract must be selected")
-     * @Assert\Choice(callback = "getContractTypesKeys", message="Contract must be selected")
+     * @Assert\NotBlank(message="job.contract.not_blank")
+     * @Assert\Choice(callback = "getContractTypesKeys", message="job.contract.callback")
      * @JMS\Groups({"post_session", "api"})
      */
     protected $contract;
@@ -79,7 +79,7 @@ class Job implements RoutedItemInterface
     /**
      * @var string
      * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Your job offer must be longer")
+     * @Assert\NotBlank(message="job.description.not_blank")
      * @JMS\Groups({"post_session"})
      */
     protected $description;
@@ -108,7 +108,7 @@ class Job implements RoutedItemInterface
     /**
      * @var string
      * @ORM\Column(type="string", length=31)
-     * @Assert\Choice(callback="getStatusesKeys", message="Status must be selected")
+     * @Assert\Choice(callback="getStatusesKeys", message="job.status.callback")
      */
     protected $status;
 
@@ -162,39 +162,27 @@ class Job implements RoutedItemInterface
     const CONTRACT_TYPE_ALTERNANCE = 'ALTERNANCE';
 
     public static $STATUSES = array(
-        self::STATUS_NEW       => "New",
-        self::STATUS_ORDERED   => "Ordered",
-        self::STATUS_PUBLISHED => "Published",
-        self::STATUS_EXPIRED   => "Expired",
-        self::STATUS_ARCHIVED  => "Archived",
-        self::STATUS_DELETED   => "Deleted",
-        self::STATUS_RESTORED  => "Restored",
+        self::STATUS_NEW       => "entity.job.status.new",
+        self::STATUS_ORDERED   => "entity.job.status.ordered",
+        self::STATUS_PUBLISHED => "entity.job.status.published",
+        self::STATUS_EXPIRED   => "entity.job.status.expired",
+        self::STATUS_ARCHIVED  => "entity.job.status.archived",
+        self::STATUS_DELETED   => "entity.job.status.deleted",
+        self::STATUS_RESTORED  => "entity.job.status.restored",
     );
 
     public static $CONTRACT_TYPES = array(
-        self::CONTRACT_TYPE_FULL_TIME  => "Full Time",
-        self::CONTRACT_TYPE_PART_TIME  => "Part Time",
-        self::CONTRACT_TYPE_INTERNSHIP => "Internship",
-        self::CONTRACT_TYPE_FREELANCE  => "Freelance",
-        self::CONTRACT_TYPE_ALTERNANCE => "Alternance"
+        self::CONTRACT_TYPE_FULL_TIME  => "entity.job.contract.fulltime",
+        self::CONTRACT_TYPE_PART_TIME  => "entity.job.contract.parttime",
+        self::CONTRACT_TYPE_INTERNSHIP => "entity.job.contract.internship",
+        self::CONTRACT_TYPE_FREELANCE  => "entity.job.contract.freelance",
+        self::CONTRACT_TYPE_ALTERNANCE => "entity.job.contract.alternance"
     );
-
-    /** @return string */
-    public static function getStatusName($status)
-    {
-        return isset(self::$STATUSES[$status]) ? self::$STATUSES[$status] : '';
-    }
 
     /** @return array */
     public static function getStatusesKeys()
     {
         return array_keys(self::$STATUSES);
-    }
-
-    /** @return string */
-    public static function getContractName($contractCode)
-    {
-        return isset(self::$CONTRACT_TYPES[$contractCode]) ? self::$CONTRACT_TYPES[$contractCode] : '';
     }
 
     /** @return array */
@@ -391,6 +379,16 @@ class Job implements RoutedItemInterface
     }
 
     /**
+     * Get contract
+     *
+     * @return string
+     */
+    public function getContractName()
+    {
+        return isset(self::$CONTRACT_TYPES[$this->contract]) ? self::$CONTRACT_TYPES[$this->contract] : '';
+    }
+
+    /**
      * Set description
      *
      * @param string $description
@@ -499,6 +497,12 @@ class Job implements RoutedItemInterface
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /** @return string */
+    public function getStatusName($status)
+    {
+        return isset(self::$STATUSES[$status]) ? self::$STATUSES[$status] : '';
     }
 
     /**

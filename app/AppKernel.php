@@ -25,6 +25,8 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Eko\FeedBundle\EkoFeedBundle(),
+            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+            new JMS\TranslationBundle\JMSTranslationBundle(),
 
             new SensioLabs\JobBoardBundle\SensioLabsJobBoardBundle(),
         );

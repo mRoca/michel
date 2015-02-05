@@ -8,9 +8,6 @@
         <service id="sensiolabs.twig.country_extension" class="SensioLabs\JobBoardBundle\Twig\CountryExtension">
             <tag name="twig.extension"/>
         </service>
-        <service id="sensiolabs.twig.contract_extension" class="SensioLabs\JobBoardBundle\Twig\ContractExtension">
-            <tag name="twig.extension"/>
-        </service>
         <!--security.userprovider-->
         <service id="sensiolabs_jobboard.security.userprovider" class="SensioLabs\JobBoardBundle\Security\UserProvider">
             <argument type="service" id="doctrine.orm.entity_manager"/>
@@ -49,6 +46,7 @@
         <service id="sensiolabs_jobboard.mailer" class="SensioLabs\JobBoardBundle\Mailer\Mailer">
             <argument type="service" id="mailer"/>
             <argument type="service" id="templating"/>
+            <argument type="service" id="translator"/>
             <argument>%sensiolabs_jobboard.mailer_from_email%</argument>
             <argument>%sensiolabs_jobboard.mailer_from_name%</argument>
             <argument>%sensiolabs_jobboard.mailer_admin_email%</argument>

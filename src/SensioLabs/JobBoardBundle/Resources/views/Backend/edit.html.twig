@@ -3,34 +3,34 @@
 {% from 'SensioLabsJobBoardBundle:Includes:breadcrumb.html.twig' import breadcrumb %}
 
 {% block page_class 'backend add' %}
-{% block title 'Backend - Edit' %}
+{% block title 'backend.edit.title' | trans ~ ' - ' ~ parent() %}
 
 {% block content %}
     {{ breadcrumb({
-        'Backend': path('backend_list'),
-        ('Make changes on "%title%" announcement' | trans({'%title%': job.title})): null,
+        ('backend.title' | trans): path('backend_list'),
+        ('backend.edit.breadcrumb' | trans({'%job.title%': job.title})): null,
     }) }}
 
     {% embed "SensioLabsJobBoardBundle:Includes:job_form.html.twig" with {'form_action' : path('backend_edit', {id: job.id})} %}
         {% block admin_extra_fields %}
             <div class="backend-job-dates">
-                Visible from
+                {{ 'form.label.job.publish_start' | trans }}
                 {{ form_widget(form.publishStart) }}
-                to
+                {{ 'form.label.job.publish_end' | trans }}
                 {{ form_widget(form.publishEnd) }}
-                (format: mm/dd/yyyy)
+                {{ 'form.label.job.publish_format' | trans }}
             </div>
         {% endblock %}
         {% block buttons %}
             <hr/>
             <div class="backend-validate">
                 {{ form_widget(form.publish) }}
-                <label for="adminjob_publish">Validate the announcement</label>
+                <label for="adminjob_publish">{{ 'form.label.job.publish' | trans }}</label>
             </div>
 
             <button class="green-button right" type="submit" name="save">
                 <img src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" class="sprite-icon-cloud-upload" />
-                <span>Save</span>
+                <span>{{ 'buttons.save' | trans }}</span>
             </button>
         {% endblock %}
     {% endembed %}

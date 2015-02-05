@@ -14,20 +14,20 @@ class JobType extends AbstractType
         $builder
             ->add('title', 'text', array(
                 'attr' => array(
-                    'placeholder' => 'Job title',
+                    'placeholder' => 'entity.job.title',
                     'class'       => 'title-input',
                 ),
             ))
             ->add('company', 'company')
             ->add('contract', 'choice', array(
                 'choices'     => Job::$CONTRACT_TYPES,
-                'empty_value' => 'Type of contract'
+                'empty_value' => 'entity.job.contract_field'
             ))
             ->add('description', 'textarea', array(
                 'attr' => array('class' => 'ckeditor')
             ))
             ->add('howToApply', 'text', array(
-                'attr'     => array('placeholder' => 'Send your resume at...'),
+                'attr'     => array('placeholder' => 'form.label.job.how_to_apply'),
                 'required' => false
             ));
     }

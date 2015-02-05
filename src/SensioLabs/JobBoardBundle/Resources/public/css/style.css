@@ -4211,6 +4211,23 @@ header {
     height: 40px;
     background: #2F2F2F;
 }
+#locales {
+    list-style: none;
+    position: absolute;
+    right: 20px;
+    top: 40px;
+}
+#locales li {
+    float: left;
+}
+#locales li a {
+    text-decoration: none;
+    padding: 0 4px;
+}
+#locales li.active a {
+    font-weight: bold;
+    color: #5ec619;
+}
 .logo a,
 .logo-tiny a {
     text-indent: -9000px;

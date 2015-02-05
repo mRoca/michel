@@ -7,13 +7,13 @@
 {% block content %}
 <ul id="breadcrumb">
     <li class="{{ status is constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_PUBLISHED') ? 'active' : '' }}">
-        <a href="{{ path('backend_list') }}">Published ads</a> |
+        <a href="{{ path('backend_list') }}">{{ 'backend.menu.published' | trans }}</a> |
     </li>
     <li class="{{ status is constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_ARCHIVED') ? 'active' : '' }}">
-        <a href="{{ path('backend_list', {status: 'archived'}) }}">Archived ads</a> |
+        <a href="{{ path('backend_list', {status: 'archived'}) }}">{{ 'backend.menu.archived' | trans }}</a> |
     </li>
     <li class="{{ status is constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_DELETED') ? 'active' : '' }}">
-        <a href="{{ path('backend_list', {status: 'deleted'}) }}">Deleted ads</a>
+        <a href="{{ path('backend_list', {status: 'deleted'}) }}">{{ 'backend.menu.deleted' | trans }}</a>
     </li>
 </ul>
 
@@ -33,18 +33,18 @@
                     </ul>
                 {% endif %}
 
-                <h2 class="big-title">Published ads</h2>
+                <h2 class="big-title">{{ ('backend.menu.' ~ status | lower) | trans }}</h2>
 
                 <table class="table table-striped backend-list">
                     <thead>
                     <tr>
-                        <th>{{ self.pagination_sortable(jobs, 'Company', 'job.company') }}</th>
-                        <th>{{ self.pagination_sortable(jobs, 'Title', 'job.title') }}</th>
-                        <th>{{ self.pagination_sortable(jobs, 'Created at', 'job.createdAt') }}</th>
-                        <th>List Displays</th>
-                        <th>View Displays</th>
-                        <th>Ext Displays</th>
-                        <th>Actions</th>
+                        <th>{{ self.pagination_sortable(jobs, 'entity.company.name' | trans, 'job.company') }}</th>
+                        <th>{{ self.pagination_sortable(jobs, 'entity.job.title' | trans, 'job.title') }}</th>
+                        <th>{{ self.pagination_sortable(jobs, 'entity.job.created_at' | trans, 'job.createdAt') }}</th>
+                        <th>{{ 'entity.job.list_views' | trans }}</th>
+                        <th>{{ 'entity.job.display_views' | trans }}</th>
+                        <th>{{ 'entity.job.api_views' | trans }}</th>
+                        <th>{{ 'buttons.actions' | trans }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -57,7 +57,7 @@
                             <td>{{ job.displayViewsCount }}</td>
                             <td>{{ job.apiViewsCount }}</td>
                             <td>
-                                <a href="{{ path('backend_edit', {id: job.id}) }}"> Edit </a>
+                                <a href="{{ path('backend_edit', {id: job.id}) }}">{{ 'buttons.edit' | trans }}</a>
                                 {% if not job.deleted %}
                                     {{ form_start(delete_forms[job.id]) }}
                                     {{ form_widget(delete_forms[job.id].delete) }}

@@ -2,7 +2,7 @@
 <html lang="{{ app.request.locale }}">
     <head>
         <meta charset="UTF-8" />
-        <title>{% if block('title') is not empty %}{% block title %}{% endblock %} - {% endif %}SensioLabs Jobs</title>
+        <title>{% if block('title') is not empty %}{% block title %}{% endblock %} - {% endif %}{{ 'layout.title' | trans }}</title>
 
         {% block metadata %}
             {% stylesheets filter='cssrewrite' output='css/compiled/main_layout.css'
@@ -31,28 +31,36 @@
 
     <body class="{% block page_class '' %}">
         <div id="sln"></div>
-
+        <ul id="locales">
+            {% for locale in locales %}
+                <li class="{% if locale == app.request.locale %}active{% endif %}">
+                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({"_locale": locale})) }}">{{ locale }}</a>
+                </li>
+            {% endfor %}
+        </ul>
         <div id="container">
             <header class="clearfix">
-                <div class="logo"><h1><a href="{{ path('homepage') }}">SensioLabs Jobs</a></h1></div>
+                <div class="logo"><h1><a href="{{ path('homepage') }}">{{ 'layout.title' | trans }}</a></h1></div>
                 {% include 'SensioLabsJobBoardBundle:Includes:menu.html.twig' %}
             </header>
 
             {% block splash '<div id="splash" class="empty-splash"></div>' %}
-            <div id="content">{% block content '' %}</div>
+            <div id="content">
+                {% block content '' %}
+            </div>
         </div>
 
         <footer class="footer">
             <div class="footer_content_wrapper clear_fix">
                 <div class="footer_symfony_creator">
                     <a target="_blank" href="http://www.symfony.com/">
-                        <span class="symfony_creator_text">Créateur de</span>
-                        <span class="symfony_creator_picto"><img alt="Créateur du Framework Symfony" src="{{ asset('bundles/sensiolabsjobboard/images/footer_symfony_creator.gif') }}"></span>
+                        <span class="symfony_creator_text">{{ 'layout.sensio.creator_of' | trans }}</span>
+                        <span class="symfony_creator_picto"><img alt="{{  'layout.sensio.creator_of_symfony' | trans }}" src="{{ asset('bundles/sensiolabsjobboard/images/footer_symfony_creator.gif') }}"></span>
                     </a>
                 </div>
 
                 <section class="footer_contact">
-                    <h2 class="footer_title">Contact</h2>
+                    <h2 class="footer_title">{{ 'layout.contact' | trans }}</h2>
 
                     <ul class="contact_list">
                         {% for email in ['contact@sensiolabs.com', 'sales@sensiolabs.com', 'job@sensiolabs.com'] %}

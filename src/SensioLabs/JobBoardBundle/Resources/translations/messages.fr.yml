@@ -1,0 +1,131 @@
+backend:
+    edit:
+        breadcrumb: 'Modification de l''annonce "%job.title%"'
+        title: Modification
+
+    menu:
+        archived: 'Annonces archivées'
+        deleted: 'Annonces supprimées'
+        published: 'Annonces publiées'
+
+    title: Administration
+
+buttons:
+    actions: Actions
+    archive: Archiver
+    delete: Supprimer
+    edit: Modifier
+    make_changes: Modifier
+    preview: Prévisualiser
+    publish: Publier
+    renew: Renouveller
+    restore: Restaurer
+    save: Enregistrer
+    unarchive: Désarchiver
+    update: Supprimer
+
+connect:
+    edit_profile: 'Modifier mon profile sur Connect'
+    logout: 'Déconnexion de SensioLabs Jobs'
+
+email:
+    job_publish:
+        subject: 'Nouvelle annonce d''emploi'
+
+    job_update:
+        after: AVANT
+        before: APRES
+        description: Description
+        hello: 'Bonjour, une annonce d''emploi a été modifiée.'
+        source: Source
+        state: Etat
+        subject: 'Mise à jour d''une annonce d''emploi'
+        title: Titre
+
+entity:
+    company:
+        city: Ville
+        name: Entreprise
+
+    job:
+        api_views: 'Vues - API'
+        contract:
+            fulltime: 'CDI'
+            parttime: 'Temps partiel'
+            internship: 'Stage'
+            freelance: 'Freelance'
+            alternance: 'Alternance'
+
+        contract_field: 'Type de contrat'
+        created_at: 'Créée le'
+        display_views: 'Vues - affichage'
+        expire_on: 'Expire le %job.publishEnd%'
+        how_to_apply: 'Comment postuler ?'
+        list_views: 'Vues - liste'
+
+        status:
+            expired: Expirée
+            not_online_yet: 'Pas encore en ligne'
+            waiting_payment: 'En attente du paiement'
+            new: Nouveau
+            published: Publiée
+            ordered: Commandée
+            expired: Expirée
+            archived: Archivée
+            deleted: Supprimée
+            restored: Restorée
+
+        time_left: 'Temps restant'
+        time_left_value: '{0} Aujourd''hui|{1} 1 jour|]1,Inf] %count% jours'
+        title: 'Libellé de l''annonce'
+        views: Vues
+
+form:
+    errors:
+        title: Erreurs
+
+    label:
+        job:
+            how_to_apply: 'Envoyez votre CV à ...'
+            publish: 'Valider l''annonce'
+            publish_end: au
+            publish_format: '(format: mm/dd/yyyy)'
+            publish_start: 'Visible du'
+
+frontend:
+    homepage: "La 1<sup>ère</sup> plateforme 100% consacrée à la communauté <strong>Symfony</strong>.<br/>\n<strong>Recruteurs</strong> La meilleure source de talent Symfony.<br/>\n<strong>Développeurs</strong> Trouvez le projet, l''entreprise ou le poste de vos rêves."
+
+    jobs:
+        filters:
+            all_contracts: 'Tous les types de contrats'
+            all_countries: 'Tous les pays'
+            all_jobs: 'Toutes les annonces'
+            contract: 'Type de contrat'
+            less: Moins
+            location: Emplacement
+            more: Plus
+
+        in: à
+        my_jobs: 'Mes annonces'
+        no_job: 'Aucune annonce'
+        no_more_job: 'Plus aucune annonce'
+        post: 'Publier une annonce'
+        user_no_job: 'Vous n''avez aucune annonce.'
+
+layout:
+    contact: Contact
+
+    menu:
+        home: Accueil
+        rss: 'Flux RSS'
+
+    sensio:
+        creator_of: 'Créateur de'
+        creator_of_symfony: 'Créateur du Framework Symfony'
+
+    title: 'SensioLabs Jobs'
+
+messages:
+    success:
+        job_added: 'Votre annonce a été ajoutée avec succès'
+        job_restored: 'L''état de l''annonce "%job.title%" a été mis à jour avec succès en "restaurée"'

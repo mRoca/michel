@@ -2,23 +2,25 @@
 {% from 'SensioLabsJobBoardBundle:Includes:breadcrumb.html.twig' import breadcrumb %}
 
 {% block page_class 'add' %}
-{% block title 'Post a Job' %}
+{% block title 'frontend.jobs.post' | trans %}
 
 {% block content %}
     {% if from_preview %}
         {{ breadcrumb({
-            'My jobs': path('manage'),
+            ('frontend.jobs.my_jobs' | trans): path('manage'),
             (job.title): null,
         }) }}
     {% else %}
-        {{ breadcrumb({'Post a job': path('job_post')}) }}
+        {{ breadcrumb({
+            ('frontend.jobs.post' | trans): path('job_post')
+        }) }}
     {% endif %}
 
     {% embed "SensioLabsJobBoardBundle:Includes:job_form.html.twig" with {'form_action' : path('job_post')} %}
         {% block buttons %}
             <button class="green-button right" type="submit" name="preview">
                 <span class="sprite-icon-light-arrow-right"></span>
-                <span>{{ (from_preview ? 'Update' : 'Preview') | trans }}</span>
+                <span>{{ ((from_preview ? 'buttons.update' : 'buttons.preview') | trans) | trans }}</span>
             </button>
         {% endblock %}
     {% endembed %}

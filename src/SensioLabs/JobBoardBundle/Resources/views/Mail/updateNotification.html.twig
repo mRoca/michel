@@ -1,35 +1,35 @@
 <html>
 <body>
 
-<p>Hello, a job announcement has been modified.</p>
+<p>{{ 'email.job_update.hello' | trans }}</p>
 
 <p>
-    Source:
+    {{ 'email.job_update.source' | trans }} :
     {% set showlink = frontend_link ? url('job_show', job.urlParameters) : url('backend_edit', {'id': job.id}) %}
     <a href="{{ showlink }}">{{ showlink }}</a>
 </p>
 
 <table>
     <tr>
-        <td rowspan="3">BEFORE</td>
-        <td>State: {{ oldjob.status }}</td>
+        <td rowspan="3">{{ 'email.job_update.before' | trans }}</td>
+        <td>{{ 'email.job_update.state' | trans }}: {{ oldjob.status }}</td>
     </tr>
     <tr>
-        <td>Title: {{ oldjob.title }}</td>
+        <td>{{ 'email.job_update.title' | trans }}: {{ oldjob.title }}</td>
     </tr>
     <tr>
-        <td>Description:<br/><br/>{{ oldjob.description | purify }} </td>
+        <td>{{ 'email.job_update.description' | trans }}:<br/><br/>{{ oldjob.description | purify }} </td>
     </tr>
 
     <tr>
-        <td rowspan="3">AFTER</td>
-        <td>State: {{ job.status }}</td>
+        <td rowspan="3">{{ 'email.job_update.after' | trans }}</td>
+        <td>{{ 'email.job_update.state' | trans }}: {{ job.status }}</td>
     </tr>
     <tr>
-        <td>Title: {{ job.title }}</td>
+        <td>{{ 'email.job_update.title' | trans }}: {{ job.title }}</td>
     </tr>
     <tr>
-        <td>Description:<br/><br/>{{ job.description  | purify }}</td>
+        <td>{{ 'email.job_update.description' | trans }}:<br/><br/>{{ job.description  | purify }}</td>
     </tr>
 </table>
 </body>

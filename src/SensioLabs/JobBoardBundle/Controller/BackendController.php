@@ -146,7 +146,7 @@ class BackendController extends Controller
 
             $session->getFlashBag()->add('success',
                 $this->get('translator')->trans(
-                    'Job "%job.title%" status successfully updated to "restored"',
+                    'messages.success.job_restored',
                     array('%job.title%' => $job->getTitle())
                 )
             );

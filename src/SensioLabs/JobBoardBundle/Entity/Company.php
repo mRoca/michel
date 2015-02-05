@@ -28,7 +28,7 @@ class Company
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Company should not be empty")
+     * @Assert\NotBlank(message="company.name.not_blank")
      * @JMS\Groups({"post_session"})
      */
     protected $name;
@@ -36,7 +36,7 @@ class Company
     /**
      * @var string
      * @ORM\Column(type="string", length=2)
-     * @Assert\NotBlank(message="Country should not be empty")
+     * @Assert\NotBlank(message="company.country.not_blank")
      * @JMS\Groups({"post_session"})
      */
     protected $country;
@@ -44,7 +44,7 @@ class Company
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="City should not be empty")
+     * @Assert\NotBlank(message="company.city.not_blank")
      * @JMS\Groups({"post_session"})
      */
     protected $city;

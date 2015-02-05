@@ -24,3 +24,8 @@ Caution : The application provides jobs for every country, so all DateTime are s
 ### Fill DB with fake data
 
 	app/console doctrine:fixtures:load
+
+### Extract translations
+
+    app/console translation:extract fr --config=jobboard --keep --output-format=yml -v
+    app/console translation:extract en --config=jobboard --keep --output-format=yml -v

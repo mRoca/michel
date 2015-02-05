@@ -4,27 +4,27 @@
 
 {% block page_class 'manage' %}
 
-{% block title 'My jobs' %}
+{% block title 'frontend.jobs.my_jobs' | trans %}
 
 {% block content %}
     {{ breadcrumb({
-        ('My Jobs'): path('manage'),
+        ('frontend.jobs.my_jobs' | trans): path('manage'),
     }) }}
 
     {% embed 'SensioLabsJobBoardBundle:Includes:box.html.twig' %}
         {% block box_content %}
             <div class="padding-table">
-                <h2 class="big-title">My jobs</h2>
+                <h2 class="big-title">{{ 'frontend.jobs.my_jobs' | trans }}</h2>
                 <a href="{{ path('job_post') }}" class="add right">
-                    <img class="sprite-button-add-focus-grey-bg" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="+"/> Post a job
+                    <img class="sprite-button-add-focus-grey-bg" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="+"/>{{ 'frontend.jobs.post' | trans }}
                 </a>
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th class="span5"> Title</th>
-                        <th class="span2"> Time left</th>
-                        <th class="span2"> Displays</th>
-                        <th class="span4"> Actions</th>
+                        <th class="span5">{{ 'entity.job.title' | trans }}</th>
+                        <th class="span2">{{ 'entity.job.time_left' | trans }} </th>
+                        <th class="span2">{{ 'entity.job.views' | trans }}</th>
+                        <th class="span4">{{ 'buttons.actions' | trans }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -33,24 +33,24 @@
                         <tr>
                             <td>
                                 <a href="{{ path('job_udpate_preview', job.urlParameters) }}">
-                                    {{ job.contract | contractName }} in {{ job.company.city }} &mdash; {{ job.title }}
+                                    {{ job.contractName | trans }} {{ 'frontend.jobs.in' | trans }} {{ job.company.city }} &mdash; {{ job.title }}
                                 </a>
                             </td>
 
                             {% set now = date('now') %}
                             {% if job.publishStart == null %}
-                                <td style="color:orange"> Waiting payment</td>
+                                <td style="color:orange">{{ 'entity.job.status.waiting_payment' | trans }}</td>
                             {% elseif job.publishStart > now %}
-                                <td style="color:orange"> Not online yet</td>
+                                <td style="color:orange">{{ 'entity.job.status.not_online_yet' | trans }}</td>
                             {% else %}
                                 {% if job.publishEnd > now %}
                                     <td>
-                                        <abbr title="Expires on {{ job.publishEnd | localizeddate }}">
-                                            {% transchoice date().diff(date(job.publishEnd)).d %}{0} Today|{1} 1 day|]1,Inf] %count% days{% endtranschoice %}
+                                        <abbr title="{{ 'entity.job.expire_on' | trans({'%job.publishEnd%': job.publishEnd | localizeddate}) }}">
+                                            {{ 'entity.job.time_left_value' | transchoice(date().diff(date(job.publishEnd)).d) }}
                                         </abbr>
                                     </td>
                                 {% else %}
-                                    <td style="color:pink"> Expired</td>
+                                    <td style="color:pink">{{ 'entity.job.status.expired' | trans }}</td>
                                 {% endif %}
                             {% endif %}
 
@@ -59,17 +59,17 @@
                             <td>{{ job.totalViewsCount }}</td>
 
                             <td class="action">
-                                <a href="#"> Renew </a> /
-                                <a href="{{ path('job_publish', job.urlParameters) }}">Publish</a> /
-                                <a href="{{ path('job_update', job.urlParameters) }}"> Make changes</a> /
-                                <a href="#"> Archive </a> /
-                                <a href="#"> Unarchive </a> /
-                                <a href="#"> Delete </a>
+                                <a href="#">{{ 'buttons.renew' | trans }}</a> /
+                                <a href="{{ path('job_publish', job.urlParameters) }}">{{ 'buttons.publish' | trans }}</a> /
+                                <a href="{{ path('job_update', job.urlParameters) }}">{{ 'buttons.make_changes' | trans }}</a> /
+                                <a href="#">{{ 'buttons.archive' | trans }}</a> /
+                                <a href="#">{{ 'buttons.unarchive' | trans }}</a> /
+                                <a href="#">{{ 'buttons.delete' | trans }}</a>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="5"> You have no jobs.</td>
+                            <td colspan="4">{{ 'frontend.jobs.user_no_job' | trans }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

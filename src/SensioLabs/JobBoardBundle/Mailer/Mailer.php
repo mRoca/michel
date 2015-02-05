@@ -4,6 +4,7 @@
 namespace SensioLabs\JobBoardBundle\Mailer;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class Mailer
 {
@@ -14,14 +15,18 @@ class Mailer
     /** @var TwigEngine */
     protected $templating;
 
+    /** @var TranslatorInterface */
+    protected $tranlator;
+
     protected $fromName;
     protected $fromEmail;
     protected $adminEmail;
 
-    public function __construct(\Swift_Mailer $mailer, TwigEngine $templating, $mailerFromEmail, $mailerFromName, $adminEmail = '')
+    public function __construct(\Swift_Mailer $mailer, TwigEngine $templating, TranslatorInterface $tranlator, $mailerFromEmail, $mailerFromName, $adminEmail = '')
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
+        $this->tranlator = $tranlator;
         $this->fromEmail = $mailerFromEmail;
         $this->fromName = $mailerFromName;
         $this->adminEmail = $adminEmail;

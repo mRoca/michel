@@ -1,0 +1,37 @@
+company:
+    city:
+        not_blank: 'City should not be empty'
+
+    country:
+        not_blank: 'Country should not be empty'
+
+    name:
+        not_blank: 'Company should not be empty'
+
+job:
+    contract:
+        callback: 'Contract is not valid'
+        not_blank: 'Contract must be selected'
+
+    delete:
+        constraint:
+            archived: 'You cannot delete "%job.title%", it must not be archive'
+            published: 'You cannot delete "%job.title%", it must not be published'
+
+    description:
+        not_blank: 'Your job offer must be longer'
+
+    publish_end:
+        date: 'The "to" date is invalid'
+
+    publish_start:
+        date: 'The "from" date is invalid'
+
+    restore:
+        constraint: 'You cannot restore "%job.title%", it must be deleted'
+
+    status:
+        callback: 'Status is not valid'
+
+    title:
+        not_blank: 'Job title should not be empty'

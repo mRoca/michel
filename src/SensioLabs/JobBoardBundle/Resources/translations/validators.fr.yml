@@ -1,0 +1,37 @@
+company:
+    city:
+        not_blank: 'La ville doit être spécifiée'
+
+    country:
+        not_blank: 'Le pays doit être spécifié'
+
+    name:
+        not_blank: 'L''entreprise doit être spécifiée'
+
+job:
+    contract:
+        callback: 'Le type de contrat n''est pas valide'
+        not_blank: 'Le type de contrat doit être spécifié'
+
+    delete:
+        constraint:
+            archived: 'Vous ne pouvez pas supprimer "%job.title%", l''annonce ne doit pas être archivée'
+            published: 'Vous ne pouvez pas supprimer "%job.title%", l''annonce ne doit pas être publiée'
+
+    description:
+        not_blank: 'Votre offre d''emploi doit être plus longue.'
+
+    publish_end:
+        date: 'La date de début est invalide'
+
+    publish_start:
+        date: 'La date de fin est invalide'
+
+    restore:
+        constraint: 'Vous ne pouvez pas restaurer "%job.title%", l''anonce doit être supprimée'
+
+    status:
+        callback: 'L''état est invalide'
+
+    title:
+        not_blank: 'Le libellé de l''annonce doit être spécifié'

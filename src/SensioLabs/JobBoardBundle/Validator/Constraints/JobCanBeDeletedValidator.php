@@ -10,10 +10,9 @@ class JobCanBeDeletedValidator extends ConstraintValidator
 {
     public function validate($object, Constraint $constraint)
     {
-        if (in_array($object->getStatus(), array(Job::STATUS_PUBLISHED, Job::STATUS_ARCHIVED))) {
-            $this->context->buildViolation($constraint->message)
+        if (isset($constraint->messages[$object->getStatus()])){
+            $this->context->buildViolation($constraint->messages[$object->getStatus()])
                 ->setParameter('%job.title%', $object->getTitle())
-                ->setParameter('%job.status%', strtolower($object->getStatus()))
                 ->addViolation();
         }
     }

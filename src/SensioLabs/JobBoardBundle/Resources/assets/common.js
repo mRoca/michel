@@ -27,4 +27,7 @@ $(function () {
         $(".datepicker").datepicker({'dateFormat': 'mm/dd/yy'});
     }
 
+    if (typeof CKEDITOR !== 'undefined') {
+        CKEDITOR.config.language = lang;
+    }
 });
