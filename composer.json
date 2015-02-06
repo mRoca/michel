@@ -16,7 +16,7 @@
         "doctrine/doctrine-bundle": "1.2.*",
         "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
         "doctrine/doctrine-migrations-bundle": "2.1.x-dev",
-        "doctrine/migrations": "dev-master",
+        "doctrine/migrations": "1.0.*@dev",
         "doctrine/orm": "2.4.*",
         "eko/feedbundle": "1.2.*",
         "exercise/htmlpurifier-bundle": "1.0.*@dev",

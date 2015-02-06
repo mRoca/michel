@@ -178,8 +178,8 @@ class Job implements RoutedItemInterface
     );
 
     public static $CONTRACT_TYPES = array(
-        self::CONTRACT_TYPE_FULL_TIME  => "entity.job.contract.fulltime",
-        self::CONTRACT_TYPE_PART_TIME  => "entity.job.contract.parttime",
+        self::CONTRACT_TYPE_FULL_TIME  => "entity.job.contract.cdi",
+        self::CONTRACT_TYPE_PART_TIME  => "entity.job.contract.part_time",
         self::CONTRACT_TYPE_INTERNSHIP => "entity.job.contract.internship",
         self::CONTRACT_TYPE_FREELANCE  => "entity.job.contract.freelance",
         self::CONTRACT_TYPE_ALTERNANCE => "entity.job.contract.alternance"

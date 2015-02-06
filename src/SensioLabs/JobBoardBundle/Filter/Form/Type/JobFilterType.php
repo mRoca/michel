@@ -1,7 +1,6 @@
 <?php
 
-
-namespace SensioLabs\JobBoardBundle\Filter;
+namespace SensioLabs\JobBoardBundle\Filter\Form\Type;
 
 use Lexik\Bundle\FormFilterBundle\Filter\Query\QueryInterface;
 use SensioLabs\JobBoardBundle\Entity\Job;

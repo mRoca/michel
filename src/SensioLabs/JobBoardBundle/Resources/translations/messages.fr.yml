@@ -50,8 +50,8 @@ entity:
     job:
         api_views: 'Vues - API'
         contract:
-            fulltime: 'CDI'
-            parttime: 'Temps partiel'
+            cdi: 'CDI'
+            part_time: 'Temps partiel'
             internship: 'Stage'
             freelance: 'Freelance'
             alternance: 'Alternance'

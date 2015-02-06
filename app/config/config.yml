@@ -127,4 +127,4 @@ sensio_labs_job_board:
     mailer_from_name: %sensiolabs_jobboard.mailer_from_name%
     mailer_from_email: %sensiolabs_jobboard.mailer_from_email%
     mailer_admin_email: %sensiolabs_jobboard.mailer_admin_email%
-    api_allowed_hosts: ["symfony.com", "sensiolabs.com"]
+    api_allowed_hosts: %sensiolabs_jobboard.api_allowed_hosts%

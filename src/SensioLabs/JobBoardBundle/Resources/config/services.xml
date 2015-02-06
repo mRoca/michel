@@ -69,7 +69,9 @@
         <!--api_access_voter-->
         <service id="security.access.api_access_voter" class="SensioLabs\JobBoardBundle\Security\Authorization\Voter\ApiAccessVoter" public="false">
             <tag name="security.voter"/>
-            <argument type="service" id="service_container" strict="false"/>
+            <argument type="service" id="request_stack" strict="false"/>
+            <argument type="service" id="kernel" strict="false"/>
+            <argument>%sensiolabs_jobboard.api_allowed_hosts%</argument>
         </service>
     </services>
 </container>

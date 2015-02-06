@@ -2,7 +2,6 @@
 
 namespace SensioLabs\JobBoardBundle\Form\Type;
 
-use SensioLabs\JobBoardBundle\Entity\Job;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class AdminJobType extends JobType

@@ -38,7 +38,7 @@
         {% for i, contract in contracts %}
             <li {% if i > 2 %}style="display:none"{% endif %} class="{{ filters.contract == contract.code ? 'active' : '' }}">
                 <a href="{{ path('homepage', {'contract': contract.code, 'country': filters.country}) }}">
-                    {{ 'entity.job.status.' ~ contract.code | trans }} ({{ contract.total }})
+                    {{ ('entity.job.contract.' ~ (contract.code | lower)) | trans }} ({{ contract.total }})
                 </a>
             </li>
         {% endfor %}

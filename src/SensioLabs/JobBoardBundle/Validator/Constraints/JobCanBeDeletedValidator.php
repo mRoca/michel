@@ -2,7 +2,6 @@
 
 namespace SensioLabs\JobBoardBundle\Validator\Constraints;
 
-use SensioLabs\JobBoardBundle\Entity\Job;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

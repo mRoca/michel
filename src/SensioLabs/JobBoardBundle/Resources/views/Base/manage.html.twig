@@ -38,20 +38,24 @@
                             </td>
 
                             {% set now = date('now') %}
-                            {% if job.publishStart == null %}
-                                <td style="color:orange">{{ 'entity.job.status.waiting_payment' | trans }}</td>
-                            {% elseif job.publishStart > now %}
-                                <td style="color:orange">{{ 'entity.job.status.not_online_yet' | trans }}</td>
-                            {% else %}
-                                {% if job.publishEnd > now %}
-                                    <td>
-                                        <abbr title="{{ 'entity.job.expire_on' | trans({'%job.publishEnd%': job.publishEnd | localizeddate}) }}">
-                                            {{ 'entity.job.time_left_value' | transchoice(date().diff(date(job.publishEnd)).d) }}
-                                        </abbr>
-                                    </td>
+                            {% if job.published %}
+                                {% if job.publishStart == null %}
+                                    <td style="color:orange">{{ 'entity.job.status.waiting_payment' | trans }}</td>
+                                {% elseif job.publishStart > now %}
+                                    <td style="color:orange">{{ 'entity.job.status.not_online_yet' | trans }}</td>
                                 {% else %}
-                                    <td style="color:pink">{{ 'entity.job.status.expired' | trans }}</td>
+                                    {% if job.publishEnd > now %}
+                                        <td>
+                                            <abbr title="{{ 'entity.job.expire_on' | trans({'%job.publishEnd%': job.publishEnd | localizeddate}) }}">
+                                                {{ 'entity.job.time_left_value' | transchoice(date().diff(date(job.publishEnd)).d) }}
+                                            </abbr>
+                                        </td>
+                                    {% else %}
+                                        <td style="color:pink">{{ 'entity.job.status.expired' | trans }}</td>
+                                    {% endif %}
                                 {% endif %}
+                            {% else %}
+                                <td>{{ job.status }}</td>
                             {% endif %}
 
                             {#<td style="color:green"> Archived</td>#}
@@ -59,12 +63,12 @@
                             <td>{{ job.totalViewsCount }}</td>
 
                             <td class="action">
-                                <a href="#">{{ 'buttons.renew' | trans }}</a> /
-                                <a href="{{ path('job_publish', job.urlParameters) }}">{{ 'buttons.publish' | trans }}</a> /
-                                <a href="{{ path('job_update', job.urlParameters) }}">{{ 'buttons.make_changes' | trans }}</a> /
-                                <a href="#">{{ 'buttons.archive' | trans }}</a> /
-                                <a href="#">{{ 'buttons.unarchive' | trans }}</a> /
-                                <a href="#">{{ 'buttons.delete' | trans }}</a>
+                                {#<a href="#">{{ 'buttons.renew' | trans }}</a> /#}
+                                {#<a href="{{ path('job_publish', job.urlParameters) }}">{{ 'buttons.publish' | trans }}</a> /#}
+                                <a href="{{ path('job_update', job.urlParameters) }}">{{ 'buttons.make_changes' | trans }}</a>
+                                {#<a href="#">{{ 'buttons.archive' | trans }}</a> /#}
+                                {#<a href="#">{{ 'buttons.unarchive' | trans }}</a> /#}
+                                {#<a href="#">{{ 'buttons.delete' | trans }}</a>#}
                             </td>
                         </tr>
                     {% else %}
