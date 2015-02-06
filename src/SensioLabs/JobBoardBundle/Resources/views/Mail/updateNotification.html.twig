@@ -1,3 +1,5 @@
+{% import '@SensioLabsJobBoard/Includes/macros.html.twig' as macros %}
+
 <html>
 <body>
 
@@ -12,7 +14,7 @@
 <table>
     <tr>
         <td rowspan="3">{{ 'email.job_update.before' | trans }}</td>
-        <td>{{ 'email.job_update.state' | trans }}: {{ oldjob.status }}</td>
+        <td>{{ 'email.job_update.state' | trans }}: {{ macros.status(oldjob.status) }}</td>
     </tr>
     <tr>
         <td>{{ 'email.job_update.title' | trans }}: {{ oldjob.title }}</td>
@@ -23,7 +25,7 @@
 
     <tr>
         <td rowspan="3">{{ 'email.job_update.after' | trans }}</td>
-        <td>{{ 'email.job_update.state' | trans }}: {{ job.status }}</td>
+        <td>{{ 'email.job_update.state' | trans }}: {{ macros.status(job.status) }}</td>
     </tr>
     <tr>
         <td>{{ 'email.job_update.title' | trans }}: {{ job.title }}</td>

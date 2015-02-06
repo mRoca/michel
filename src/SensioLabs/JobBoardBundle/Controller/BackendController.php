@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SensioLabs\JobBoardBundle\Entity\Job;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class BackendController extends Controller
@@ -22,7 +21,7 @@ class BackendController extends Controller
         $status = strtoupper($request->query->get('status', Job::STATUS_PUBLISHED));
 
         if (!in_array($status, Job::getStatusesKeys())) {
-            throw $this->createNotFoundException('Status parameter not valid');
+            $status = null;
         }
 
         $repository = $this->getDoctrine()->getRepository('SensioLabsJobBoardBundle:Job');
@@ -40,31 +39,27 @@ class BackendController extends Controller
             )
         );
 
-        $deleteForms = array();
-        $restoreForms = array();
+        $actionForms = array(
+            'job_delete' => array(),
+            'job_restore' => array(),
+        );
+
         foreach ($jobs as $job) {
-            if ($job->isDeleted()) {
-                $restoreForms[$job->getId()] = $this->get('form.factory')->createNamed(
-                    'job_restore_' . $job->getId(),
-                    'job_restore',
-                    $job,
-                    array('action' => $this->generateUrl('backend_restore', array('id' => $job->getId())),)
-                )->createView();
-            } else {
-                $deleteForms[$job->getId()] = $this->get('form.factory')->createNamed(
-                    'job_delete_' . $job->getId(),
-                    'job_delete',
-                    $job,
-                    array('action' => $this->generateUrl('backend_delete', array('id' => $job->getId())),)
-                )->createView();
-            }
+            $formType = $job->isDeleted() ? 'job_restore' : 'job_delete';
+            $formAction = $job->isDeleted() ? 'backend_restore' : 'backend_delete';
+            $actionForms[$formType][$job->getId()] = $this->get('form.factory')->createNamed(
+                $formType . $job->getId(),
+                $formType,
+                $job,
+                array('action' => $this->generateUrl($formAction, array('id' => $job->getId())),)
+            )->createView();
         }
 
         return array(
             'status'        => $status,
             'jobs'          => $jobs,
-            'delete_forms'  => $deleteForms,
-            'restore_forms' => $restoreForms,
+            'delete_forms'  => $actionForms['job_delete'],
+            'restore_forms' => $actionForms['job_restore'],
         );
     }
 
@@ -82,11 +77,6 @@ class BackendController extends Controller
 
         if ($form->isValid()) {
 
-            // If the "Publish" checkbox has been changed, we switch the job status
-            if ($form->get('publish')->getData() !== $oldjob->isPublished()) {
-                $job->setStatus($form->get('publish')->getData() ? Job::STATUS_PUBLISHED : Job::STATUS_NEW);
-            }
-
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
@@ -94,7 +84,7 @@ class BackendController extends Controller
                 $this->get('sensiolabs_jobboard.mailer.job')->jobPublish($job, $oldjob);
             }
 
-            return $this->redirectToRoute('backend_list');
+            return $this->redirectToRoute('backend_list', array('status' => 'all'));
         }
 
         return array(
@@ -111,7 +101,7 @@ class BackendController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $deleteForm = $this->get('form.factory')->createNamed('job_delete_' . $job->getId(), 'job_delete', $job);
+        $deleteForm = $this->get('form.factory')->createNamed('job_delete' . $job->getId(), 'job_delete', $job);
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {
             $job->setStatus(Job::STATUS_DELETED);
@@ -124,7 +114,8 @@ class BackendController extends Controller
             }
         }
 
-        return new RedirectResponse($this->generateUrl('backend_list'));
+        parse_str(parse_url($request->headers->get('referer'), PHP_URL_QUERY), $params);
+        return $this->redirectToRoute('backend_list', $params);
     }
 
     /**
@@ -137,7 +128,7 @@ class BackendController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $this->get('session');
 
-        $restoreForm = $this->get('form.factory')->createNamed('job_restore_' . $job->getId(), 'job_restore', $job);
+        $restoreForm = $this->get('form.factory')->createNamed('job_restore' . $job->getId(), 'job_restore', $job);
         $restoreForm->handleRequest($request);
         if ($restoreForm->isValid()) {
             $job->setStatus(Job::STATUS_RESTORED);
@@ -156,6 +147,7 @@ class BackendController extends Controller
             }
         }
 
-        return new RedirectResponse($this->generateUrl('backend_list', array('status' => 'deleted')));
+        parse_str(parse_url($request->headers->get('referer'), PHP_URL_QUERY), $params);
+        return $this->redirectToRoute('backend_list', $params);
     }
 }

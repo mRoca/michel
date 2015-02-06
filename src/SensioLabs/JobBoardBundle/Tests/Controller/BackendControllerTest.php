@@ -88,7 +88,6 @@ class BackendControllerTest extends ConnectWebTestCase
 
         // Delete success
         $this->assertCount(1, $crawler->filter('#backend-job-container .success'));
-        $this->assertCount(0, $crawler->filter('#backend-job-container > table > tbody > tr'));
     }
 
     public function testEditAction()
@@ -111,9 +110,10 @@ class BackendControllerTest extends ConnectWebTestCase
 
         // The job is published, we untick the box and resubmit the form to unpublish it
         $form = $crawler->selectButton('save')->form();
-        $form['adminjob[publish]']->untick();
+        $form['adminjob[status]']->setValue(Job::STATUS_EXPIRED);
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect('/backend'));
+
+        $this->assertTrue($this->client->getResponse()->isRedirect('/backend?status=all'));
 
         $this->em->clear();
         $job = $this->em->getRepository('SensioLabsJobBoardBundle:Job')->find($job->getId());

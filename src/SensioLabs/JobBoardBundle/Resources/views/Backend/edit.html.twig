@@ -24,12 +24,17 @@
         {% block buttons %}
             <hr/>
             <div class="backend-validate">
-                {{ form_widget(form.publish) }}
+                {{ form_widget(form.publish, {attr: {'data-status-if-checked': constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_PUBLISHED')}}) }}
                 <label for="adminjob_publish">{{ 'form.label.job.publish' | trans }}</label>
+            </div>
+            <hr/>
+            <div class="backend-status">
+                <label for="adminjob_status">{{ 'form.label.job.status' | trans }}</label>
+                {{ form_widget(form.status, {attr: {'data-initial-value': job.status}}) }}
             </div>
 
             <button class="green-button right" type="submit" name="save">
-                <img src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" class="sprite-icon-cloud-upload" />
+                <img src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" class="sprite-icon-cloud-upload"/>
                 <span>{{ 'buttons.save' | trans }}</span>
             </button>
         {% endblock %}

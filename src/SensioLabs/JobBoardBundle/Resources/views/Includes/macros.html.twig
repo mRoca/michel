@@ -1,0 +1,21 @@
+{% macro filteraction() %}
+    <a href="#" class="filter-action" data-filter-action="down">
+        <img class="sprite-icon-dark-arrow-down" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="v"/>
+        {{ 'frontend.jobs.filters.more' | trans }}
+    </a>
+    <a href="#" class="filter-action" data-filter-action="up" style="display:none">
+        <img class="sprite-icon-dark-arrow-up" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="^"/>
+        {{ 'frontend.jobs.filters.less' | trans }}
+    </a>
+{% endmacro %}
+
+{% macro pagination_sortable(pagination, title, key) %}
+    {{ knp_pagination_sortable(pagination, title, key) }}
+    {% if pagination.isSorted(key) %}
+        {{ pagination.direction == 'asc' ? '▲' : '▼' }}
+    {% endif %}
+{% endmacro %}
+
+{% macro status(status) %}
+    {{ ('entity.job.status.' ~ status | lower) | trans }}
+{% endmacro %}

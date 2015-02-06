@@ -11,6 +11,7 @@
                 <div class="error-container">
                     <h4>{{ 'form.errors.title' | trans }}</h4>
                     <ul>
+                        {{ form_errors(form) }}
                         {% for field in form.children %}
                             {{ form_errors(field) }}
                             {% for child in field.children %}

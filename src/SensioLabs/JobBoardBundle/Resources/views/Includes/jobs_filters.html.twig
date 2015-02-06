@@ -1,4 +1,4 @@
-{% import _self as self %}
+{% import '@SensioLabsJobBoard/Includes/macros.html.twig' as macros %}
 
 <div class="filter">
     <span class="title">
@@ -20,7 +20,7 @@
 
         {% if (countries | length) > 4 %}
             <li>
-                {{ self.filteraction()  }}
+                {{ macros.filteraction()  }}
             </li>
         {% endif %}
     </ul>
@@ -45,7 +45,7 @@
 
         {% if (contracts | length) > 4 %}
             <li>
-                {{ self.filteraction()  }}
+                {{ macros.filteraction()  }}
             </li>
         {% endif %}
     </ul>
@@ -58,14 +58,3 @@
         </a>
     </li>
 </ul>
-
-{% macro filteraction() %}
-    <a href="#" class="filter-action" data-filter-action="down">
-        <img class="sprite-icon-dark-arrow-down" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="v"/>
-        {{ 'frontend.jobs.filters.more' | trans }}
-    </a>
-    <a href="#" class="filter-action" data-filter-action="up" style="display:none">
-        <img class="sprite-icon-dark-arrow-up" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="^"/>
-        {{ 'frontend.jobs.filters.less' | trans }}
-    </a>
-{% endmacro %}
