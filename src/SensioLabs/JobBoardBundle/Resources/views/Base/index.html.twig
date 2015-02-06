@@ -8,11 +8,7 @@
             <article>
                 <img src="{{ asset('bundles/sensiolabsjobboard/images/home/megaphone.png') }}" alt="Job !" class="megaphone"/>
 
-                <p class="description">
-                    The 1<sup>st</sup> jobboard 100% devoted to the <strong>Symfony</strong> community.<br/>
-                    <strong>Recruiters</strong> The definitive source for Symfony talent.<br/>
-                    <strong>Developers</strong> Find the project, the company, or the job of your dreams.
-                </p>
+                <p class="description">{{ 'frontend.homepage' | trans | purify }}</p>
             </article>
         </div>
     </div>
@@ -29,7 +25,7 @@
         <div class="feed">
             <a href="{{ path('feed_rss', {'contract': filters.contract, 'country': filters.country}) }}">
                 <img src="{{ asset('bundles/sensiolabsjobboard/images/rss.png') }}" width="16" height="16"/>
-                <span>Flux RSS</span>
+                <span>{{ 'layout.menu.rss' | trans }}</span>
             </a>
         </div>
     </div>
@@ -45,13 +41,13 @@
             {% if jobs | length %}
                 {% include 'SensioLabsJobBoardBundle:Includes:job_container.html.twig' %}
             {% else %}
-                <p class="text-center">No job to show</p>
+                <p class="text-center">{{ 'frontend.jobs.no_job' | trans }}</p>
             {% endif %}
         </div>
         <div
                 data-page="1"
                 data-url="{{ path('homepage', {'contract': filters.contract, 'country': filters.country}) }}"
-                data-empty="<p class='text-center'>No more jobs to show</p>"
+                data-empty="<p class='text-center'>{{ 'frontend.jobs.no_more_job' | trans }}</p>"
                 id="loadmoreajaxloader"
                 style="display:none;"
                 >

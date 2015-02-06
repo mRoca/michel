@@ -8,11 +8,11 @@ $(document).ready(function() {
     {% endif %}
     SLNBar.urlConnectButton = "{{ path('login') }}";
     SLNBar.actions = [
-        {"label": "{{ 'Edit my profile on Connect'|trans }}", "url": "http://connect.sensiolabs.com" },
+        {"label": "{{ 'connect.edit_profile' | trans }}", "url": "http://connect.sensiolabs.com" },
         {% if app.user is not null and is_granted('ROLE_ADMIN') %}
-            {"label": "{{ 'Backend' | trans }}", "url": "{{ path('backend_list') }}"},
+            {"label": "{{ 'backend.title' | trans }}", "url": "{{ path('backend_list') }}"},
         {% endif %}
-        {"label": "{{ 'Logout from SensioLabs Jobs'|trans}}", "url": "{{ path('logout') }}"}
+        {"label": "{{ 'connect.logout' | trans}}", "url": "{{ path('logout') }}"}
     ];
     $('#sln').html(SLNBar.render());
     SLNBar.bindEvents();

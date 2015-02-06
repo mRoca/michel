@@ -8,9 +8,9 @@
 
 {% block content %}
     {{ breadcrumb({
-        'Post a job': path('job_post'),
-        'Preview':  path('job_preview', job.urlParameters),
-        'Publish':  null,
+        ('frontend.jobs.post' | trans): path('job_post'),
+        ('buttons.preview' | trans):  path('job_preview', job.urlParameters),
+        ('buttons.publish' | trans):  null,
     }) }}
 
     {% embed 'SensioLabsJobBoardBundle:Includes:job.html.twig' %}
@@ -19,14 +19,15 @@
                 <h2 style="color: red;">Here will be a payment form</h2>
             </div>
             <div class="padding clearfix">
-                <a href="{{ path('job_preview', job.urlParameters) }}" class="green-button left"><span class="sprite-icon-light-arrow-left"></span>
-                    <span>Preview</span>
+                <a href="{{ path('job_preview', job.urlParameters) }}" class="green-button left">
+                    <span class="sprite-icon-light-arrow-left"></span>
+                    <span>{{ 'buttons.preview' | trans }}</span>
                 </a>
 
                 {{ form_start(publish_form) }}
                 <button type="submit" class="green-button right">
-                    <b>€</b>&nbsp;
-                    <span>Pay &amp; Publish</span>
+                    <b>€$</b>&nbsp;
+                    <span>{{ 'buttons.publish' | trans }}</span>
                 </button>
                 {{ form_end(publish_form) }}
             </div>

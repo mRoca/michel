@@ -2,11 +2,11 @@
 {% from 'SensioLabsJobBoardBundle:Includes:breadcrumb.html.twig' import breadcrumb %}
 
 {% block page_class 'add' %}
-{% block title 'Update a Job' %}
+{% block title job.title %}
 
 {% block content %}
     {{ breadcrumb({
-        'My jobs': path('manage'),
+        ('frontend.jobs.my_jobs' | trans): path('manage'),
         (job.title): null,
     }) }}
 
@@ -14,7 +14,7 @@
         {% block buttons %}
             <button class="green-button right" type="submit" name="save">
                 <span class="sprite-icon-light-arrow-right"></span>
-                <span>Save</span>
+                <span>{{ 'buttons.save' | trans }}</span>
             </button>
         {% endblock %}
     {% endembed %}

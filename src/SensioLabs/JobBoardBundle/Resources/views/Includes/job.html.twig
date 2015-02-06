@@ -15,7 +15,7 @@
     {% block job_apply %}
         {% if job.howToApply | length > 0 %}
             <div class="padding how-to-apply">
-                <h3>How to apply?</h3><br/>
+                <h3>{{ 'entity.job.how_to_apply' | trans }}</h3><br/>
 
                 <div id="howToApply">{{ job.howToApply | purify }}</div>
             </div>

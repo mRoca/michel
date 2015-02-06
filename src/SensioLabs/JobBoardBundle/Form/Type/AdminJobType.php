@@ -13,7 +13,7 @@ class AdminJobType extends JobType
 
         $builder
             ->add('publishStart', 'date', array(
-                'invalid_message' => 'The "from" date is invalid',
+                'invalid_message' => 'job.publish_start.date',
                 'widget'          => 'single_text',
                 'format'          => 'MM/dd/yyyy',
                 'attr'            => array(
@@ -21,7 +21,7 @@ class AdminJobType extends JobType
                 )
             ))
             ->add('publishEnd', 'date', array(
-                'invalid_message' => 'The "to" date is invalid',
+                'invalid_message' => 'job.publish_end.date',
                 'widget'          => 'single_text',
                 'format'          => 'MM/dd/yyyy',
                 'attr'            => array(

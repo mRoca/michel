@@ -16,7 +16,7 @@ class DeleteJobType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('delete', 'submit', array('label' => 'Delete',));
+            ->add('delete', 'submit', array('label' => 'buttons.delete',));
     }
 
     /**

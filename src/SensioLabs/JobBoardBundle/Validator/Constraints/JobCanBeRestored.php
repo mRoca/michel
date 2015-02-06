@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 
 class JobCanBeRestored extends Constraint
 {
-    public $message = 'You cannot restore "%job.title%", it must be deleted';
+    public $message = 'job.restore.constraint';
 
     public function getTargets()
     {

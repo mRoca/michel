@@ -15,13 +15,13 @@ class CompanyType extends AbstractType
         $builder
             ->add('name', 'text', array(
                 'attr' => array(
-                    'placeholder' => 'Company',
+                    'placeholder' => 'entity.company.name',
                 ),
             ))
             ->add('country', 'country')
             ->add('city', 'text', array(
                 'attr' => array(
-                    'placeholder' => 'City',
+                    'placeholder' => 'entity.company.city',
                     'class'       => 'location',
                 ),
             ));

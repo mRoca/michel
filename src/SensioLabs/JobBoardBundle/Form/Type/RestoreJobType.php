@@ -14,7 +14,7 @@ class RestoreJobType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('restore', 'submit', array('label' => 'Restore',));
+            ->add('restore', 'submit', array('label' => 'buttons.restore',));
     }
 
     /**

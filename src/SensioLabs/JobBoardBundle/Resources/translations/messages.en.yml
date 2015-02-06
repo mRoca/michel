@@ -1,0 +1,131 @@
+backend:
+    edit:
+        breadcrumb: 'Make changes on "%title%" announcement'
+        title: Edit
+
+    menu:
+        archived: 'Archived ads'
+        deleted: 'Deleted ads'
+        published: 'Published ads'
+
+    title: Backend
+
+buttons:
+    actions: Actions
+    archive: Archive
+    delete: Delete
+    edit: Edit
+    make_changes: 'Make changes'
+    preview: Preview
+    publish: Publish
+    renew: Renew
+    restore: Restore
+    save: Save
+    unarchive: Unarchive
+    update: Update
+
+connect:
+    edit_profile: 'Edit my profile on Connect'
+    logout: 'Logout from SensioLabs Jobs'
+
+email:
+    job_publish:
+        subject: 'Job announcement publish'
+
+    job_update:
+        after: AFTER
+        before: BEFORE
+        description: Description
+        hello: 'Hello, a job announcement has been modified.'
+        source: Source
+        state: State
+        subject: 'Job announcement update'
+        title: Title
+
+entity:
+    company:
+        city: City
+        name: Company
+
+    job:
+        api_views: 'Ext Displays'
+        contract:
+            fulltime: 'Full Time'
+            parttime: 'Part Time'
+            internship: 'Internship'
+            freelance: 'Freelance'
+            alternance: 'Alternance'
+
+        contract_field: 'Contract type'
+        created_at: 'Created at'
+        display_views: 'View Displays'
+        expire_on: 'Expires on %job.publishEnd%'
+        how_to_apply: 'How to apply ?'
+        list_views: 'List Displays'
+
+        status:
+            expired: Expired
+            not_online_yet: 'Not online yet'
+            waiting_payment: 'Waiting payment'
+            new: New
+            published: Published
+            ordered: Ordered
+            expired: Expired
+            archived: Archived
+            deleted: Deleted
+            restored: Restored
+
+        time_left: 'Time left'
+        time_left_value: '{0} Today|{1} 1 day|]1,Inf] %count% days'
+        title: 'Job title'
+        views: Displays
+
+form:
+    errors:
+        title: Errors
+
+    label:
+        job:
+            how_to_apply: 'Send your resume at...'
+            publish: 'Validate the announcement'
+            publish_end: to
+            publish_format: '(format: mm/dd/yyyy)'
+            publish_start: 'Visible from'
+
+frontend:
+    homepage: "The 1<sup>st</sup> jobboard 100% devoted to the <strong>Symfony</strong> community.<br/>\n<strong>Recruiters</strong> The definitive source for Symfony talent.<br/>\n<strong>Developers</strong> Find the project, the company, or the job of your dreams."
+
+    jobs:
+        filters:
+            all_contracts: 'All types of contracts'
+            all_countries: 'All countries'
+            all_jobs: 'All jobs'
+            contract: 'Type of contract'
+            less: Less
+            location: Location
+            more: More
+
+        in: in
+        my_jobs: 'My jobs'
+        no_job: 'No job to show'
+        no_more_job: 'No more jobs to show'
+        post: 'Post a job'
+        user_no_job: 'You have no job.'
+
+layout:
+    contact: Contact
+
+    menu:
+        home: Home
+        rss: 'RSS feed'
+
+    sensio:
+        creator_of: 'Creator of'
+        creator_of_symfony: 'Creator of Symfony'
+
+    title: 'SensioLabs Jobs'
+
+messages:
+    success:
+        job_added: 'Your announcement has been added with success'
+        job_restored: 'Job "%job.title%" status successfully updated to "restored"'

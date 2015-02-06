@@ -5,7 +5,7 @@
             {{ job.company.city }}, {{ job.company.country | countryName }}
         </a> /
         <a href="{{ path('homepage', {'contract': job.contract, 'country': filters.country}) }}">
-            {{ job.contract | contractName }}
+            {{ job.contractName | trans }}
         </a>
         
         {#<br/><span class="archived">Archived since 12/12/2013</span>#}

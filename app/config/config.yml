@@ -32,7 +32,8 @@ twig:
             - 'SensioLabsJobBoardBundle:Form:fields.html.twig'
             - 'LexikFormFilterBundle:Form:form_div_layout.html.twig'
     globals:
-        sln_js:       "%sensiolabs_connect.sln_js%"
+        sln_js: "%sensiolabs_connect.sln_js%"
+        locales: ['fr', 'en']
 
 # Assetic Configuration
 assetic:
@@ -108,6 +109,19 @@ eko_feed:
             link:        'http://jobs.sensiolabs.com/rss'
             encoding:    'utf-8'
             author:      'SensioLabs Jobs (http://jobs.sensiolabs.com/)'
+
+jms_translation:
+    configs:
+        jobboard:
+            dirs: [%kernel.root_dir%/../src/SensioLabs/JobBoardBundle]
+            output_dir: %kernel.root_dir%/../src/SensioLabs/JobBoardBundle/Resources/translations
+            ignored_domains: [routes]
+            excluded_names: ["*TestCase.php", "*Test.php"]
+
+jms_i18n_routing:
+    default_locale: %locale%
+    locales: [en, fr]
+    strategy: prefix_except_default
 
 sensio_labs_job_board:
     mailer_from_name: %sensiolabs_jobboard.mailer_from_name%

@@ -90,7 +90,9 @@ class JobController extends Controller
             $em->flush();
 
             $postedJobHandler->clearPostedJob();
-            $this->get('session')->getFlashBag()->add('success', 'Your announcement has been added with success');
+            $this->get('session')->getFlashBag()->add('success',
+                $this->get('translator')->trans('messages.success.job_added')
+            );
 
             return $this->redirectToRoute('homepage');
         }
@@ -129,7 +131,7 @@ class JobController extends Controller
     public function updateAction(Request $request, Job $job)
     {
         if (!$this->get('security.authorization_checker')->isGranted('edit', $job)) {
-            throw new AccessDeniedException('Unauthorised access');
+            throw $this->createAccessDeniedException('Unauthorised access');
         }
 
         $oldjob = clone($job);

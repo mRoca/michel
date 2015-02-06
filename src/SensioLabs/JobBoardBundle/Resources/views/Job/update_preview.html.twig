@@ -8,16 +8,17 @@
 
 {% block content %}
     {{ breadcrumb({
-        'My jobs': path('manage'),
+        ('frontend.jobs.my_jobs' | trans): path('manage'),
         (job.title): null,
-        'Preview':  path('job_udpate_preview', job.urlParameters),
+        ('buttons.preview' | trans):  path('job_udpate_preview', job.urlParameters),
     }) }}
 
     {% embed 'SensioLabsJobBoardBundle:Includes:job.html.twig' %}
         {% block job_steps %}
             <div class="padding clearfix">
-                <a href="{{ path('job_update', job.urlParameters) }}" class="green-button left"><span class="sprite-icon-light-arrow-left"></span>
-                    <span>Make changes</span>
+                <a href="{{ path('job_update', job.urlParameters) }}" class="green-button left">
+                    <span class="sprite-icon-light-arrow-left"></span>
+                    <span>{{ 'buttons.make_changes' | trans }}</span>
                 </a>
             </div>
         {% endblock %}

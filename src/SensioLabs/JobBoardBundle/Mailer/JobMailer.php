@@ -17,7 +17,8 @@ class JobMailer extends Mailer
      */
     public function jobUpdate(Job $job, Job $oldJob)
     {
-        return $this->updateNotification($job, $oldJob, 'Job announcement update', $this->adminEmail, false);
+        $title = $this->tranlator->trans('email.job_update.subject');
+        return $this->updateNotification($job, $oldJob, $title, $this->adminEmail, false);
     }
 
     /**
@@ -33,7 +34,8 @@ class JobMailer extends Mailer
             return false;
         }
 
-        return $this->updateNotification($job, $oldJob, 'Job announcement publish', $job->getUser()->getEmail());
+        $title = $this->tranlator->trans('email.job_publish.subject');
+        return $this->updateNotification($job, $oldJob, $title, $job->getUser()->getEmail());
     }
 
     /**

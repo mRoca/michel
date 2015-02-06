@@ -3,11 +3,11 @@
 <div class="filter">
     <span class="title">
         <img class="sprite-icon-location" alt=">" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}"/>
-        Location
+        {{ 'frontend.jobs.filters.location' | trans }}
     </span>
     <ul>
         <li class="{{ filters.country ? '' : 'active' }}">
-            <a href="{{ path('homepage', {'contract': filters.contract}) }}">All countries</a>
+            <a href="{{ path('homepage', {'contract': filters.contract}) }}">{{ 'frontend.jobs.filters.all_countries' | trans }}</a>
         </li>
 
         {% for i, country in countries %}
@@ -28,17 +28,17 @@
 <div class="filter">
     <span class="title">
         <img class="sprite-icon-paperclip" alt=">" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}"/>
-        Type of contract
+        {{ 'frontend.jobs.filters.contract' | trans }}
     </span>
     <ul>
         <li class="{{ filters.contract ? '' : 'active' }}">
-            <a href="{{ path('homepage', {'country': filters.country}) }}">All types of contracts</a>
+            <a href="{{ path('homepage', {'country': filters.country}) }}">{{ 'frontend.jobs.filters.all_contracts' | trans }}</a>
         </li>
 
         {% for i, contract in contracts %}
             <li {% if i > 2 %}style="display:none"{% endif %} class="{{ filters.contract == contract.code ? 'active' : '' }}">
                 <a href="{{ path('homepage', {'contract': contract.code, 'country': filters.country}) }}">
-                    {{ contract.code | contractName }} ({{ contract.total }})
+                    {{ 'entity.job.status.' ~ contract.code | trans }} ({{ contract.total }})
                 </a>
             </li>
         {% endfor %}
@@ -53,16 +53,19 @@
 <ul class="function">
     <li>
         <a href="{{ path('homepage') }}">
-            <img class="sprite-icon-dark-arrow-right" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt=">"/>All jobs
+            <img class="sprite-icon-dark-arrow-right" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt=">"/>
+            {{ 'frontend.jobs.filters.all_jobs' | trans }}
         </a>
     </li>
 </ul>
 
 {% macro filteraction() %}
     <a href="#" class="filter-action" data-filter-action="down">
-        <img class="sprite-icon-dark-arrow-down" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="v"/>More
+        <img class="sprite-icon-dark-arrow-down" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="v"/>
+        {{ 'frontend.jobs.filters.more' | trans }}
     </a>
     <a href="#" class="filter-action" data-filter-action="up" style="display:none">
-        <img class="sprite-icon-dark-arrow-up" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="^"/>Less
+        <img class="sprite-icon-dark-arrow-up" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="^"/>
+        {{ 'frontend.jobs.filters.less' | trans }}
     </a>
 {% endmacro %}
