@@ -230,9 +230,20 @@ class Job
         );
     }
 
+    /**
+     * @return bool
+     */
     public function isPublished()
     {
         return $this->status === Job::STATUS_PUBLISHED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted()
+    {
+        return $this->getStatus() === Job::STATUS_DELETED;
     }
 
     /**

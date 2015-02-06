@@ -19,9 +19,15 @@ class BackendController extends Controller
      */
     public function listAction(Request $request)
     {
+        $status = strtoupper($request->query->get('status', Job::STATUS_PUBLISHED));
+
+        if (!in_array($status, Job::getStatusesKeys())) {
+            throw $this->createNotFoundException('Status parameter not valid');
+        }
+
         $repository = $this->getDoctrine()->getRepository('SensioLabsJobBoardBundle:Job');
 
-        $qb = $repository->getListQb()->getQuery();
+        $qb = $repository->getListQb($status)->getQuery();
 
         /** @var Job[] $jobs */
         $jobs = $this->get('knp_paginator')->paginate(
@@ -42,6 +48,7 @@ class BackendController extends Controller
         }
 
         return array(
+            'status'       => $status,
             'jobs'         => $jobs,
             'delete_forms' => $deleteForms
         );

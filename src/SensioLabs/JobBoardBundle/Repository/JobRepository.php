@@ -17,12 +17,12 @@ class JobRepository extends EntityRepository
      */
     protected function getFiltersLists($filterColumn, $requestFilters = array())
     {
-        $qb = $this->filterPublished($this->createQueryBuilder('job'));
-        $qb
+        $qb = $this->filterPublished($this->createQueryBuilder('job'))
             ->addSelect("count(job) as total")
             ->addSelect("job.$filterColumn as code")
             ->groupBy("job.$filterColumn")
             ->orderBy('total', 'DESC');
+
 
         foreach ($requestFilters as $column => $value) {
             if ($filterColumn === $column || null === $value) {
@@ -37,12 +37,18 @@ class JobRepository extends EntityRepository
     }
 
     /**
-     * @param array $filters
-     * @return array
+     * @param QueryBuilder $qb
+     * @param null $status
+     * @return QueryBuilder
      */
-    public function getCountries($filters = array())
+    protected function filterStatus(QueryBuilder $qb, $status = null)
     {
-        return $this->getFiltersLists('country', $filters);
+        if (null === $status) {
+            return $qb;
+        }
+
+        return $qb->where($qb->expr()->eq('job.status', ':status'))
+            ->setParameter('status', $status);
     }
 
     /**
@@ -51,8 +57,16 @@ class JobRepository extends EntityRepository
      */
     protected function filterPublished(QueryBuilder $qb)
     {
-        return $qb->where($qb->expr()->eq('job.status', ':published'))
-            ->setParameter('published', Job::STATUS_PUBLISHED);
+        return $this->filterStatus($qb, Job::STATUS_PUBLISHED);
+    }
+
+    /**
+     * @param array $filters
+     * @return array
+     */
+    public function getCountries($filters = array())
+    {
+        return $this->getFiltersLists('country', $filters);
     }
 
     /**
@@ -65,19 +79,13 @@ class JobRepository extends EntityRepository
     }
 
     /**
-     * @param bool $onlyPublished
+     * @param string $status
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getListQb($onlyPublished = true)
+    public function getListQb($status = Job::STATUS_PUBLISHED)
     {
-        $qb = $this->createQueryBuilder('job');
-        $qb->orderBy('job.id', 'desc');
-
-        if ($onlyPublished) {
-            $this->filterPublished($qb);
-        }
-
-        return $qb;
+        return $this->filterStatus($this->createQueryBuilder('job'), $status)
+            ->orderBy('job.id', 'desc');
     }
 
     /**
@@ -121,17 +129,18 @@ class JobRepository extends EntityRepository
     }
 
     /**
+     * @param string $status
      * @return Job|null
      */
-    public function getRandom()
+    public function getRandom($status = null)
     {
-        $count = $this->filterPublished($this->createQueryBuilder('job'))
+        $count = $this->filterPublished($this->createQueryBuilder('job'), $status)
             ->select('count(job.id)')
             ->getQuery()
             ->getSingleScalarResult();
 
 
-        return $this->filterPublished($this->createQueryBuilder('job'))
+        return $this->filterPublished($this->createQueryBuilder('job'), $status)
             ->setMaxResults(1)
             ->setFirstResult(mt_rand(0, $count))
             ->getQuery()

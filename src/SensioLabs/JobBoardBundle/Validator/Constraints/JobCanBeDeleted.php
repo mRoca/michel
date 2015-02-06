@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 
 class JobCanBeDeleted extends Constraint
 {
-    public $message = 'You cannot delete "%job.title%", it must not be published';
+    public $message = 'You cannot delete "%job.title%", it must not be %job.status%';
 
     public function getTargets()
     {

@@ -6,11 +6,11 @@
 
 {% block content %}
 <ul id="breadcrumb">
-    <li class="active">
+    <li class="{{ status == 'PUBLISHED' ? 'active' : '' }}">
         <a href="{{ path('backend_list') }}">Published ads</a> |
     </li>
-    <li>
-        <a href="#">Archived ads</a> |
+    <li class="{{ status == 'ARCHIVED' ? 'active' : '' }}">
+        <a href="{{ path('backend_list', {status: 'archived'}) }}">Archived ads</a> |
     </li>
     <li>
         <a href="#">Deleted ads</a>
