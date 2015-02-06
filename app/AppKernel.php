@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Eko\FeedBundle\EkoFeedBundle(),
 
             new SensioLabs\JobBoardBundle\SensioLabsJobBoardBundle(),
         );

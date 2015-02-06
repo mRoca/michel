@@ -3,6 +3,7 @@
 namespace SensioLabs\JobBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +24,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @ORM\EntityListeners({"SensioLabs\JobBoardBundle\EventListener\JobCompanySubscriber"})
  */
-class Job
+class Job implements RoutedItemInterface
 {
     /**
      * @var int
@@ -534,4 +535,66 @@ class Job
 
         return $this;
     }
+
+    /**
+     * This method returns feed item title
+     *
+     * @return string
+     */
+    public function getFeedItemTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * This method returns feed item description (or content)
+     *
+     * @return string
+     */
+    public function getFeedItemDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * This method returns the name of the route
+     *
+     * @return string
+     */
+    public function getFeedItemRouteName()
+    {
+        return 'job_show';
+    }
+
+    /**
+     * This method returns the parameters for the route.
+     *
+     * @return array
+     */
+    public function getFeedItemRouteParameters()
+    {
+        return $this->getUrlParameters();
+    }
+
+    /**
+     * This method returns the anchor to be appended on this item's url
+     *
+     * @return string The anchor, without the "#"
+     */
+    public function getFeedItemUrlAnchor()
+    {
+        return '';
+    }
+
+    /**
+     * This method returns item publication date
+     *
+     * @return \DateTime
+     */
+    public function getFeedItemPubDate()
+    {
+        return $this->publishStart ?: $this->createdAt;
+    }
+
+
 }

@@ -22,6 +22,19 @@ class BaseControllerTest extends ConnectWebTestCase
         $this->assertCount(Job::LIST_MAX_JOB_ITEMS, $ajaxCrawler->filter('body > .box'));
     }
 
+    public function testFeedAction()
+    {
+        $this->client->request('GET', '/rss?country=FR');
+        $output = $this->client->getResponse()->getContent();
+
+        $dom = new \DOMDocument('1.0', 'utf-8');
+        $dom->loadXML($output);
+        $this->assertEquals(20, $dom->getElementsByTagName('item')->length);
+        $this->assertEquals(0, count(libxml_get_errors()));
+        $this->assertContains('<rss version="2.0">', $output);
+        $this->assertContains('<title><![CDATA[My great job 50]]></title>', $output);
+    }
+
     public function testManageAction()
     {
         // Not authenticated => Redirect to connect.sensiolabs

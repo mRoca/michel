@@ -20,14 +20,14 @@
 
 {% block metadata %}
     {{ parent() }}
-    <link rel="alternate" type="application/rss+xml" href="#" title="Jobs RSS feed"/>
+    <link rel="alternate" type="application/rss+xml" href="{{ path('feed_rss', {'contract': filters.contract, 'country': filters.country}) }}" title="Jobs RSS feed"/>
 {% endblock %}
 
 {% block content %}
     <div id="left">
         {% include 'SensioLabsJobBoardBundle:Includes:jobs_filters.html.twig' %}
         <div class="feed">
-            <a href="#">
+            <a href="{{ path('feed_rss', {'contract': filters.contract, 'country': filters.country}) }}">
                 <img src="{{ asset('bundles/sensiolabsjobboard/images/rss.png') }}" width="16" height="16"/>
                 <span>Flux RSS</span>
             </a>

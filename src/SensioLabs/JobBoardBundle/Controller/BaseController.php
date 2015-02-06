@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class BaseController extends Controller
 {
@@ -44,6 +45,26 @@ class BaseController extends Controller
         $data['form_filter'] = $formFilter->createView();
 
         return $data;
+    }
+
+    /**
+     * @Route("/rss", name="feed_rss")
+     */
+    public function feedAction()
+    {
+        $repository = $this->getDoctrine()->getRepository('SensioLabsJobBoardBundle:Job');
+        $formFilter = $this->get('form.factory')->createNamed(null, new JobFilterType());
+
+        $formFilter->submit($this->get('request'));
+
+        $qb = $repository->getFeedQb();
+
+        $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($formFilter, $qb);
+
+        $feed = $this->get('eko_feed.feed.manager')->get('article');
+        $feed->addFromArray($qb->getQuery()->execute());
+
+        return new Response($feed->render('rss'));
     }
 
     /**
