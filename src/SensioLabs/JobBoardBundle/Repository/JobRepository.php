@@ -167,4 +167,20 @@ class JobRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param int $days
+     * @return mixed
+     */
+    public function deleteOldJobs($days)
+    {
+        $qb = $this->createQueryBuilder('job');
+        $qb->delete()
+            ->where($qb->expr()->eq('job.status', ':status'))
+            ->andWhere($qb->expr()->lte('job.deletedAt', ':date'))
+            ->setParameter('status', Job::STATUS_DELETED)
+            ->setParameter('date', new \DateTime("tomorrow - $days days"));
+
+        return $qb->getQuery()->execute();
+    }
+
 }

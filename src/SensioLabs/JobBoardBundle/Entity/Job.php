@@ -23,7 +23,7 @@ use JMS\Serializer\Annotation as JMS;
  *      @ORM\Index(name="status_idx", columns={"status"}),
  * })
  *
- * @ORM\EntityListeners({"SensioLabs\JobBoardBundle\EventListener\Job\JobCompanySubscriber"})
+ * @ORM\EntityListeners({"SensioLabs\JobBoardBundle\EventListener\Job\JobEntitySubscriber"})
  */
 class Job implements RoutedItemInterface
 {
@@ -143,6 +143,12 @@ class Job implements RoutedItemInterface
      * @ORM\Column(type="datetime", nullable=true, name="updated_at")
      */
     protected $updatedAt;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true, name="deleted_at")
+     */
+    protected $deletedAt;
 
     const LIST_MAX_JOB_ITEMS = 10;
     const LIST_ADMIN_MAX_JOB_ITEMS = 25;
@@ -574,6 +580,25 @@ class Job implements RoutedItemInterface
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param \DateTime $deletedAt
+     * @return $this
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }
