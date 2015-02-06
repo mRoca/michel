@@ -150,18 +150,17 @@ class JobRepository extends EntityRepository
     }
 
     /**
-     * @param string $status
      * @return Job|null
      */
-    public function getRandom($status = null)
+    public function getRandom()
     {
-        $count = $this->filterPublished($this->createQueryBuilder('job'), $status)
+        $count = $this->filterPublished($this->createQueryBuilder('job'))
             ->select('count(job.id)')
             ->getQuery()
             ->getSingleScalarResult();
 
 
-        return $this->filterPublished($this->createQueryBuilder('job'), $status)
+        return $this->filterPublished($this->createQueryBuilder('job'))
             ->setMaxResults(1)
             ->setFirstResult(mt_rand(0, $count))
             ->getQuery()

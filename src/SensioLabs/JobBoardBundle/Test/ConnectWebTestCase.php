@@ -102,4 +102,12 @@ abstract class ConnectWebTestCase extends WebTestCase
         $this->assertTrue($response->isRedirect());
         $this->assertStringStartsWith('https://connect.sensiolabs.com/', $response->headers->get('Location'));
     }
+
+    protected function assertJsonResponse(Response $response, $statusCode = Response::HTTP_OK)
+    {
+        $content = $response->getContent();
+        $this->assertEquals($statusCode, $response->getStatusCode(), $content);
+        $this->assertTrue($response->headers->contains('Content-Type', 'application/json'), $response->headers);
+        $this->assertJson($content);
+    }
 }

@@ -16,9 +16,14 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
         <!--event_listener.interactive_login-->
-        <service id="sensiolabs_jobboard.event_listener.interactive_login" class="SensioLabs\JobBoardBundle\EventListener\SecurityInteractiveLoginListener">
+        <service id="sensiolabs_jobboard.event_listener.interactive_login" class="SensioLabs\JobBoardBundle\EventListener\Security\InteractiveLoginListener">
             <tag name="kernel.event_subscriber"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+        <!--event_listener.job_post_serialize-->
+        <service id="sensiolabs_jobboard.event_listener.job_post_serialize" class="SensioLabs\JobBoardBundle\EventListener\Job\PostSerializeSubscriber">
+            <tag name="jms_serializer.event_subscriber"/>
+            <argument type="service" id="router"/>
         </service>
         <!--form.job-->
         <service id="form.job" class="SensioLabs\JobBoardBundle\Form\Type\JobType">
@@ -55,9 +60,18 @@
         </service>
         <!--sensiolabs_jobboard.mailer.job-->
         <service id="sensiolabs_jobboard.mailer.job" class="SensioLabs\JobBoardBundle\Mailer\JobMailer" parent="sensiolabs_jobboard.mailer"/>
+        <!--sensiolabs_jobboard.entity.job-->
+        <service id="sensiolabs_jobboard.entity.job" class="SensioLabs\JobBoardBundle\Entity\Job">
+            <argument type="service" id="router"/>
+        </service>
         <!--job_document_voter-->
         <service id="security.access.job_document_voter" class="SensioLabs\JobBoardBundle\Security\Authorization\Voter\JobVoter" public="false">
             <tag name="security.voter"/>
+        </service>
+        <!--api_access_voter-->
+        <service id="security.access.api_access_voter" class="SensioLabs\JobBoardBundle\Security\Authorization\Voter\ApiAccessVoter" public="false">
+            <tag name="security.voter"/>
+            <argument type="service" id="service_container" strict="false"/>
         </service>
     </services>
 </container>

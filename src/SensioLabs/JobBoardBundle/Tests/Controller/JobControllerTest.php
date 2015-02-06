@@ -92,9 +92,8 @@ class JobControllerTest extends ConnectWebTestCase
 
         // API views count
         $this->client->request('GET', '/api/random');
-        $responseContent = $this->client->getResponse()->getContent();
-        $this->assertJson($responseContent);
-        $result = json_decode($responseContent, true);
+        $this->assertJsonResponse($this->client->getResponse());
+        $result = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('id', $result);
 
         $this->em->clear();

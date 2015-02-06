@@ -2,24 +2,25 @@
 
 namespace SensioLabs\JobBoardBundle\Controller;
 
+use Doctrine\ORM\EntityManager;
+use JMS\Serializer\SerializationContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use SensioLabs\JobBoardBundle\Entity\Job;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApiController extends Controller
 {
     /**
      * @Route("/api/random", name="api_random")
-     *
-     * Temporary method used for views counting, waiting for US #18
      */
     public function randomAction()
     {
+        /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('SensioLabsJobBoardBundle:Job');
 
-        $job = $repository->getRandom(Job::STATUS_PUBLISHED);
+        $job = $repository->getRandom();
 
         if (null === $job) {
             throw $this->createNotFoundException('Random entity not found');
@@ -28,8 +29,12 @@ class ApiController extends Controller
         $job->incrementApiViews();
         $em->flush($job);
 
-        return new JsonResponse(array(
-            'id' => $job->getId()
-        ));
+        $serializer = $this->get('jms_serializer');
+
+        return new Response(
+            $serializer->serialize($job, 'json', SerializationContext::create()->setGroups(array('api'))),
+            200,
+            array('Content-Type' => 'application/json')
+        );
     }
 }

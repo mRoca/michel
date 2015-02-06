@@ -17,6 +17,9 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('mailer_from_email')->isRequired()->end()
                 ->scalarNode('mailer_from_name')->isRequired()->end()
                 ->scalarNode('mailer_admin_email')->end()
+                ->arrayNode('api_allowed_hosts')
+                    ->prototype('scalar')
+                    ->end()
             ->end();
 
         return $treeBuilder;
