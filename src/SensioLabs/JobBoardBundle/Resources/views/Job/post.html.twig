@@ -1,4 +1,4 @@
-{% extends "SensioLabsJobBoardBundle::layout.html.twig" %}
+{% extends "SensioLabsJobBoardBundle::layout_wysiwyg.html.twig" %}
 {% from 'SensioLabsJobBoardBundle:Includes:breadcrumb.html.twig' import breadcrumb %}
 
 {% block page_class 'add' %}
@@ -23,15 +23,4 @@
         {% endblock %}
     {% endembed %}
 
-{% endblock %}
-
-{% block javascript %}
-    {{ parent() }}
-    <script src="{{ asset('bundles/sensiolabsjobboard/vendor/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('bundles/sensiolabsjobboard/vendor/ckeditor/config.js') }}"></script>
-{% endblock %}
-
-{% block metadata %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/sensiolabsjobboard/vendor/ckeditor/contents.css') }}" />
 {% endblock %}

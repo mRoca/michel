@@ -1,5 +1,7 @@
 $(function () {
 
+    var lang = $('html').attr('lang') || 'en';
+
     $('.filter-action').on('click', function (e) {
 
         e.preventDefault();
@@ -18,4 +20,11 @@ $(function () {
     });
 
     $('.filter li.active:not(:visible)').parent().find('a[data-filter-action=down]').click();
+
+
+    if ($.datepicker) {
+        $.datepicker.setDefaults($.datepicker.regional[lang]);
+        $(".datepicker").datepicker({'dateFormat': 'mm/dd/yy'});
+    }
+
 });

@@ -43,6 +43,9 @@
             </div>
         </div>
 
+        {% block admin_extra_fields %}
+        {% endblock %}
+
         {{ form_row(form.description) }}
 
         <div class="how-to-apply">

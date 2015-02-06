@@ -86,6 +86,9 @@ stof_doctrine_extensions:
             sluggable: true
             timestampable: true
 
+lexik_form_filter:
+    where_method: and
+
 knp_paginator:
     page_range: 10
     default_options:

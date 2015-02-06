@@ -24,6 +24,10 @@
         <service id="form.job" class="SensioLabs\JobBoardBundle\Form\Type\JobType">
             <tag name="form.type" alias="job"/>
         </service>
+        <!--form.adminjob-->
+        <service id="form.adminjob" class="SensioLabs\JobBoardBundle\Form\Type\AdminJobType">
+            <tag name="form.type" alias="adminjob"/>
+        </service>
         <!--form.job.delete-->
         <service id="form.job_delete" class="SensioLabs\JobBoardBundle\Form\Type\DeleteJobType">
             <tag name="form.type" alias="job_delete"/>

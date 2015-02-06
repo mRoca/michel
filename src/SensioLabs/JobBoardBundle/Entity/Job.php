@@ -100,12 +100,14 @@ class Job
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime", nullable=true, name="publish_start")
+     * @Assert\Date()
      */
     protected $publishStart;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime", nullable=true, name="publish_end")
+     * @Assert\Date()
      */
     protected $publishEnd;
 

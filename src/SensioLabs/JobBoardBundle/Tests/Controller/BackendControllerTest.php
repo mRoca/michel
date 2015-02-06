@@ -45,4 +45,33 @@ class BackendControllerTest extends ConnectWebTestCase
         // Published announcement => cannot delete
         $this->assertCount(1, $crawler->filter('#backend-job-container .error'));
     }
+
+    public function testEditAction()
+    {
+        $job = $this->em->getRepository('SensioLabsJobBoardBundle:Job')->findOneBy(array('status' => Job::STATUS_PUBLISHED));
+        $this->assertNotNull($job);
+        $this->assertTrue($job->isPublished());
+
+        $route = '/backend/' . $job->getId() . '/edit';
+
+        // Not authenticated => Redirect to connect.sensiolabs
+        $this->client->request('GET', $route);
+        $this->assertConnectRedirect($this->client->getResponse());
+
+        // Authenticated
+        $this->logInAsAdmin();
+
+        $crawler = $this->client->request('GET', $route);
+        $this->assertCount(1, $crawler->filter('body.backend.add'));
+
+        // The job is published, we untick the box and resubmit the form to unpublish it
+        $form = $crawler->selectButton('save')->form();
+        $form['adminjob[publish]']->untick();
+        $this->client->submit($form);
+        $this->assertTrue($this->client->getResponse()->isRedirect('/backend'));
+
+        $this->em->clear();
+        $job = $this->em->getRepository('SensioLabsJobBoardBundle:Job')->find($job->getId());
+        $this->assertFalse($job->isPublished());
+    }
 }

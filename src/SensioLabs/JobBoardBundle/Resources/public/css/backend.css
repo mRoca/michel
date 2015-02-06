@@ -45,7 +45,7 @@
     margin: 0 5px;
     font-size: 24px;
     text-align: center;
-    background: white url(/bundles/sensiolabsjobboard/images/form-background.png) repeat-x;
+    background: white url('../images/form-background.png') repeat-x;
 }
 
 .backend-pager {
@@ -75,4 +75,10 @@
     background: #82e83e;
     border-color: #82e83e;
     color: white;
+}
+
+.backend-validate label {
+    display: inline;
+    font-size: large;
+    cursor: pointer;
 }

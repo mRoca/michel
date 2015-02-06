@@ -65,7 +65,7 @@ class JobControllerTest extends ConnectWebTestCase
         $crawler = $this->client->request('GET', $route);
         $this->assertCount(1, $crawler->filter('body.add'));
 
-        $form = $crawler->selectButton('Save')->form();
+        $form = $crawler->selectButton('save')->form();
 
         $this->assertSame($job->getTitle(), $form->get('job[title]')->getValue());
 
