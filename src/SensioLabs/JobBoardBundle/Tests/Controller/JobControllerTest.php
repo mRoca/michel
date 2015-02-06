@@ -50,7 +50,7 @@ class JobControllerTest extends ConnectWebTestCase
 
     public function testUpdateAction()
     {
-        $job = $this->em->getRepository('SensioLabsJobBoardBundle:Job')->findOneBy(array('user' => $this->user));
+        $job = $this->em->getRepository('SensioLabsJobBoardBundle:Job')->findOneBy(array('user' => $this->getSimpleUser()));
         $this->assertNotNull($job);
 
         $route = $this->client->getContainer()->get('router')->generate('job_update', $job->getUrlParameters(), false);
@@ -60,14 +60,14 @@ class JobControllerTest extends ConnectWebTestCase
         $this->assertConnectRedirect($this->client->getResponse());
 
         // Authenticated
-        $this->logIn($this->client);
+        $this->logInAsUser();
 
         $crawler = $this->client->request('GET', $route);
         $this->assertCount(1, $crawler->filter('body.add'));
 
         $form = $crawler->selectButton('Save')->form();
 
-        $this->assertEquals($job->getTitle(), $form->get('job[title]')->getValue());
+        $this->assertSame($job->getTitle(), $form->get('job[title]')->getValue());
 
         $this->client->submit($form, $this->jobData());
         $crawler = $this->client->followRedirect();

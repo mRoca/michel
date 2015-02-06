@@ -2,6 +2,7 @@
 
 {% set add = route in ['job_post', 'job_preview', 'job_publish'] %}
 {% set manage = route in ['manage', 'job_update'] %}
+{% set backend = route in ['backend_list', 'backend_edit'] %}
 
 <nav class="menu">
     <ul>
@@ -10,10 +11,19 @@
                 <span class="sprite-button-add{{ add ? '-focus' }}"></span> Post a job
             </a>
         </li>
-        <li>
-            <a href="{{ path('manage') }}"{{ manage ? ' class="focus"' }}>
-                <span class="sprite-button-manage{{ manage ? '-focus' }}"></span> My jobs
-            </a>
-        </li>
+        {% if is_granted('ROLE_CONNECT_USER') %}
+            <li>
+                <a href="{{ path('manage') }}"{{ manage ? ' class="focus"' }}>
+                    <span class="sprite-button-manage{{ manage ? '-focus' }}"></span> My jobs
+                </a>
+            </li>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <li>
+                <a href="{{ path('backend_list') }}"{{ backend ? ' class="focus"' }}>
+                    <span class="sprite-button-manage{{ backend ? '-focus' }}"></span> Backend
+                </a>
+            </li>
+        {% endif %}
     </ul>
 </nav>

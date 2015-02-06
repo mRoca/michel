@@ -1,0 +1,20 @@
+{% if pageCount > 1 %}
+    <ul class="backend-pager">
+        {% if previous is defined %}
+            <li><a href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&lt;</a></li>
+        {% endif %}
+
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <li class="page"><a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a></li>
+            {% else %}
+                <li class="page active"><a href="#">{{ page }}</a></li>
+            {% endif %}
+
+        {% endfor %}
+
+        {% if next is defined %}
+            <li><a href="{{ path(route, query|merge({(pageParameterName): next})) }}">&gt;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}

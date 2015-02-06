@@ -1,81 +1,83 @@
+{% import _self as self %}
+
 {% extends "SensioLabsJobBoardBundle:Backend:layout.html.twig" %}
 
 {% block title 'Backend - List' %}
 
 {% block content %}
-    <ul id="breadcrumb">
-            <li class="active">
-                <a href="#">Published ads</a> |
-            </li>
-            <li>
-                <a href="#">Archived ads</a> |
-            </li>
-            <li>
-                <a href="#">Deleted ads</a>
-            </li>
-    </ul>
+<ul id="breadcrumb">
+    <li class="active">
+        <a href="{{ path('backend_list') }}">Published ads</a> |
+    </li>
+    <li>
+        <a href="#">Archived ads</a> |
+    </li>
+    <li>
+        <a href="#">Deleted ads</a>
+    </li>
+</ul>
 
-    {% embed 'SensioLabsJobBoardBundle:Includes:box.html.twig' %}
-        {% block box_content %}
-            <div class="padding-table">
-                <div id="backend-job-container">
+{% embed 'SensioLabsJobBoardBundle:Includes:box.html.twig' %}
+    {% block box_content %}
+        <div class="padding-table">
+            <div id="backend-job-container">
 
+                {% if app.session.flashBag.peek('error') | length %}
                     <ul class="backend-flashes">
-                        <li class="error">Example of an error message</li>
-                        <li class="success">Example of an error message</li>
+                        {% for error in app.session.flashBag.get('error') %}
+                            <li class="error">{{ error }}</li>
+                        {% endfor %}
+                        {#<li class="success">Example of an success message</li>#}
                     </ul>
+                {% endif %}
 
-                    <h2 class="big-title">Published ads</h2>
+                <h2 class="big-title">Published ads</h2>
 
-                    <table class="table table-striped backend-list">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <a href="#"> Company </a> ▼
-                                </th>
-                                <th>
-                                    <a href="#"> Title </a> ▲
-                                </th>
-                                <th> 
-                                    <a href="#"> CreatedAt </a> 
-                                </th>
-                                <th>List Displays</th>
-                                <th>View Displays</th>
-                                <th>Ext Displays</th>
-                                <th> Actions </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for i in 0..5 %}
-                                <tr>
-                                    <td> SensioLabs </td>
-                                    <td> Developer </td>
-                                    <td> 03/01/2014 </td>
-                                    <td> 100 </td>
-                                    <td> 60 </td>
-                                    <td> 40 </td>
-                                    <td>
-                                        <a href="{{ path('backend_edit') }}"> Edit </a>
-                                        <button> Delete </button>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <table class="table table-striped backend-list">
+                    <thead>
+                    <tr>
+                        <th>{{ self.pagination_sortable(jobs, 'Company', 'job.company') }}</th>
+                        <th>{{ self.pagination_sortable(jobs, 'Title', 'job.title') }}</th>
+                        <th>{{ self.pagination_sortable(jobs, 'Created at', 'job.createdAt') }}</th>
+                        <th>List Displays</th>
+                        <th>View Displays</th>
+                        <th>Ext Displays</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for job in jobs %}
+                        <tr data-id="{{ job.id }}">
+                            <td>{{ job.company }}</td>
+                            <td>{{ job.title }}</td>
+                            <td>{{ job.createdAt | date('d/m/Y') }}</td>
+                            <td>{{ job.listViewsCount }}</td>
+                            <td>{{ job.displayViewsCount }}</td>
+                            <td>{{ job.apiViewsCount }}</td>
+                            <td>
+                                <a href="{{ path('backend_edit', {id: job.id}) }}"> Edit </a>
+                                {{ form_start(delete_forms[job.id]) }}
+                                {{ form_widget(delete_forms[job.id].delete) }}
+                                {{ form_end(delete_forms[job.id]) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
 
-                    <ul class="backend-pager">
-                        <li class="page active">
-                            <a href="#"> 1 </a>
-                        </li>
-                        <li class="page">
-                            <a href="#"> 2 </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="clear"></div>
+                {{ knp_pagination_render(jobs, 'SensioLabsJobBoardBundle:Pagination:sliding_backend.html.twig') }}
             </div>
+            <div class="clear"></div>
+        </div>
 
-            {% block box_clear '' %}
+        {% block box_clear '' %}
         {% endblock %}
-    {% endembed %}
-{% endblock %}
+        {% endembed %}
+    {% endblock %}
+
+{% macro pagination_sortable(pagination, title, key) %}
+    {{ knp_pagination_sortable(pagination, title, key) }}
+    {% if pagination.isSorted(key) %}
+        {{ pagination.direction == 'asc' ? '▲' : '▼' }}
+    {% endif %}
+{% endmacro %}
