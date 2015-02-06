@@ -2,6 +2,7 @@
 
 namespace SensioLabs\JobBoardBundle\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -41,16 +42,30 @@ class BackendController extends Controller
         );
 
         $deleteForms = array();
+        $restoreForms = array();
         foreach ($jobs as $job) {
-            $deleteForms[$job->getId()] = $this->createForm('job_delete', $job, array(
-                'action' => $this->generateUrl('backend_delete', array('id' => $job->getId())),
-            ))->createView();
+            if ($job->isDeleted()) {
+                $restoreForms[$job->getId()] = $this->get('form.factory')->createNamed(
+                    'job_restore_' . $job->getId(),
+                    'job_restore',
+                    $job,
+                    array('action' => $this->generateUrl('backend_restore', array('id' => $job->getId())),)
+                )->createView();
+            } else {
+                $deleteForms[$job->getId()] = $this->get('form.factory')->createNamed(
+                    'job_delete_' . $job->getId(),
+                    'job_delete',
+                    $job,
+                    array('action' => $this->generateUrl('backend_delete', array('id' => $job->getId())),)
+                )->createView();
+            }
         }
 
         return array(
-            'status'       => $status,
-            'jobs'         => $jobs,
-            'delete_forms' => $deleteForms
+            'status'        => $status,
+            'jobs'          => $jobs,
+            'delete_forms'  => $deleteForms,
+            'restore_forms' => $restoreForms,
         );
     }
 
@@ -97,7 +112,7 @@ class BackendController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $deleteForm = $this->createForm('job_delete', $job);
+        $deleteForm = $this->get('form.factory')->createNamed('job_delete_' . $job->getId(), 'job_delete', $job);
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {
             $job->setStatus(Job::STATUS_DELETED);
@@ -111,5 +126,37 @@ class BackendController extends Controller
         }
 
         return new RedirectResponse($this->generateUrl('backend_list'));
+    }
+
+    /**
+     * @Route("/backend/{id}/restore", name="backend_restore")
+     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job")
+     */
+    public function restoreAction(Request $request, Job $job)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $session = $this->get('session');
+
+        $restoreForm = $this->get('form.factory')->createNamed('job_restore_' . $job->getId(), 'job_restore', $job);
+        $restoreForm->handleRequest($request);
+        if ($restoreForm->isValid()) {
+            $job->setStatus(Job::STATUS_RESTORED);
+            $em->flush();
+
+            $session->getFlashBag()->add('success',
+                $this->get('translator')->trans(
+                    'Job "%job.title%" status successfully updated to "restored"',
+                    array('%job.title%' => $job->getTitle())
+                )
+            );
+        } else {
+            $errors = $restoreForm->getErrors();
+            foreach ($errors as $error) {
+                $session->getFlashBag()->add('error', $error->getMessage());
+            }
+        }
+
+        return new RedirectResponse($this->generateUrl('backend_list', array('status' => 'deleted')));
     }
 }

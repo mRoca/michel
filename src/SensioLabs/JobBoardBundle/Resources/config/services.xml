@@ -32,6 +32,10 @@
         <service id="form.job_delete" class="SensioLabs\JobBoardBundle\Form\Type\DeleteJobType">
             <tag name="form.type" alias="job_delete"/>
         </service>
+        <!--form.job.restore-->
+        <service id="form.job_restore" class="SensioLabs\JobBoardBundle\Form\Type\RestoreJobType">
+            <tag name="form.type" alias="job_restore"/>
+        </service>
         <!--sensiolabs_jobboard.mailer-->
         <service id="sensiolabs_jobboard.mailer" class="SensioLabs\JobBoardBundle\Mailer\Mailer">
             <argument type="service" id="mailer"/>
