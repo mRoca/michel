@@ -1,7 +1,7 @@
 {% set route = app.request.attributes.get('_route') %}
 
 {% set add = route in ['job_post', 'job_preview', 'job_publish'] %}
-{% set manage = route in ['manage', 'job_update'] %}
+{% set manage = route in ['manage', 'job_update', 'job_udpate_preview'] %}
 {% set backend = route in ['backend_list', 'backend_edit'] %}
 
 <nav class="menu">

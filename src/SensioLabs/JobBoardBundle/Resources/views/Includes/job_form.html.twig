@@ -11,9 +11,12 @@
                 <div class="error-container">
                     <h4>Errors:</h4>
                     <ul>
-                    {% for field in form.children %}
-                        {{ form_errors(field) }}
-                    {% endfor %}
+                        {% for field in form.children %}
+                            {{ form_errors(field) }}
+                            {% for child in field.children %}
+                                {{ form_errors(child) }}
+                            {% endfor %}
+                        {% endfor %}
                     </ul>
                 </div>
             {% endif %}
@@ -24,17 +27,17 @@
                 </div>
                 <div class="company-label">
                     <label class="label" for="job_company">@</label>
-                    {{ form_row(form.company) }}
+                    {{ form_row(form.company.name) }}
                 </div>
             </div>
 
             <div class="country-city-contract">
                 <div class="country-city clearfix">
                     <div class="city-input country-select">
-                        {{ form_row(form.country) }}
+                        {{ form_row(form.company.country) }}
                     </div>
                     <div class="city-input">
-                        {{ form_row(form.city) }}
+                        {{ form_row(form.company.city) }}
                     </div>
                 </div>
                 <div>

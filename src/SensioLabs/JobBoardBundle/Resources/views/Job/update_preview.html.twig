@@ -10,7 +10,7 @@
     {{ breadcrumb({
         'My jobs': path('manage'),
         (job.title): null,
-        'Preview':  path('job_preview', job.urlParameters),
+        'Preview':  path('job_udpate_preview', job.urlParameters),
     }) }}
 
     {% embed 'SensioLabsJobBoardBundle:Includes:job.html.twig' %}

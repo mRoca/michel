@@ -1,8 +1,8 @@
 <div class="details">
     <span class="filter">
 
-        <a href="{{ path('homepage', {'contract': filters.contract, 'country': job.country}) }}">
-            {{ job.city }}, {{ job.country | countryName }}
+        <a href="{{ path('homepage', {'contract': filters.contract, 'country': job.company.country}) }}">
+            {{ job.company.city }}, {{ job.company.country | countryName }}
         </a> /
         <a href="{{ path('homepage', {'contract': job.contract, 'country': filters.country}) }}">
             {{ job.contract | contractName }}

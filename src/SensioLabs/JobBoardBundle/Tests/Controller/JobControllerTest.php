@@ -122,12 +122,12 @@ class JobControllerTest extends ConnectWebTestCase
     protected function jobData()
     {
         return array(
-            'job[title]'       => 'My job',
-            'job[company]'     => 'My company',
-            'job[country]'     => 'FR',
-            'job[city]'        => 'PARIS',
-            'job[contract]'    => Job::CONTRACT_TYPE_FULL_TIME,
-            'job[description]' => '<b>My</b> Description',
+            'job[title]'            => 'My job',
+            'job[company][name]'    => 'My company',
+            'job[company][country]' => 'FR',
+            'job[company][city]'    => 'PARIS',
+            'job[contract]'         => Job::CONTRACT_TYPE_FULL_TIME,
+            'job[description]'      => '<b>My</b> Description',
         );
     }
 }

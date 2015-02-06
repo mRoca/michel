@@ -11,32 +11,6 @@ use SensioLabs\JobBoardBundle\Entity\User;
 class JobRepository extends EntityRepository
 {
     /**
-     * @param string $filterColumn
-     * @param array $requestFilters
-     * @return array
-     */
-    protected function getFiltersLists($filterColumn, $requestFilters = array())
-    {
-        $qb = $this->filterPublished($this->createQueryBuilder('job'))
-            ->addSelect("count(job) as total")
-            ->addSelect("job.$filterColumn as code")
-            ->groupBy("job.$filterColumn")
-            ->orderBy('total', 'DESC');
-
-
-        foreach ($requestFilters as $column => $value) {
-            if ($filterColumn === $column || null === $value) {
-                continue;
-            }
-
-            $qb->andWhere($qb->expr()->eq("job.$column", ":$column"))
-                ->setParameter(":$column", $value);
-        }
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
      * @param QueryBuilder $qb
      * @param null $status
      * @return QueryBuilder
@@ -50,7 +24,7 @@ class JobRepository extends EntityRepository
         return $qb->where($qb->expr()->eq('job.status', ':status'))
             ->setParameter('status', $status);
     }
-
+    
     /**
      * @param QueryBuilder $qb
      * @return QueryBuilder
@@ -58,24 +32,48 @@ class JobRepository extends EntityRepository
     protected function filterPublished(QueryBuilder $qb)
     {
         return $this->filterStatus($qb, Job::STATUS_PUBLISHED);
+
+    }
+
+    /**
+     * @param string $status
+     * @return array
+     */
+    public function getCountries()
+    {
+        $qb = $this->filterPublished($this->createQueryBuilder('job'));
+        $qb
+            ->addSelect("count(job) as total")
+            ->addSelect("company.country as code")
+            ->join('job.company', 'company')
+            ->groupBy("company.country")
+            ->orderBy('total', 'DESC');
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
      * @param array $filters
+     * @param string $status
      * @return array
      */
-    public function getCountries($filters = array())
+    public function getContracts($status = null, $filters = array())
     {
-        return $this->getFiltersLists('country', $filters);
-    }
+        $qb = $this->filterPublished($this->createQueryBuilder('job'));
+        $qb
+            ->addSelect("count(job) as total")
+            ->addSelect("job.contract as code")
+            ->groupBy("job.contract")
+            ->orderBy('total', 'DESC');
 
-    /**
-     * @param array $filters
-     * @return array
-     */
-    public function getContracts($filters = array())
-    {
-        return $this->getFiltersLists('contract', $filters);
+        if (isset($filters['country']) && strlen($filters['country']) >= 2) {
+            $qb
+                ->join('job.company', 'company')
+                ->andWhere($qb->expr()->eq("company.country", ':country'))
+                ->setParameter(":country", $filters['country']);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -84,8 +82,12 @@ class JobRepository extends EntityRepository
      */
     public function getListQb($status = Job::STATUS_PUBLISHED)
     {
-        return $this->filterStatus($this->createQueryBuilder('job'), $status)
+        $qb = $this->filterStatus($this->createQueryBuilder('job'), $status)
+            ->addSelect('company')
+            ->leftJoin('job.company', 'company')
             ->orderBy('job.id', 'desc');
+
+        return $qb;
     }
 
     /**
@@ -95,7 +97,10 @@ class JobRepository extends EntityRepository
     public function getQbByUser(User $user)
     {
         $qb = $this->createQueryBuilder('job');
-        $qb->where($qb->expr()->eq('job.user', ':user'))
+        $qb
+            ->addSelect('company')
+            ->leftJoin('job.company', 'company')
+            ->where($qb->expr()->eq('job.user', ':user'))
             ->setParameter(':user', $user)
             ->orderBy('job.id', 'desc');
 

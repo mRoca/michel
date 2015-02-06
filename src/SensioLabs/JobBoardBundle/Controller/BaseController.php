@@ -39,7 +39,7 @@ class BaseController extends Controller
             return $this->render('SensioLabsJobBoardBundle:Includes:job_container.html.twig', $data);
         }
 
-        $data['countries'] = $repository->getCountries($data['filters']);
+        $data['countries'] = $repository->getCountries();
         $data['contracts'] = $repository->getContracts($data['filters']);
         $data['form_filter'] = $formFilter->createView();
 

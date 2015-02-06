@@ -3,26 +3,25 @@
 namespace SensioLabs\JobBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Class Job
  *
- * @Entity(repositoryClass="SensioLabs\JobBoardBundle\Repository\JobRepository")
+ * @ORM\Entity(repositoryClass="SensioLabs\JobBoardBundle\Repository\JobRepository")
  *
  * @ORM\Table(name="jobs", indexes={
- *      @ORM\Index(name="country_idx", columns={"country"}),
  *      @ORM\Index(name="contract_idx", columns={"contract"}),
  *      @ORM\Index(name="slug_idx", columns={"slug"}),
- *      @ORM\Index(name="company_idx", columns={"company"}),
  *      @ORM\Index(name="title_idx", columns={"title"}),
  *      @ORM\Index(name="created_at_idx", columns={"created_at"}),
  *      @ORM\Index(name="status_idx", columns={"status"}),
  * })
  *
+ * @ORM\EntityListeners({"SensioLabs\JobBoardBundle\EventListener\JobCompanySubscriber"})
  */
 class Job
 {
@@ -45,6 +44,7 @@ class Job
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Job title should not be empty")
+     * @JMS\Groups({"post_session"})
      */
     protected $title;
 
@@ -56,31 +56,20 @@ class Job
     protected $slug;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Company should not be empty")
+     * @var Company
+     * @ORM\ManyToOne(targetEntity="Company", inversedBy="jobs", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
+     * @JMS\Groups({"post_session"})
      */
     protected $company;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=2)
-     * @Assert\NotBlank(message="Country should not be empty")
-     */
-    protected $country;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="City should not be empty")
-     */
-    protected $city;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=31)
      * @Assert\NotBlank(message="Contract must be selected")
      * @Assert\Choice(callback = "getContractTypesKeys", message="Contract must be selected")
+     * @JMS\Groups({"post_session"})
      */
     protected $contract;
 
@@ -88,12 +77,14 @@ class Job
      * @var string
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Your job offer must be longer")
+     * @JMS\Groups({"post_session"})
      */
     protected $description;
 
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true, name="how_to_apply")
+     * @JMS\Groups({"post_session"})
      */
     protected $howToApply;
 
@@ -122,19 +113,19 @@ class Job
      * @var int
      * @ORM\Column(type="integer", name="list_views_count")
      */
-    protected $listViewsCount;
+    protected $listViewsCount = 0;
 
     /**
      * @var int
      * @ORM\Column(type="integer", name="display_views_count")
      */
-    protected $displayViewsCount;
+    protected $displayViewsCount = 0;
 
     /**
      * @var int
      * @ORM\Column(type="integer", name="api_views_count")
      */
-    protected $apiViewsCount;
+    protected $apiViewsCount = 0;
 
     /**
      * @var \DateTime
@@ -209,14 +200,6 @@ class Job
         return array_keys(self::$CONTRACT_TYPES);
     }
 
-    public function __construct()
-    {
-        $this->status = self::STATUS_NEW;
-        $this->listViewsCount = 0;
-        $this->displayViewsCount = 0;
-        $this->apiViewsCount = 0;
-    }
-
     /**
      * Create an array used by the generateUrl method
      * @return array
@@ -224,7 +207,7 @@ class Job
     public function getUrlParameters()
     {
         return array(
-            'country'  => strtoupper($this->country),
+            'country'  => strtoupper($this->getCompany()->getCountry()),
             'contract' => strtoupper($this->contract),
             'slug'     => $this->slug ? $this->slug : Urlizer::urlize($this->title),
         );
@@ -327,22 +310,7 @@ class Job
     }
 
     /**
-     * Set company
-     *
-     * @param string $company
-     * @return Job
-     */
-    public function setCompany($company)
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
-    /**
-     * Get company
-     *
-     * @return string
+     * @return Company
      */
     public function getCompany()
     {
@@ -350,49 +318,14 @@ class Job
     }
 
     /**
-     * Set country
-     *
-     * @param string $country
-     * @return Job
+     * @param Company $company
+     * @return $this
      */
-    public function setCountry($country)
+    public function setCompany($company)
     {
-        $this->country = $country;
+        $this->company = $company;
 
         return $this;
-    }
-
-    /**
-     * Get country
-     *
-     * @return string
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
-     * Set city
-     *
-     * @param string $city
-     * @return Job
-     */
-    public function setCity($city)
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    /**
-     * Get city
-     *
-     * @return string
-     */
-    public function getCity()
-    {
-        return $this->city;
     }
 
     /**

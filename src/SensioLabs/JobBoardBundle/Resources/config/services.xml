@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <!--twig.extension-->
         <service id="sensiolabs.twig.country_extension" class="SensioLabs\JobBoardBundle\Twig\CountryExtension">
@@ -24,6 +24,10 @@
         <service id="form.job" class="SensioLabs\JobBoardBundle\Form\Type\JobType">
             <tag name="form.type" alias="job"/>
         </service>
+        <!--form.company-->
+        <service id="form.company" class="SensioLabs\JobBoardBundle\Form\Type\CompanyType">
+            <tag name="form.type" alias="company"/>
+        </service>
         <!--form.adminjob-->
         <service id="form.adminjob" class="SensioLabs\JobBoardBundle\Form\Type\AdminJobType">
             <tag name="form.type" alias="adminjob"/>
@@ -43,6 +47,11 @@
             <argument>%sensiolabs_jobboard.mailer_from_email%</argument>
             <argument>%sensiolabs_jobboard.mailer_from_name%</argument>
             <argument>%sensiolabs_jobboard.mailer_admin_email%</argument>
+        </service>
+        <!--sensiolabs_jobboard.postedjob_handler-->
+        <service id="sensiolabs_jobboard.postedjob_handler" class="SensioLabs\JobBoardBundle\Services\PostedJobSessionHandler">
+            <argument type="service" id="session"/>
+            <argument type="service" id="jms_serializer"/>
         </service>
         <!--sensiolabs_jobboard.mailer.job-->
         <service id="sensiolabs_jobboard.mailer.job" class="SensioLabs\JobBoardBundle\Mailer\JobMailer" parent="sensiolabs_jobboard.mailer"/>
