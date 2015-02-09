@@ -1,4 +1,5 @@
 {% extends "SensioLabsJobBoardBundle::layout.html.twig" %}
+{% import '@SensioLabsJobBoard/Includes/macros.html.twig' as macros %}
 
 {% from 'SensioLabsJobBoardBundle:Includes:breadcrumb.html.twig' import breadcrumb %}
 
@@ -55,7 +56,7 @@
                                     {% endif %}
                                 {% endif %}
                             {% else %}
-                                <td>{{ job.status }}</td>
+                                <td>{{ macros.status(job.status) }}</td>
                             {% endif %}
 
                             {#<td style="color:green"> Archived</td>#}

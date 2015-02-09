@@ -2,7 +2,9 @@
 
 namespace SensioLabs\JobBoardBundle\Form\Type;
 
+use SensioLabs\JobBoardBundle\Entity\Job;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AdminJobType extends JobType
 {
@@ -30,6 +32,15 @@ class AdminJobType extends JobType
             ->add('publish', 'checkbox', array(
                 'mapped' => false,
                 'data'   => $builder->getData()->isPublished()
+            ))
+            ->add('status', 'choice', array(
+                'choices'     => Job::$STATUSES,
+                'empty_value' => 'form.label.job.status',
+                'constraints' => array(
+                    new NotBlank(array(
+                        'message' => 'job.status.not_blank'
+                    ))
+                )
             ));
     }
 

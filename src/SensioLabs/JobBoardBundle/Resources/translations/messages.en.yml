@@ -1,12 +1,13 @@
 backend:
     edit:
-        breadcrumb: 'Make changes on "%title%" announcement'
+        breadcrumb: 'Make changes on "%job.title%" announcement'
         title: Edit
 
     menu:
         archived: 'Archived ads'
         deleted: 'Deleted ads'
         published: 'Published ads'
+        all: 'All ads'
 
     title: Backend
 
@@ -75,6 +76,7 @@ entity:
             deleted: Deleted
             restored: Restored
 
+        status_field: Status
         time_left: 'Time left'
         time_left_value: '{0} Today|{1} 1 day|]1,Inf] %count% days'
         title: 'Job title'
@@ -91,6 +93,7 @@ form:
             publish_end: to
             publish_format: '(format: mm/dd/yyyy)'
             publish_start: 'Visible from'
+            status: 'Announcement status'
 
 frontend:
     homepage: "The 1<sup>st</sup> jobboard 100% devoted to the <strong>Symfony</strong> community.<br/>\n<strong>Recruiters</strong> The definitive source for Symfony talent.<br/>\n<strong>Developers</strong> Find the project, the company, or the job of your dreams."

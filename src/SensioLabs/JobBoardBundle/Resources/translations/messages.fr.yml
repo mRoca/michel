@@ -7,6 +7,7 @@ backend:
         archived: 'Annonces archivées'
         deleted: 'Annonces supprimées'
         published: 'Annonces publiées'
+        all: 'Toutes les annonces'
 
     title: Administration
 
@@ -75,6 +76,7 @@ entity:
             deleted: Supprimée
             restored: Restorée
 
+        status_field: Etat
         time_left: 'Temps restant'
         time_left_value: '{0} Aujourd''hui|{1} 1 jour|]1,Inf] %count% jours'
         title: 'Libellé de l''annonce'
@@ -91,6 +93,7 @@ form:
             publish_end: au
             publish_format: '(format: mm/dd/yyyy)'
             publish_start: 'Visible du'
+            status: 'Etat de l''annonce'
 
 frontend:
     homepage: "La 1<sup>ère</sup> plateforme 100% consacrée à la communauté <strong>Symfony</strong>.<br/>\n<strong>Recruteurs</strong> La meilleure source de talent Symfony.<br/>\n<strong>Développeurs</strong> Trouvez le projet, l''entreprise ou le poste de vos rêves."

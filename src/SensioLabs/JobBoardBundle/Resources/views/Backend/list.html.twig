@@ -1,4 +1,4 @@
-{% import _self as self %}
+{% import '@SensioLabsJobBoard/Includes/macros.html.twig' as macros %}
 
 {% extends "SensioLabsJobBoardBundle:Backend:layout.html.twig" %}
 
@@ -13,7 +13,10 @@
         <a href="{{ path('backend_list', {status: 'archived'}) }}">{{ 'backend.menu.archived' | trans }}</a> |
     </li>
     <li class="{{ status is constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_DELETED') ? 'active' : '' }}">
-        <a href="{{ path('backend_list', {status: 'deleted'}) }}">{{ 'backend.menu.deleted' | trans }}</a>
+        <a href="{{ path('backend_list', {status: 'deleted'}) }}">{{ 'backend.menu.deleted' | trans }}</a> |
+    </li>
+    <li class="{{ status is null ? 'active' : '' }}">
+        <a href="{{ path('backend_list', {status: 'all'}) }}">{{ 'backend.menu.all' | trans }}</a>
     </li>
 </ul>
 
@@ -33,14 +36,17 @@
                     </ul>
                 {% endif %}
 
-                <h2 class="big-title">{{ ('backend.menu.' ~ status | lower) | trans }}</h2>
+                <h2 class="big-title">{{ (status is null ? 'backend.menu.all' : ('backend.menu.' ~ status | lower)) | trans }}</h2>
 
                 <table class="table table-striped backend-list">
                     <thead>
                     <tr>
-                        <th>{{ self.pagination_sortable(jobs, 'entity.company.name' | trans, 'job.company') }}</th>
-                        <th>{{ self.pagination_sortable(jobs, 'entity.job.title' | trans, 'job.title') }}</th>
-                        <th>{{ self.pagination_sortable(jobs, 'entity.job.created_at' | trans, 'job.createdAt') }}</th>
+                        <th>{{ macros.pagination_sortable(jobs, 'entity.company.name' | trans, 'job.company') }}</th>
+                        <th>{{ macros.pagination_sortable(jobs, 'entity.job.title' | trans, 'job.title') }}</th>
+                        <th>{{ macros.pagination_sortable(jobs, 'entity.job.created_at' | trans, 'job.createdAt') }}</th>
+                        {% if(status is null) %}
+                            <th>{{ macros.pagination_sortable(jobs, 'entity.job.status_field' | trans, 'job.status') }}</th>
+                        {% endif %}
                         <th>{{ 'entity.job.list_views' | trans }}</th>
                         <th>{{ 'entity.job.display_views' | trans }}</th>
                         <th>{{ 'entity.job.api_views' | trans }}</th>
@@ -53,6 +59,9 @@
                             <td>{{ job.company }}</td>
                             <td>{{ job.title }}</td>
                             <td>{{ job.createdAt | date('d/m/Y') }}</td>
+                            {% if(status is null) %}
+                                <td>{{ macros.status(job.status) }}</td>
+                            {% endif %}
                             <td>{{ job.listViewsCount }}</td>
                             <td>{{ job.displayViewsCount }}</td>
                             <td>{{ job.apiViewsCount }}</td>
@@ -79,13 +88,6 @@
         </div>
 
         {% block box_clear '' %}
-        {% endblock %}
-        {% endembed %}
     {% endblock %}
-
-{% macro pagination_sortable(pagination, title, key) %}
-    {{ knp_pagination_sortable(pagination, title, key) }}
-    {% if pagination.isSorted(key) %}
-        {{ pagination.direction == 'asc' ? '▲' : '▼' }}
-    {% endif %}
-{% endmacro %}
+{% endembed %}
+{% endblock %}
