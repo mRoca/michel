@@ -2,8 +2,6 @@
 
 namespace SensioLabs\JobBoardBundle\Form\Type;
 
-use Doctrine\ORM\EntityManagerInterface;
-use SensioLabs\JobBoardBundle\Form\EventListener\CompanyFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

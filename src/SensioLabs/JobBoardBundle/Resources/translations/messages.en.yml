@@ -50,8 +50,8 @@ entity:
     job:
         api_views: 'Ext Displays'
         contract:
-            fulltime: 'Full Time'
-            parttime: 'Part Time'
+            cdi: 'Full Time'
+            part_time: 'Part Time'
             internship: 'Internship'
             freelance: 'Freelance'
             alternance: 'Alternance'

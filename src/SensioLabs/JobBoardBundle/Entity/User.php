@@ -9,7 +9,9 @@ use SensioLabs\Connect\Api\Entity\User as ConnectApiUser;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Table(name="sl_user")
+ * @ORM\Table(name="sl_user", indexes={
+ *      @ORM\Index(name="uuid_idx", columns={"uuid"}),
+ * })
  * @ORM\Entity(repositoryClass="SensioLabs\JobBoardBundle\Repository\UserRepository")
  */
 class User implements UserInterface
@@ -38,7 +40,7 @@ class User implements UserInterface
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    protected $isAdmin;
+    protected $admin;
 
     /**
      * @var ArrayCollection|Job[]
@@ -49,7 +51,7 @@ class User implements UserInterface
     public function __construct($uuid)
     {
         $this->uuid = $uuid;
-        $this->isAdmin = false;
+        $this->admin = false;
         $this->jobs = new ArrayCollection();
     }
 
@@ -146,7 +148,7 @@ class User implements UserInterface
         $roles = array('ROLE_USER');
 
         if (null !== $this->id) $roles[] = 'ROLE_CONNECT_USER';
-        if ($this->isAdmin) $roles[] = 'ROLE_ADMIN';
+        if ($this->admin) $roles[] = 'ROLE_ADMIN';
 
         return $roles;
     }
@@ -174,18 +176,18 @@ class User implements UserInterface
     /**
      * @return boolean
      */
-    public function getIsAdmin()
+    public function isAdmin()
     {
-        return $this->isAdmin;
+        return $this->admin;
     }
 
     /**
-     * @param boolean $isAdmin
+     * @param boolean $admin
      * @return $this
      */
-    public function setIsAdmin($isAdmin)
+    public function setAdmin($admin)
     {
-        $this->isAdmin = $isAdmin;
+        $this->admin = $admin;
 
         return $this;
     }

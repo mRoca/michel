@@ -5,7 +5,6 @@ namespace SensioLabs\JobBoardBundle\Controller;
 use Doctrine\ORM\EntityManager;
 use JMS\Serializer\SerializationContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use SensioLabs\JobBoardBundle\Entity\Job;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 

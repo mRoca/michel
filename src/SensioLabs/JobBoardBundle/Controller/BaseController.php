@@ -3,7 +3,7 @@
 namespace SensioLabs\JobBoardBundle\Controller;
 
 use SensioLabs\JobBoardBundle\Entity\Job;
-use SensioLabs\JobBoardBundle\Filter\JobFilterType;
+use SensioLabs\JobBoardBundle\Filter\Form\Type\JobFilterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -41,7 +41,7 @@ class BaseController extends Controller
         }
 
         $data['countries'] = $repository->getCountries();
-        $data['contracts'] = $repository->getContracts($data['filters']);
+        $data['contracts'] = $repository->getContracts(isset($data['filters']['country']) ? $data['filters']['country'] : null);
         $data['form_filter'] = $formFilter->createView();
 
         return $data;

@@ -2,12 +2,10 @@
 
 namespace SensioLabs\JobBoardBundle\Form\Type;
 
-use SensioLabs\JobBoardBundle\Entity\Job;
 use SensioLabs\JobBoardBundle\Validator\Constraints\JobCanBeRestored;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\Collection;
 
 class RestoreJobType extends AbstractType
 {

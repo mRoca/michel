@@ -36,7 +36,6 @@ class JobRepository extends EntityRepository
     }
 
     /**
-     * @param string $status
      * @return array
      */
     public function getCountries()
@@ -53,11 +52,10 @@ class JobRepository extends EntityRepository
     }
 
     /**
-     * @param array $filters
-     * @param string $status
+     * @param string $country
      * @return array
      */
-    public function getContracts($status = null, $filters = array())
+    public function getContracts($country = null)
     {
         $qb = $this->filterPublished($this->createQueryBuilder('job'));
         $qb
@@ -66,11 +64,11 @@ class JobRepository extends EntityRepository
             ->groupBy("job.contract")
             ->orderBy('total', 'DESC');
 
-        if (isset($filters['country']) && strlen($filters['country']) >= 2) {
+        if ($country) {
             $qb
                 ->join('job.company', 'company')
                 ->andWhere($qb->expr()->eq("company.country", ':country'))
-                ->setParameter(":country", $filters['country']);
+                ->setParameter(":country", $country);
         }
 
         return $qb->getQuery()->getResult();

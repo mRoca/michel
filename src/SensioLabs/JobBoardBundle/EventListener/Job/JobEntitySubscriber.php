@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use SensioLabs\JobBoardBundle\Entity\Company;
 use SensioLabs\JobBoardBundle\Entity\Job;
 
 class JobEntitySubscriber implements EventSubscriber

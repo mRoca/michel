@@ -2,7 +2,8 @@
 
 namespace SensioLabs\JobBoardBundle\Security\Authorization\Voter;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -10,11 +11,15 @@ class ApiAccessVoter implements VoterInterface
 {
     const ROLE_API_ACCESS = 'API_ACCESS';
 
-    protected $container;
+    protected $requestStack;
+    protected $kernel;
+    protected $apiAllowedHosts;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(RequestStack $requestStack, Kernel $kernel, $apiAllowedHosts = array())
     {
-        $this->container = $container;
+        $this->requestStack = $requestStack;
+        $this->kernel = $kernel;
+        $this->apiAllowedHosts = $apiAllowedHosts;
     }
 
     public function supportsAttribute($attribute)
@@ -31,19 +36,18 @@ class ApiAccessVoter implements VoterInterface
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 
-        $request = $this->container->get('request');
-        $allowedHosts = $this->container->getParameter('api_allowed_hosts');
+        $request = $this->requestStack->getCurrentRequest();
 
         foreach ($attributes as $attribute) {
             if (!$this->supportsAttribute($attribute)) {
                 continue;
             }
 
-            if (in_array($request->getHost(), $allowedHosts)) {
+            if (in_array($request->getHost(), $this->apiAllowedHosts)) {
                 return VoterInterface::ACCESS_GRANTED;
             }
 
-            if (in_array($this->container->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+            if (in_array($this->kernel->getEnvironment(), array('test', 'dev'))) {
                 return VoterInterface::ACCESS_GRANTED;
             }
 

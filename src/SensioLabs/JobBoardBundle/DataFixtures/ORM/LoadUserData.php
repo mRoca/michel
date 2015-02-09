@@ -22,13 +22,13 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $admin = new User(self::TEST_UUID_ADMIN);
         $admin->setName('Admin Admin');
         $admin->setUsername('admin');
-        $admin->setIsAdmin(true);
+        $admin->setAdmin(true);
         $manager->persist($admin);
 
         $user = new User(self::TEST_UUID_USER);
         $user->setName('User User');
         $user->setUsername('user');
-        $user->setIsAdmin(false);
+        $user->setAdmin(false);
         $manager->persist($user);
 
         $manager->flush();
