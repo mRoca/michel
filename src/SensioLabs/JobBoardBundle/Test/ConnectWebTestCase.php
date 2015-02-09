@@ -106,7 +106,7 @@ abstract class ConnectWebTestCase extends WebTestCase
     protected function assertJsonResponse(Response $response, $statusCode = Response::HTTP_OK)
     {
         $content = $response->getContent();
-        $this->assertEquals($statusCode, $response->getStatusCode(), $content);
+        $this->assertEquals($statusCode, $response->getStatusCode());
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'), $response->headers);
         $this->assertJson($content);
     }

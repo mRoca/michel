@@ -28,7 +28,7 @@
                 </div>
                 <div class="company-label">
                     <label class="label" for="job_company">@</label>
-                    {{ form_row(form.company.name) }}
+                    {{ form_row(form.company.name, {attr: {'data-source': url('autocomplete_company')}}) }}
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
                         {{ form_row(form.company.country) }}
                     </div>
                     <div class="city-input">
-                        {{ form_row(form.company.city) }}
+                        {{ form_row(form.company.city, {attr: {'data-source': url('autocomplete_city')}}) }}
                     </div>
                 </div>
                 <div>

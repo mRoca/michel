@@ -14,13 +14,18 @@ class CompanyType extends AbstractType
             ->add('name', 'text', array(
                 'attr' => array(
                     'placeholder' => 'entity.company.name',
+                    'class' => 'company-name'
                 ),
             ))
-            ->add('country', 'country')
+            ->add('country', 'country', array(
+                'attr' => array(
+                    'class' => 'company-country'
+                ),
+            ))
             ->add('city', 'text', array(
                 'attr' => array(
                     'placeholder' => 'entity.company.city',
-                    'class'       => 'location',
+                    'class'       => 'location company-city',
                 ),
             ));
     }
