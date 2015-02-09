@@ -223,7 +223,7 @@ class Job implements RoutedItemInterface
      */
     public function isDeleted()
     {
-        return $this->getStatus() === Job::STATUS_DELETED;
+        return $this->status === Job::STATUS_DELETED;
     }
 
     /**

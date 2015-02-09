@@ -114,7 +114,9 @@ class JobRepository extends EntityRepository
         $qb
             ->addSelect('company')
             ->leftJoin('job.company', 'company')
-            ->where($qb->expr()->eq('job.user', ':user'))
+            ->where($qb->expr()->neq('job.status', ':status'))
+            ->setParameter('status', Job::STATUS_DELETED)
+            ->andWhere($qb->expr()->eq('job.user', ':user'))
             ->setParameter(':user', $user)
             ->orderBy('job.id', 'desc');
 

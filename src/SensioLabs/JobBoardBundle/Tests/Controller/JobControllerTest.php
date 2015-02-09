@@ -50,7 +50,7 @@ class JobControllerTest extends ConnectWebTestCase
 
     public function testUpdateAction()
     {
-        $job = $this->em->getRepository('SensioLabsJobBoardBundle:Job')->findOneBy(array('user' => $this->getSimpleUser()));
+        $job = $this->em->getRepository('SensioLabsJobBoardBundle:Job')->findOneBy(array('user' => $this->getSimpleUser(), 'status' => Job::STATUS_PUBLISHED));
         $this->assertNotNull($job);
 
         $route = $this->client->getContainer()->get('router')->generate('job_update', $job->getUrlParameters(), false);
@@ -116,6 +116,31 @@ class JobControllerTest extends ConnectWebTestCase
         $this->em->clear();
         $job = $jobRepository->find($initialJob->getId());
         $this->assertEquals($initialJob->getDisplayViewsCount() + 1, $job->getDisplayViewsCount());
+    }
+
+    public function testChangeStatusAction()
+    {
+        $jobRepository = $this->em->getRepository('SensioLabsJobBoardBundle:Job');
+        $job = $jobRepository->findOneBy(array('user' => $this->getSimpleUser(), 'status' => Job::STATUS_PUBLISHED));
+        $this->assertNotNull($job);
+
+        $route = $this->client->getContainer()->get('router')->generate(
+            'job_udpate_status',
+            array_merge($job->getUrlParameters(), array('status' => Job::STATUS_ARCHIVED)),
+            false
+        );
+
+        // Not authenticated => Redirect to connect.sensiolabs
+        $this->client->request('GET', $route);
+        $this->assertConnectRedirect($this->client->getResponse());
+
+        // Authenticated
+        $this->logInAsUser();
+
+        $this->client->request('GET', $route);
+        $this->em->clear();
+        $job = $jobRepository->find($job->getId());
+        $this->assertSame(Job::STATUS_ARCHIVED, $job->getStatus());
     }
 
     protected function jobData()

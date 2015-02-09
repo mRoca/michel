@@ -116,6 +116,9 @@ frontend:
         user_no_job: 'Vous n''avez aucune annonce.'
 
 layout:
+    confirm:
+        delete: 'Voulez-vous vraiment supprimer cet élément ?'
+
     contact: Contact
 
     menu:
@@ -131,4 +134,5 @@ layout:
 messages:
     success:
         job_added: 'Votre annonce a été ajoutée avec succès'
+        job_updated: 'Votre annonce a été mise à jour avec succès'
         job_restored: 'L''état de l''annonce "%job.title%" a été mis à jour avec succès en "restaurée"'
