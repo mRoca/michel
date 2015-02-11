@@ -29,7 +29,7 @@ class BaseControllerTest extends ConnectWebTestCase
 
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->loadXML($output);
-        $this->assertEquals(20, $dom->getElementsByTagName('item')->length);
+        $this->assertEquals(17, $dom->getElementsByTagName('item')->length);
         $this->assertEquals(0, count(libxml_get_errors()));
         $this->assertContains('<rss version="2.0">', $output);
         $this->assertContains('<title><![CDATA[My great job 50]]></title>', $output);

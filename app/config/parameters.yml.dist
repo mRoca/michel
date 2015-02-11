@@ -6,6 +6,9 @@ parameters:
     database_user:     root
     database_password: ~
 
+    elasticsearch_host: localhost
+    elasticsearch_port: 9200
+
     router.request_context.host: jobs.sensiolabs.com
 
     mailer_transport:  smtp

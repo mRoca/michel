@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SensioLabs\JobBoardBundle\Entity\Job;
+use SensioLabs\JobBoardBundle\SearchRepository\JobRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,17 +25,17 @@ class BackendController extends Controller
             $status = null;
         }
 
-        $repository = $this->getDoctrine()->getRepository('SensioLabsJobBoardBundle:Job');
-
-        $qb = $repository->getListQb($status)->getQuery();
+        /** @var JobRepository $searchRepository */
+        $searchRepository = $this->get('fos_elastica.manager')->getRepository('SensioLabsJobBoardBundle:Job');
+        $paginator = $searchRepository->createPaginatorAdapter($searchRepository->getListQuery($status));
 
         /** @var Job[] $jobs */
         $jobs = $this->get('knp_paginator')->paginate(
-            $qb,
+            $paginator,
             $request->query->get('page', 1),
             Job::LIST_ADMIN_MAX_JOB_ITEMS,
             array(
-                'defaultSortFieldName' => 'job.createdAt',
+                'defaultSortFieldName' => 'created_at.raw',
                 'defaultSortDirection' => 'asc',
             )
         );

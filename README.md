@@ -45,6 +45,12 @@ To delete from the database all announcements having the status « deleted » si
 	app/console jobboard:jobs:clean
 	app/console jobboard:jobs:clean --days=20
 
+### Clean old deleted jobs
+
+Populate the elasticsearch index :
+
+	app/console fos:elastica:populate
+
 ## API
 
 The API is accessible if the current environment is dev, or only by those urls : 
@@ -65,7 +71,7 @@ Caution : The application provides jobs for every country, so all DateTime are s
 	
 ### Fill DB with fake data
 
-	app/console doctrine:fixtures:load
+	bin/fixtures.sh
 
 ### Extract translations
 

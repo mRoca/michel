@@ -102,7 +102,7 @@ class JobControllerTest extends ConnectWebTestCase
 
         // List views count
         $this->em->clear();
-        $initialJob = $jobRepository->getListQb(Job::STATUS_PUBLISHED)->setMaxResults(1)->getQuery()->getSingleResult();
+        $initialJob = $jobRepository->findOneBy(array('status' => Job::STATUS_PUBLISHED), array('createdAt' => 'desc'));
         $this->assertNotNull($initialJob);
 
         $this->client->request('GET', '/');

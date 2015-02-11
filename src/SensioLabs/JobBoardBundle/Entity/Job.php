@@ -4,6 +4,7 @@ namespace SensioLabs\JobBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
+use FOS\ElasticaBundle\Configuration\Search;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\Intl\Intl;
@@ -14,13 +15,11 @@ use JMS\Serializer\Annotation as JMS;
  * Class Job
  *
  * @ORM\Entity(repositoryClass="SensioLabs\JobBoardBundle\Repository\JobRepository")
+ * @Search(repositoryClass="SensioLabs\JobBoardBundle\SearchRepository\JobRepository")
  *
  * @ORM\Table(name="jobs", indexes={
- *      @ORM\Index(name="contract_idx", columns={"contract"}),
- *      @ORM\Index(name="slug_idx", columns={"slug"}),
- *      @ORM\Index(name="title_idx", columns={"title"}),
- *      @ORM\Index(name="created_at_idx", columns={"created_at"}),
  *      @ORM\Index(name="status_idx", columns={"status"}),
+ *      @ORM\Index(name="deleted_at_idx", columns={"deleted_at"}),
  * })
  *
  * @ORM\EntityListeners({"SensioLabs\JobBoardBundle\EventListener\Job\JobEntitySubscriber"})

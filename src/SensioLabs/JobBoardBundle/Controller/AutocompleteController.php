@@ -3,9 +3,11 @@
 namespace SensioLabs\JobBoardBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use SensioLabs\JobBoardBundle\SearchRepository\CompanyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 class AutocompleteController extends Controller
 {
@@ -18,12 +20,18 @@ class AutocompleteController extends Controller
         $search = $request->query->get('search');
         $country = $request->query->get('country');
 
-        $repository = $this->getDoctrine()->getRepository('SensioLabsJobBoardBundle:Company');
-        $companies = $repository->autocompleteCity($search, $country);
+        if (!$search || !$country) {
+            throw new InvalidParameterException('Search & country parameters are required');
+        }
 
-        return new JsonResponse(array_map(function ($company) {
-            return $company['city'];
-        }, $companies));
+        /** @var CompanyRepository $repository */
+        $repository = $this->get('fos_elastica.manager')->getRepository('SensioLabsJobBoardBundle:Company');
+        $type = $this->get('fos_elastica.index.jobboard.company');
+        $companies = $type->search($repository->autocompleteCity($search, $country))->getAggregations();
+
+        return new JsonResponse(array_map(function ($aggr) {
+            return $aggr['key'];
+        }, $companies['citys']['items']['buckets']));
     }
 
     /**
@@ -35,11 +43,18 @@ class AutocompleteController extends Controller
         $country = $request->query->get('country');
         $city = $request->query->get('city');
 
-        $repository = $this->getDoctrine()->getRepository('SensioLabsJobBoardBundle:Company');
-        $companies = $repository->autocompleteCompany($search, $country, $city);
+        if (!$search || !$country) {
+            throw new InvalidParameterException('Search & country parameters are required');
+        }
 
-        return new JsonResponse(array_map(function ($company) {
-            return $company['name'];
-        }, $companies));
+        /** @var CompanyRepository $repository */
+        $repository = $this->get('fos_elastica.manager')->getRepository('SensioLabsJobBoardBundle:Company');
+        $type = $this->get('fos_elastica.index.jobboard.company');
+
+        $companies = $type->search($repository->autocompleteCompany($search, $country, $city))->getAggregations();
+
+        return new JsonResponse(array_map(function ($aggr) {
+            return $aggr['key'];
+        }, $companies['names']['items']['buckets']));
     }
 }

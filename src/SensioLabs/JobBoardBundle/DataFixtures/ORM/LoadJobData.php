@@ -50,10 +50,11 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
                 $job->setStatus(Job::STATUS_DELETED);
             }
 
-            if ($job->isPublished() && ($i % 2)) {
-                $job->setPublishStart(new \DateTime("last week - " . rand(1, 90) . " days"));
-                $job->setPublishEnd(new \DateTime("next week +" . rand(0, 90) . " days"));
+            if ($job->isPublished() && ($i > 15)) {
+                $job->setPublishStart(new \DateTime("last week - " . (50 - $i). " days"));
+                $job->setPublishEnd(new \DateTime("next week +" . $i . " days"));
             }
+            $job->setCreatedAt(new \DateTime("last week - " . (2 * 50 - $i). " days"));
 
             $manager->persist($job);
         }

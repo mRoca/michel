@@ -30,7 +30,6 @@ twig:
     form:
         resources:
             - 'SensioLabsJobBoardBundle:Form:fields.html.twig'
-            - 'LexikFormFilterBundle:Form:form_div_layout.html.twig'
     globals:
         sln_js: "%sensiolabs_connect.sln_js%"
         locales: ['fr', 'en']
@@ -87,9 +86,6 @@ stof_doctrine_extensions:
             sluggable: true
             timestampable: true
 
-lexik_form_filter:
-    where_method: and
-
 knp_paginator:
     page_range: 10
     default_options:
@@ -122,6 +118,88 @@ jms_i18n_routing:
     default_locale: %locale%
     locales: [en, fr]
     strategy: prefix_except_default
+
+fos_elastica:
+    clients:
+        default: { host: %elasticsearch_host%, port: %elasticsearch_port% }
+    indexes:
+        jobboard:
+            index_name: jobboard_%kernel.environment%
+            client: default
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            custom_search_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter   : [standard, lowercase, asciifolding]
+                            custom_index_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter   : [standard, lowercase, asciifolding, custom_filter]
+                        filter:
+                            custom_filter:
+                                type: edgeNGram
+                                side: front
+                                min_gram: 1
+                                max_gram: 20
+            types:
+                company:
+                    mappings:
+                        name:
+                            type: string
+                            search_analyzer: custom_search_analyzer
+                            index_analyzer: custom_index_analyzer
+                            fields:
+                                raw: { type: string , index: "not_analyzed" }
+                        country: { type: string , index: "not_analyzed" }
+                        city:
+                            type: string
+                            search_analyzer: custom_search_analyzer
+                            index_analyzer: custom_index_analyzer
+                            fields:
+                                raw: { type: string , index: "not_analyzed" }
+                    persistence:
+                        driver: orm
+                        model: SensioLabs\JobBoardBundle\Entity\Company
+                        provider: ~
+                        listener: ~
+                        finder: ~
+                job:
+                    mappings:
+                        title: { type: string , index: "not_analyzed" }
+                        status: { type: string , index: "not_analyzed" }
+                        slug: { type: string , index: "not_analyzed" }
+                        contract: { type: string , index: "not_analyzed" }
+                        publish_start:
+                            type: date
+                            fields:
+                                raw: { type: string , index: "not_analyzed" }
+                        publish_end:
+                            type: date
+                            fields:
+                                raw: { type: string , index: "not_analyzed" }
+                        created_at:
+                            type: date
+                            fields:
+                                raw: { type: string , index: "not_analyzed" }
+                        user:
+                            type: object
+                            properties:
+                                uuid: { type: string , index: "not_analyzed" }
+                        company:
+                            type: object
+                            properties:
+                                name: { type: string , index: "not_analyzed" }
+                                country: { type: string , index: "not_analyzed" }
+                                city: { type: string , index: "not_analyzed" }
+                    persistence:
+                        driver: orm
+                        model: SensioLabs\JobBoardBundle\Entity\Job
+                        provider: ~
+                        listener: ~
+                        finder: ~
 
 sensio_labs_job_board:
     mailer_from_name: %sensiolabs_jobboard.mailer_from_name%

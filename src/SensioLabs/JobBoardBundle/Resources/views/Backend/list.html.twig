@@ -32,11 +32,11 @@
                 <table class="table table-striped backend-list">
                     <thead>
                     <tr>
-                        <th>{{ macros.pagination_sortable(jobs, 'entity.company.name' | trans, 'job.company') }}</th>
-                        <th>{{ macros.pagination_sortable(jobs, 'entity.job.title' | trans, 'job.title') }}</th>
-                        <th>{{ macros.pagination_sortable(jobs, 'entity.job.created_at' | trans, 'job.createdAt') }}</th>
+                        <th>{{ macros.pagination_sortable(jobs, 'entity.company.name' | trans, 'company.name') }}</th>
+                        <th>{{ macros.pagination_sortable(jobs, 'entity.job.title' | trans, 'title') }}</th>
+                        <th>{{ macros.pagination_sortable(jobs, 'entity.job.created_at' | trans, 'created_at.raw') }}</th>
                         {% if(status is null) %}
-                            <th>{{ macros.pagination_sortable(jobs, 'entity.job.status_field' | trans, 'job.status') }}</th>
+                            <th>{{ macros.pagination_sortable(jobs, 'entity.job.status_field' | trans, 'status') }}</th>
                         {% endif %}
                         <th>{{ 'entity.job.list_views' | trans }}</th>
                         <th>{{ 'entity.job.display_views' | trans }}</th>

@@ -3,6 +3,7 @@
 namespace SensioLabs\JobBoardBundle\Test;
 
 use Doctrine\ORM\EntityManager;
+use FOS\ElasticaBundle\Provider\ProviderInterface;
 use SensioLabs\JobBoardBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -50,7 +51,26 @@ abstract class ConnectWebTestCase extends WebTestCase
         $executor = new ORMExecutor($this->em, $purger);
         $executor->execute($loader->getFixtures());
 
+        $this->elasticPopulate();
+
         parent::setUp();
+    }
+
+    protected function elasticPopulate()
+    {
+        $index = 'jobboard';
+        $registry = $this->client->getContainer()->get('fos_elastica.provider_registry');
+        $resetter = $this->client->getContainer()->get('fos_elastica.resetter');
+        $indexManager = $this->client->getContainer()->get('fos_elastica.index_manager');
+
+        $resetter->resetIndex($index);
+        /** @var ProviderInterface[] $providers */
+        $providers = $registry->getIndexProviders($index);
+        foreach ($providers as $type => $provider) {
+            $provider->populate();
+        }
+        $resetter->postPopulate($index);
+        $indexManager->getIndex($index)->refresh();
     }
 
     protected function getUser($userUuid)

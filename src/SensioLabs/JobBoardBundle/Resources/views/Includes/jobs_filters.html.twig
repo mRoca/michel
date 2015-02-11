@@ -11,9 +11,9 @@
         </li>
 
         {% for i, country in countries %}
-            <li {% if i > 2 %}style="display:none"{% endif %} class="{{ filters.country == country.code ? 'active' : '' }}">
-                <a href="{{ path('homepage', {'contract': filters.contract, 'country': country.code}) }}">
-                    {{ country.code | countryName }} ({{ country.total }})
+            <li {% if i > 2 %}style="display:none"{% endif %} class="{{ filters.country == country.key ? 'active' : '' }}">
+                <a href="{{ path('homepage', {'contract': filters.contract, 'country': country.key}) }}">
+                    {{ country.key | countryName }} ({{ country.doc_count }})
                 </a>
             </li>
         {% endfor %}
@@ -36,9 +36,9 @@
         </li>
 
         {% for i, contract in contracts %}
-            <li {% if i > 2 %}style="display:none"{% endif %} class="{{ filters.contract == contract.code ? 'active' : '' }}">
-                <a href="{{ path('homepage', {'contract': contract.code, 'country': filters.country}) }}">
-                    {{ ('entity.job.contract.' ~ (contract.code | lower)) | trans }} ({{ contract.total }})
+            <li {% if i > 2 %}style="display:none"{% endif %} class="{{ filters.contract == (contract.key | upper) ? 'active' : '' }}">
+                <a href="{{ path('homepage', {'contract': (contract.key | upper), 'country': filters.country}) }}">
+                    {{ ('entity.job.contract.' ~ (contract.key | lower)) | trans }} ({{ contract.doc_count }})
                 </a>
             </li>
         {% endfor %}

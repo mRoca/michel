@@ -21,12 +21,12 @@ class AppKernel extends Kernel
             new SensioLabs\Internal\Bundle\ConnectBundle\SensioLabsInternalConnectBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
-            new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Eko\FeedBundle\EkoFeedBundle(),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
+            new FOS\ElasticaBundle\FOSElasticaBundle(),
 
             new SensioLabs\JobBoardBundle\SensioLabsJobBoardBundle(),
         );

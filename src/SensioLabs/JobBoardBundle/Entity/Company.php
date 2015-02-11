@@ -4,6 +4,7 @@ namespace SensioLabs\JobBoardBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\ElasticaBundle\Configuration\Search;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
 
@@ -11,6 +12,7 @@ use JMS\Serializer\Annotation as JMS;
  * Class Company
  *
  * @ORM\Entity(repositoryClass="SensioLabs\JobBoardBundle\Repository\CompanyRepository")
+ * @Search(repositoryClass="SensioLabs\JobBoardBundle\SearchRepository\CompanyRepository")
  *
  * @ORM\Table(name="companies", uniqueConstraints={@ORM\UniqueConstraint(name="search_idx", columns={"name", "country", "city"})})
  *

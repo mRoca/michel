@@ -30,8 +30,8 @@ class BackendControllerTest extends ConnectWebTestCase
         // Here we override the $_GET global : the knp-paginator "paginate" method use it...
         // Maybe there is another way ?
         $savedGet = $_GET;
-        $_GET = array('sort' => 'job.title', 'direction' => 'desc');
-        $crawler = $this->client->request('GET', '/backend');
+        $_GET = array('sort' => 'title', 'direction' => 'desc');
+        $crawler = $this->client->request('GET', '/backend', $_GET);
         $this->assertSame('My great job 50', $crawler->filter('#backend-job-container > table > tbody > tr > td')->eq(1)->first()->text());
         $_GET = $savedGet;
 
