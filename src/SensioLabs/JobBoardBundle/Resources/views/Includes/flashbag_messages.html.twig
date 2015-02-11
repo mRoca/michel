@@ -1,0 +1,10 @@
+{% if app.session.flashBag.peekAll() | length %}
+    <ul class="backend-flashes">
+        {% for message in app.session.flashBag.get('error') %}
+            <li class="error">{{ message }}</li>
+        {% endfor %}
+        {% for message in app.session.flashBag.get('success') %}
+            <li class="success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

@@ -116,6 +116,9 @@ frontend:
         user_no_job: 'You have no job.'
 
 layout:
+    confirm:
+        delete: 'Do you really want to delete this item ?'
+
     contact: Contact
 
     menu:
@@ -131,4 +134,5 @@ layout:
 messages:
     success:
         job_added: 'Your announcement has been added with success'
+        job_updated: 'Your announcement has been updated with success'
         job_restored: 'Job "%job.title%" status successfully updated to "restored"'

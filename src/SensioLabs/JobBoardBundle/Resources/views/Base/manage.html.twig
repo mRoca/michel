@@ -15,6 +15,9 @@
     {% embed 'SensioLabsJobBoardBundle:Includes:box.html.twig' %}
         {% block box_content %}
             <div class="padding-table">
+
+                {% include '@SensioLabsJobBoard/Includes/flashbag_messages.html.twig' %}
+
                 <h2 class="big-title">{{ 'frontend.jobs.my_jobs' | trans }}</h2>
                 <a href="{{ path('job_post') }}" class="add right">
                     <img class="sprite-button-add-focus-grey-bg" src="{{ asset('bundles/sensiolabsjobboard/images/blank.png') }}" alt="+"/>{{ 'frontend.jobs.post' | trans }}
@@ -56,20 +59,28 @@
                                     {% endif %}
                                 {% endif %}
                             {% else %}
-                                <td>{{ macros.status(job.status) }}</td>
+                                <td style="color:green">{{ macros.status(job.status) }}</td>
                             {% endif %}
-
-                            {#<td style="color:green"> Archived</td>#}
 
                             <td>{{ job.totalViewsCount }}</td>
 
                             <td class="action">
                                 {#<a href="#">{{ 'buttons.renew' | trans }}</a> /#}
                                 {#<a href="{{ path('job_publish', job.urlParameters) }}">{{ 'buttons.publish' | trans }}</a> /#}
-                                <a href="{{ path('job_update', job.urlParameters) }}">{{ 'buttons.make_changes' | trans }}</a>
-                                {#<a href="#">{{ 'buttons.archive' | trans }}</a> /#}
-                                {#<a href="#">{{ 'buttons.unarchive' | trans }}</a> /#}
-                                {#<a href="#">{{ 'buttons.delete' | trans }}</a>#}
+
+                                <a href="{{ path('job_update', job.urlParameters) }}">{{ 'buttons.make_changes' | trans }}</a> /
+                                {% if job.published %}
+                                    <a href="{{ path('job_udpate_status', job.urlParameters | merge({status: constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_ARCHIVED')})) }}">
+                                        {{ 'buttons.archive' | trans }}
+                                    </a> /
+                                {% else %}
+                                    <a href="{{ path('job_udpate_status', job.urlParameters | merge({status: constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_PUBLISHED')})) }}">
+                                        {{ 'buttons.unarchive' | trans }}
+                                    </a> /
+                                {% endif %}
+                                <a href="{{ path('job_udpate_status', job.urlParameters | merge({status: constant('SensioLabs\\JobBoardBundle\\Entity\\Job::STATUS_DELETED')})) }}" onclick="return confirm('{{ 'layout.confirm.delete' | trans | e('js') }}');">
+                                    {{ 'buttons.delete' | trans }}
+                                </a>
                             </td>
                         </tr>
                     {% else %}

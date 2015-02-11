@@ -89,9 +89,7 @@ class JobController extends Controller
             $em->flush();
 
             $postedJobHandler->clearPostedJob();
-            $this->get('session')->getFlashBag()->add('success',
-                $this->get('translator')->trans('messages.success.job_added')
-            );
+            $this->addFlash('success', $this->get('translator')->trans('messages.success.job_added'));
 
             return $this->redirectToRoute('homepage');
         }
@@ -129,9 +127,7 @@ class JobController extends Controller
      */
     public function updateAction(Request $request, Job $job)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('edit', $job)) {
-            throw $this->createAccessDeniedException('Unauthorised access');
-        }
+        $this->denyAccessUnlessGranted('edit', $job);
 
         $oldjob = clone($job);
 
@@ -140,12 +136,13 @@ class JobController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($job);
             $em->flush();
 
             if ($job->isPublished()) {
                 $this->get('sensiolabs_jobboard.mailer.job')->jobUpdate($job, $oldjob);
             }
+
+            $this->addFlash('success', $this->get('translator')->trans('messages.success.job_updated'));
 
             return $this->redirectToRoute('job_udpate_preview', $job->getUrlParameters());
         }
@@ -167,5 +164,26 @@ class JobController extends Controller
         return array(
             'job' => $job,
         );
+    }
+
+    /**
+     * @Route("/{country}/{contract}/{slug}/update/status/{status}", name="job_udpate_status")
+     * @ParamConverter("job", class="SensioLabsJobBoardBundle:Job", options={"mapping": {"slug": "slug"}})
+     */
+    public function changeStatusAction(Request $request, Job $job, $status)
+    {
+        $this->denyAccessUnlessGranted('edit', $job);
+
+        if (in_array($status, Job::getStatusesKeys())) {
+            $job->setStatus($status);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash('success', $this->get('translator')->trans('messages.success.job_updated'));
+        }
+
+        parse_str(parse_url($request->headers->get('referer'), PHP_URL_QUERY), $params);
+
+        return $this->redirectToRoute('manage', $params);
     }
 }

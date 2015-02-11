@@ -107,10 +107,9 @@ class BackendController extends Controller
             $job->setStatus(Job::STATUS_DELETED);
             $em->flush();
         } else {
-            $session = $this->get('session');
             $errors = $deleteForm->getErrors();
             foreach ($errors as $error) {
-                $session->getFlashBag()->add('error', $error->getMessage());
+                $this->addFlash('error', $error->getMessage());
             }
         }
 
@@ -126,7 +125,6 @@ class BackendController extends Controller
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $session = $this->get('session');
 
         $restoreForm = $this->get('form.factory')->createNamed('job_restore' . $job->getId(), 'job_restore', $job);
         $restoreForm->handleRequest($request);
@@ -134,7 +132,7 @@ class BackendController extends Controller
             $job->setStatus(Job::STATUS_RESTORED);
             $em->flush();
 
-            $session->getFlashBag()->add('success',
+            $this->addFlash('success',
                 $this->get('translator')->trans(
                     'messages.success.job_restored',
                     array('%job.title%' => $job->getTitle())
@@ -143,7 +141,7 @@ class BackendController extends Controller
         } else {
             $errors = $restoreForm->getErrors();
             foreach ($errors as $error) {
-                $session->getFlashBag()->add('error', $error->getMessage());
+                $this->addFlash('error', $error->getMessage());
             }
         }
 
